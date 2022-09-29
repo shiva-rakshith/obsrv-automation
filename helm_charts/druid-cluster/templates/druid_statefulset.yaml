@@ -62,8 +62,8 @@ spec:
     druid.startup.logging.logProperties=true
 
     # Zookeeper
-    # druid.zk.service.host=druid-cluster-zookeeper-headless.{{ .Values.druid_namespace }}.svc.cluster.local
-    druid.zk.service.host=druid-cluster-zookeeper-0.druid-cluster-zookeeper-headless.druid-raw.svc.cluster.local:2181,druid-cluster-zookeeper-1.druid-cluster-zookeeper-headless.druid-raw.svc.cluster.local:2181,druid-cluster-zookeeper-2.druid-cluster-zookeeper-headless.druid-raw.svc.cluster.local:2181
+    druid.zk.service.host=druid-cluster-zookeeper-headless.{{ .Values.druid_namespace }}.svc.cluster.local
+    # druid.zk.service.host=druid-cluster-zookeeper-0.druid-cluster-zookeeper-headless.druid-raw.svc.cluster.local:2181,druid-cluster-zookeeper-1.druid-cluster-zookeeper-headless.druid-raw.svc.cluster.local:2181,druid-cluster-zookeeper-2.druid-cluster-zookeeper-headless.druid-raw.svc.cluster.local:2181
 
     druid.zk.paths.base=/druid
 
@@ -76,17 +76,16 @@ spec:
 
     # Deep storage
     druid.storage.type={{ .Values.druid_deepstorage_type }}
+    druid.storage.storageDirectory = {{ .Values.druid_storage_directory }}
     #druid.storage.bucket={{ .Values.druid_deepstorage_container }}
     #druid.storage.baseKey=druid/segments
     #druid.storage.disableAcl=true
     #
     #
     #
-    druid.azure.account={{ .Values.azure_storage_account }}
-    druid.azure.key={{ .Values.azure_storage_key }}
-    druid.azure.container={{ .Values.azure_deepstorage_container }}
-        #                        # Indexing service logs
-        #                            # For local disk (only viable in a cluster if this is a network mount):
+    
+    # # Indexing service logs
+    # # For local disk (only viable in a cluster if this is a network mount):
     druid.indexer.logs.type={{ .Values.druid_indexer_logs_type }}
     druid.indexer.logs.container={{ .Values.druid_indexer_logs_container }}
     druid.indexer.logs.prefix={{ .Values.druid_indexer_logs_prefix }}
@@ -172,20 +171,20 @@ spec:
           path: /status/health
           port: {{ .Values.druid_broker_port }}
 
-      hpAutoscaler:
-        maxReplicas: 2
-        minReplicas: 1
-        scaleTargetRef:
-           apiVersion: apps/v1
-           kind: StatefulSet
-           name: druid-tiny-cluster-brokers
-        metrics:
-         - type: Resource
-           resource:
-             name: cpu
-             target:
-               type: Utilization
-               averageUtilization: 50
+      # hpAutoscaler:
+      #   maxReplicas: 2
+      #   minReplicas: 1
+      #   scaleTargetRef:
+      #      apiVersion: apps/v1
+      #      kind: StatefulSet
+      #      name: druid-tiny-cluster-brokers
+      #   metrics:
+      #    - type: Resource
+      #      resource:
+      #        name: cpu
+      #        target:
+      #          type: Utilization
+      #          averageUtilization: 50
 
       resources:
         requests:

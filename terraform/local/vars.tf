@@ -7,7 +7,7 @@ variable "kind_cluster_name" {
 variable "kind_cluster_config_path" {
   type        = string
   description = "The location where this cluster's kubeconfig will be saved to."
-  default     = "/Users/sada/z/local/one-click/kube_local.yaml"
+  default     = "~/.kube/kube_local.yaml"
 }
 
 variable "ingress_nginx_helm_version" {
@@ -46,8 +46,9 @@ variable "DRUID_OPERATOR_CHART" {
 
 variable "DRUID_MIDDLE_MANAGER_WORKER_NODES" {
   type    = number
-  default = 3
+  default = 1
 }
+
 variable "DRUID_MIDDLE_MANAGER_PEON_HEAP" {
   type    = string
   default = "256M"
@@ -89,6 +90,7 @@ variable "SUPERSET_ADMIN_PASSWORD" {
   type    = string
 default   = "admin123"
 }
+
 variable "SUPERSET_ADMIN_EMAIL" {
   type    = string
   default = "admin@superset.com"

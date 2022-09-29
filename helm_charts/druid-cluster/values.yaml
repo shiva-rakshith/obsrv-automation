@@ -1,3 +1,4 @@
+
 druid_env: "${deployment_stage}"
 druid_cluster_type: "raw"
 druid_image: "apache/druid:0.21.1"
@@ -5,7 +6,7 @@ druid_namespace: "${druid_namespace}"
 dp_vault_pgdb_admin_password: postgres
 druid_monitoring: False
 mount_path: /druid/data
-storageClass: default
+storageClass: standard
 
 ######################### Druid common variables ########################
 druid_directory: "/opt/druid"
@@ -17,21 +18,17 @@ druid.startup.logging.logProperties: true
 
 # Druid Metadata Store
 druid_metadata_storage_type: "postgresql"
-druid_metadata_storage_connector_connectURI: "jdbc:postgresql://${end_point}/druid_raw"
+druid_metadata_storage_connector_connectURI: "jdbc:postgresql://postgresql-hl.postgres.svc.cluster.local:5432/druid_raw"
 druid_metadata_storage_connector_user: "${druid_user}"
 druid_metadata_storage_connector_password: "${druid_password}"
 
 # Druid Storage Type
-druid_deepstorage_type: "azure"
-azure_deepstorage_container: "${azure_storage_container}" 
-azure_storage_account: "${azure_storage_account}"
-azure_storage_key: "${azure_storage_key}"
-#azure_storage_container: "${azure_storage_container}"
+druid_deepstorage_type: "local"
+druid_storage_directory: "/data"
 
 # Indexing service logs
 # For local disk (only viable in a cluster_type if this is a network mount):
-druid_indexer_logs_type: "azure"
-druid_indexer_logs_container: "${azure_storage_container}"
+druid_indexer_logs_type: "file"
 druid_indexer_logs_prefix: "druid-task-logs"
 
 # Service discovery
@@ -148,7 +145,7 @@ druid_middlemanager_service: druid/middlemanager
 druid_middlemanager_port: 8091
 druid_middlemanager_heap_size: 128M
 
-druid_middlemanager_persistent_volume_size: 20G
+druid_middlemanager_persistent_volume_size: 1G
 
 # Number of tasks per middleManager
 druid_worker_capacity: "${druid_worker_capacity}"
@@ -198,12 +195,15 @@ zookeeper:
     tag: 3.6-debian-10
     pullPolicy: Always
 
-  heapSize: 256
-  replicaCount: 3
+  persistence:
+    size: 1Gi
+
+  heapSize: 128
+  replicaCount: 1
 
   resources:
     requests:
-      memory: 256Mi
+      memory: 128Mi
       cpu: 512m
 
   tickTime: 2000
@@ -262,3 +262,6 @@ zookeeper:
     annotations: {}
     headless:
       annotations: {}
+    
+    
+  

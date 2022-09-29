@@ -1,10 +1,6 @@
 provider "kind" {
 }
 
-provider "kubernetes" {
-  config_path = pathexpand(var.kind_cluster_config_path)
-}
-
 resource "kind_cluster" "one-click" {
   name            = var.kind_cluster_name
   kubeconfig_path = pathexpand(var.kind_cluster_config_path)
@@ -31,25 +27,28 @@ resource "kind_cluster" "one-click" {
     }
 
     node {
-     role = "worker"
-     kubeadm_config_patches = [
-              "kind: InitConfiguration\nnodeRegistration:\n  kubeletExtraArgs:\n    node-labels: \"worker-node=true\"\n" 
-          ]
+      role = "worker"
+      kubeadm_config_patches = [
+        "kind: InitConfiguration\nnodeRegistration:\n  kubeletExtraArgs:\n    node-labels: \"worker-node=true\"\n" 
+      ]
     }
+
     node {
-     role = "worker"
-     kubeadm_config_patches = [
-              "kind: InitConfiguration\nnodeRegistration:\n  kubeletExtraArgs:\n    node-labels: \"worker-node=true\"\n"
-          ]
-         }
+      role = "worker"
+      kubeadm_config_patches = [
+        "kind: InitConfiguration\nnodeRegistration:\n  kubeletExtraArgs:\n    node-labels: \"worker-node=true\"\n"
+      ]
+    }
+
     node {
-     role = "worker"
-     kubeadm_config_patches = [
-              "kind: InitConfiguration\nnodeRegistration:\n  kubeletExtraArgs:\n    node-labels: \"worker-node=true\"\n"
-          ]
-         }
+      role = "worker"
+      kubeadm_config_patches = [
+        "kind: InitConfiguration\nnodeRegistration:\n  kubeletExtraArgs:\n    node-labels: \"worker-node=true\"\n"
+      ]
+    }
+  }
+
 }
-    }
 
 
 
