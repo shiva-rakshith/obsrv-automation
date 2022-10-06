@@ -1,0 +1,118 @@
+namespace: "flink-dev"
+imagepullsecrets: "dev-docker-registry-secret"
+dockerhub: ""
+repository: "observations-transformer"
+region: "us-east-2"
+account_id: "863231827901"
+image_tag: "dev-2021-12-14-3"
+serviceMonitor:
+  enabled: false
+replicaCount: 1
+
+jobmanager:
+  rpc_port: 6123
+  blob_port: 6124
+  query_port: 6125
+  ui_port: 8081
+  prom_port: 9250
+  heap_memory: 1024
+
+rest_port: 80
+resttcp_port: 8081
+service:
+  type: LoadBalancer
+#  annotations:
+#    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+
+
+taskmanager:
+  prom_port: 9251
+  rpc_port: 6122
+  heap_memory: 1024
+  replicas: 1
+  cpu_requests: 0.3
+
+log4j_console_properties: |
+  # This affects logging for both user code and Flink
+  rootLogger.level = INFO
+  rootLogger.appenderRef.console.ref = ConsoleAppender
+
+  # Uncomment this if you want to _only_ change Flink's logging
+  #logger.flink.name = org.apache.flink
+  #logger.flink.level = INFO
+
+  # The following lines keep the log level of common libraries/connectors on
+  # log level INFO. The root logger does not override this. You have to manually
+  # change the log levels here.
+  logger.akka.name = akka
+  logger.akka.level = ERROR
+  logger.kafka.name= org.apache.kafka
+  logger.kafka.level = ERROR
+  logger.hadoop.name = org.apache.hadoop
+  logger.hadoop.level = ERROR
+  logger.zookeeper.name = org.apache.zookeeper
+  logger.zookeeper.level = ERROR
+
+  # Log all infos to the console
+  appender.console.name = ConsoleAppender
+  appender.console.type = CONSOLE
+  appender.console.layout.type = PatternLayout
+  appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+
+  # Suppress the irrelevant (wrong) warnings from the Netty channel handler
+  logger.netty.name = org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline
+  logger.netty.level = OFF
+
+observations-transformer:
+  observations-transformer: |+
+    job {
+      env = "dev"
+      enable.filesystem.checkpointing = true
+      checkpoint.store {
+        s3 {
+          storage {
+            container = dev-observations-databus-flink
+            checkpointing.dir = "flink-jobs"
+          }
+        }
+        base.url = "s3://"${job.checkpoint.store.s3.storage.container}"/"${job.checkpoint.store.s3.storage.checkpointing.dir}
+      }
+      enable.distributed.checkpointing = true
+    }
+    kafka {
+      consumer.broker-servers = "b-1.dev-observations-msk.90n2hy.c7.kafka.us-east-2.amazonaws.com:9092,b-3.dev-observations-msk.90n2hy.c7.kafka.us-east-2.amazonaws.com:9092,b-2.dev-observations-msk.90n2hy.c7.kafka.us-east-2.amazonaws.com:9092"
+      producer {
+        broker-servers = "b-1.dev-observations-msk.90n2hy.c7.kafka.us-east-2.amazonaws.com:9092,b-3.dev-observations-msk.90n2hy.c7.kafka.us-east-2.amazonaws.com:9092,b-2.dev-observations-msk.90n2hy.c7.kafka.us-east-2.amazonaws.com:9092"
+        max-request-size = 1572864
+        batch.size = 98304
+        linger.ms = 10
+      }
+      input.topic = "dev.observation.raw"
+      output.topic = "dev.observation.transformed"
+      skipped.topic = "dev.observation.skipped"
+      failed.topic = "dev.observation.failed"
+      groupId = "dev-observations-transformer-group"
+    }
+    task {
+      consumer.parallelism = 1
+      downstream.operators.parallelism = 1
+
+      checkpointing.compressed = true
+      checkpointing.interval = 60000
+      checkpointing.pause.between.seconds = 30000
+      restart-strategy.attempts = 3
+      restart-strategy.delay = 30000 # in milli-seconds
+    }
+    obs.supporting.content-type = ["AGG_TIME_WINDOW", "AGG_METHOD", "PARAMETER", "FEATURE_OF_INTEREST", "OBS_PROPERTY", "SAMPLING_STRATEGY", "OBS_METHOD", "METADATA", "DEVICE_METADATA", "DATA_QUALITY", "EVENT"]
+    cache.expired.period = 60 #in sec
+    cache.keys.maxsize = 1000
+    observation.schema.path = "/obs/schemas"
+  flink-conf: |+
+    jobmanager.memory.flink.size: 1024m
+    taskmanager.memory.flink.size: 1024m
+    taskmanager.numberOfTaskSlots: 1
+    parallelism.default: 1
+    jobmanager.execution.failover-strategy: region
+    taskmanager.memory.network.fraction: 0.1
+    taskmanager.memory.process.size: 1700m
+    jobmanager.memory.process.size: 1600m
