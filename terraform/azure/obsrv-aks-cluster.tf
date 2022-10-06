@@ -38,6 +38,6 @@ output "kube_config" {
 
 resource "local_file" "kubeconfig" {
   depends_on   = [azurerm_kubernetes_cluster.aks]
-  filename     = "/Users/sada/z/azure/aks.yaml" 
+  filename     = var.KUBE_CONFIG_FILENAME 
   content      = azurerm_kubernetes_cluster.aks.kube_config_raw
 }

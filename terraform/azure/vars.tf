@@ -5,6 +5,10 @@ variable "RESOURCE_GROUP" {
 default = "Obsrv-testing"
 }
 
+variable "KUBE_CONFIG_FILENAME" {
+  description = "Druid Instance Running Namespace"
+  default     = "../aks.yaml"
+}
 
 variable "DRUID_NAMESPACE" {
   description = "Druid Instance Running Namespace"

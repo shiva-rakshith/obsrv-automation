@@ -3,8 +3,11 @@ read x
 echo "Deploying in $x"
 terraform -chdir=$x  init
 terraform -chdir=$x apply --auto-approve
-echo "$(terraform -chdir=$x output kube_config)" > $PWD/aks.yaml
-sed -i '' '1d; $d' $PWD/aks.yaml
+if [ $x == "azure" ]
+then
+    echo "$(terraform -chdir=$x output kube_config)" > $PWD/aks.yaml
+    sed -i '' '1d; $d' $PWD/aks.yaml
+fi
 export KUBECONFIG=$PWD/aks.yaml
 export KUBE_CONFIG_PATH=$PWD/aks.yaml
 terraform -chdir=$x apply --auto-approve
