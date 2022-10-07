@@ -14,7 +14,7 @@ Run create shell script and provide option input as "azure" .
 
 Destroy infra on Azure
 Steps:
-Run destroy shell script with option as "azure" .
+Run destroy shell script with option as "azure" and append --auto-approve to continue without confirmation.
 
 
 Infra provision on local
@@ -26,4 +26,4 @@ Run shell script and provide option as "local"
 
 Destroy infra on local
 Steps:
-Run destroy shell script and provide option as "local" .
+Run destroy shell script and provide option as "local" append --auto-approve to continue without confirmation.
