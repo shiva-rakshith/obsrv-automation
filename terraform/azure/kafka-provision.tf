@@ -7,7 +7,7 @@ chart              = var.KAFKA_CHART
   wait_for_jobs    = true
   values = [
 #"${file("../kafka/values2.yaml")}","${file("../kafka/values.yaml")}"
-templatefile("../../helm_charts/kafka/values2.yaml",
+templatefile("../../helm_charts/kafka/values.yaml",
 {
 #kafka_namespace: "kafka",
 kafka_image_repository: "bitnami/kafka"
