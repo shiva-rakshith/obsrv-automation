@@ -10,6 +10,14 @@ provider "helm" {
 #  config_context = "obsrv-aks"
 #}
 
+resource "helm_release" "obs_druid_operator" {
+  name             = "druid-operator"
+  chart            =  var.DRUID_OPERATOR_CHART
+  create_namespace = true
+  namespace        = var.DRUID_NAMESPACE
+  wait_for_jobs    = true
+}
+
 resource "helm_release" "obs_druid_cluster" {
   name             = "druid-cluster"
   chart            = var.DRUID_CLUSTER_CHART
@@ -27,26 +35,23 @@ resource "helm_release" "obs_druid_cluster" {
         druid_password  = azurerm_postgresql_server.postgres.administrator_login_password
         azure_storage_container = var.DRUID_DEEP_STORAGE_CONTAINER
         deployment_stage = var.STAGE
-        druid_worker_capacity = var.DRUID_MIDDLE_MANAGER_WORKER_NODES
+        druid_worker_capacity = var.DRUID_MIDDLE_MANAGER_WORKER_CAPACITY
         azure_storage_account = var.STORAGE_ACCOUNT
-        azure_storage_key = azurerm_storage_account.obsrv-sa.primary_access_key 
+        azure_storage_key = azurerm_storage_account.obsrv-sa.primary_access_key
+        storage_class_name = "standard"
       }
     )
   ]
 }
+
 data "kubernetes_service" "druid" {
   metadata {
     namespace = "druid-raw"
     name = "druid-cluster-zookeeper"
   }
-depends_on       = [helm_release.obs_druid_cluster]
+  depends_on       = [helm_release.obs_druid_cluster]
 }
-resource "helm_release" "obs_druid_operator" {
-  name             = "druid-operator"
-  chart            =  var.DRUID_OPERATOR_CHART
-  create_namespace = true
-  namespace        = var.DRUID_NAMESPACE
-  wait_for_jobs    = true
-}
+
+
 
 

@@ -1,4 +1,3 @@
-
 druid_env: "${deployment_stage}"
 druid_cluster_type: "raw"
 druid_image: "apache/druid:0.21.1"
@@ -6,7 +5,7 @@ druid_namespace: "${druid_namespace}"
 dp_vault_pgdb_admin_password: postgres
 druid_monitoring: False
 mount_path: /druid/data
-storageClass: default
+storageClass: ${storage_class_name}
 
 ######################### Druid common variables ########################
 druid_directory: "/opt/druid"
@@ -18,7 +17,7 @@ druid.startup.logging.logProperties: true
 
 # Druid Metadata Store
 druid_metadata_storage_type: "postgresql"
-druid_metadata_storage_connector_connectURI: "jdbc:postgresql://${end_point}:5432/druid_raw"
+druid_metadata_storage_connector_connectURI: "jdbc:postgresql://postgres-postgresql-hl.postgres.svc.local:5432/druid_raw"
 druid_metadata_storage_connector_user: "${druid_user}"
 druid_metadata_storage_connector_password: "${druid_password}"
 

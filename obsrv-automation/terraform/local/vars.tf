@@ -7,8 +7,14 @@ variable "kind_cluster_name" {
 variable "kind_cluster_config_path" {
   type        = string
   description = "The location where this cluster's kubeconfig will be saved to."
-  default     = "./kube/kube_local.yaml"
+  default = "~/.kube/config"
 }
+
+variable "kube_config_context" {
+  type        = string
+  description = "The config context in kubeconfig"
+  default = "minikube"
+ }
 
 variable "ingress_nginx_helm_version" {
   type        = string
@@ -44,9 +50,9 @@ variable "DRUID_OPERATOR_CHART" {
   default     = "../../helm_charts/druid-operator"
 }
 
-variable "DRUID_MIDDLE_MANAGER_WORKER_NODES" {
+variable "DRUID_MIDDLE_MANAGER_WORKER_CAPACITY" {
   type    = number
-  default = 1
+  default = 2
 }
 
 variable "DRUID_MIDDLE_MANAGER_PEON_HEAP" {
