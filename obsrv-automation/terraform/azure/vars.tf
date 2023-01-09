@@ -58,6 +58,11 @@ variable "STORAGE_ACCOUNT" {
   default     = "obsrvacc"
 }
 
+variable "PERSISTENT_STORAGE_CLASS" {
+  description = "Persistent Storage Class Name"
+  default     = "default"
+}
+
 
 variable "KUBE_CONFIG_PATH" {
   description = "Path of the kubeconfig file"
