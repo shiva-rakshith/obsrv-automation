@@ -11,7 +11,7 @@ primary:
     size: 1Gi
     enabled: true
     mountPath: /bitnami/postgresql
-    storageClass: "standard"
+    storageClass: "default"
 
   initdb:
     user: "postgres"

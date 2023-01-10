@@ -122,7 +122,7 @@ variable "RDS_STORAGE" {
   default = 5120
 }
 
-variable "DRUID_MIDDLE_MANAGER_WORKER_NODES" {
+variable "DRUID_MIDDLE_MANAGER_WORKER_CAPACITY" {
   type    = number
   default = 2
 }
