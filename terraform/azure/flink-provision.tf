@@ -21,6 +21,3 @@ data "kubernetes_service" "flink" {
   }
 depends_on       = [azurerm_kubernetes_cluster.aks,helm_release.kafka]
 }
-
-
-

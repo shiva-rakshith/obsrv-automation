@@ -40,7 +40,7 @@ variable "NAME_INGESTION_SPEC"{
 }
 
 variable "PATH_INGESTION_SPEC"{
-  default     = "../2020-06-04-1591233567703.json.gz"
+  default     = "../sample-data/2020-06-04-1591233567703.json.gz"
 }
 
 variable "KAFKA_CHART" {

@@ -17,7 +17,7 @@ druid.startup.logging.logProperties: true
 
 # Druid Metadata Store
 druid_metadata_storage_type: "postgresql"
-druid_metadata_storage_connector_connectURI: "jdbc:postgresql://postgresql-hl.postgres.svc.cluster.local:5432/druid_raw"
+druid_metadata_storage_connector_connectURI: "jdbc:postgresql://postgresql-hl.postgresql.svc.cluster.local:5432/druid_raw"
 druid_metadata_storage_connector_user: "${druid_user}"
 druid_metadata_storage_connector_password: "${druid_password}"
 

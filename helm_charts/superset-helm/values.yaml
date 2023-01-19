@@ -106,7 +106,7 @@ configOverrides:
     }
 
   sql_alchemy_config: |
-    SQLALCHEMY_DATABASE_URI = 'postgresql://{{ tpl .Values.postgres.superset.db_username . }}:{{ tpl .Values.postgres.superset.db_password . }}@postgresql-hl.postgres.svc.cluster.local:5432/{{ tpl .Values.postgres.superset.db_name . }}'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://{{ tpl .Values.postgres.superset.db_username . }}:{{ tpl .Values.postgres.superset.db_password . }}@postgresql-hl.postgresql.svc.cluster.local:5432/{{ tpl .Values.postgres.superset.db_name . }}'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = 'thisISaSECRET_1234'
 
