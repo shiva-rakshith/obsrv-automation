@@ -4,7 +4,6 @@ resource "helm_release" "postgres" {
   timeout = 600
   namespace = "postgres"
   create_namespace = true
-  storage_class_name = var.PERSISTENT_STORAGE_CLASS
 
   values = [
     file("${path.module}/postgresql/custom-values.yaml")
