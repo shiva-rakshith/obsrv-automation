@@ -10,7 +10,7 @@ resource "helm_release" "flink" {
   values = [
     templatefile("../../helm_charts/flink/values.yaml",
     {
-      //storage_class_name = var.PERSISTENT_STORAGE_CLASS
+      
     })
   ]
 }
