@@ -6,8 +6,13 @@ resource "helm_release" "flink" {
     depends_on       = [helm_release.kafka]
     wait_for_jobs    = var.flink_wait_for_jobs
     timeout          = var.flink_chart_install_timeout
-    
+        
     values = [
-      templatefile(var.flink_chart_custom_values_yaml,{})
+      templatefile(var.flink_chart_template,
+      {
+          checkpoint_store_type = var.flink_checkpoint_store_type
+          s3_access_key         = coalesce(local.s3_access_key, "")
+          s3_secret_key         = coalesce(local.s3_secret_key, "")
+      })
     ]
 }

@@ -7,7 +7,7 @@ locals {
 
     availability_zones = [for zone in ["a", "b", "c"] : "${var.region}${zone}"]
 
-    ingestion_spec_bucket = "${var.building_block}-${var.env}-${data.aws_caller_identity.current.account_id}"
+    storage_bucket = "${var.building_block}-${var.env}-${data.aws_caller_identity.current.account_id}"
 
     kubeconfig = <<KUBECONFIG
       apiVersion: v1
@@ -38,4 +38,8 @@ locals {
               - --cluster-name
               - "${var.building_block}-${var.env}-eks"
     KUBECONFIG
+
+    s3_bucket              = local.storage_bucket
+    s3_access_key          = aws_iam_access_key.s3_user_key.id
+    s3_secret_key          = aws_iam_access_key.s3_user_key.secret
 }

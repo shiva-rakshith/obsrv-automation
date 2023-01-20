@@ -98,9 +98,9 @@ variable "eks_node_group_scaling_config" {
     type        = map(number)
     description = "EKS node group auto scaling configuration."
     default = {
-      desired_size = 0
+      desired_size = 3
       max_size   = 3
-      min_size   = 0
+      min_size   = 1
     }
 }
 
@@ -136,7 +136,7 @@ variable "eks_addons" {
   ]
 }
 
-variable "eks_storage_class" {
+variable "kubernetes_storage_class" {
     type        = string
     description = "Storage class name for the EKS cluster"
     default     = "gp2"
@@ -172,10 +172,10 @@ variable "postgresql_create_namespace" {
     default     = true
 }
 
-variable "postgresql_chart_custom_values_yaml" {
+variable "postgresql_chart_template" {
     type        = string
     description = "Postgresql chart custom values.yaml path."
-    default     = "../helm-custom-values/postgres.yaml"
+    default     = "../terraform_helm_templates/postgres.yaml.tfpl"
 }
 
 variable "postgresql_chart_dependecy_update" {
@@ -227,9 +227,9 @@ variable "druid_cluster_release_name" {
     default     = "druid-cluster"
 }
 
-variable "druid_cluster_namespace" {
+variable "druid_namespace" {
     type        = string
-    description = "Druid cluster namespace."
+    description = "Druid namespace."
     default     = "druid-raw"
 }
 
@@ -257,13 +257,13 @@ variable "druid_cluster_wait_for_jobs" {
     default     = true
 }
 
-variable "druid_cluster_chart_custom_values_yaml" {
+variable "druid_cluster_chart_template" {
     type        = string
     description = "Druid cluster chart values.yaml path."
-    default     = "../../helm_charts/druid-cluster/values.yaml"
+    default     = "../terraform_helm_templates/druid_cluster.yaml.tfpl"
 }
 
-variable "druid_user_name" {
+variable "druid_user" {
     type        = string
     description = "Druid user name."
     default     = "druid"
@@ -436,14 +436,26 @@ variable "flink_wait_for_jobs" {
     default     = false
 }
 
-variable "flink_chart_custom_values_yaml" {
+variable "flink_chart_template" {
     type        = string
     description = "Flink chart values.yaml path."
-    default     = "../../helm_charts/flink/values.yaml"
+    default     = "../terraform_helm_templates/flink.yaml.tfpl"
 }
 
 variable "flink_kubernetes_service_name" {
     type        = string
     description = "Flink kubernetes service name."
     default     = "druid-validator-jobmanager"
+}
+
+variable "druid_deepstorage_type" {
+    type        = string
+    description = "Druid deep strorage."
+    default     = "s3"
+}
+
+variable "flink_checkpoint_store_type" {
+    type        = string
+    description = "Flink checkpoint store type."
+    default     = "s3"
 }

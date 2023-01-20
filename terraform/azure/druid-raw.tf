@@ -37,7 +37,7 @@ resource "helm_release" "obs_druid_cluster" {
         druid_user      = "druid" 
         druid_password  = "druid"
         azure_storage_container = var.DRUID_DEEP_STORAGE_CONTAINER
-        deployment_stage = var.STAGE
+        env = var.STAGE
         druid_worker_capacity = var.DRUID_MIDDLE_MANAGER_WORKER_CAPACITY
         azure_storage_account = var.STORAGE_ACCOUNT
         azure_storage_key = azurerm_storage_account.obsrv-sa.primary_access_key

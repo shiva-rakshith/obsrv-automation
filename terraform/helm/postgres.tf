@@ -7,6 +7,6 @@ resource "helm_release" "postgres" {
     dependency_update = var.postgresql_chart_dependecy_update
 
     values = [
-      file(var.postgresql_chart_custom_values_yaml)
+      file(var.postgresql_chart_template)
     ]
 }

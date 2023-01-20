@@ -25,7 +25,7 @@ resource "helm_release" "druid_cluster" {
         druid_user  = "druid"
         druid_password  = "druid"
         druid_worker_capacity = var.DRUID_MIDDLE_MANAGER_WORKER_CAPACITY
-        deployment_stage = var.STAGE
+        env = var.STAGE
         storage_class_name = "local-path"
       }
     )

@@ -69,15 +69,20 @@ spec:
     druid.metadata.storage.connector.connectURI={{ .Values.druid_metadata_storage_connector_connectURI }}
     druid.metadata.storage.connector.user={{ .Values.druid_metadata_storage_connector_user }}
     druid.metadata.storage.connector.password={{ .Values.druid_metadata_storage_connector_password }}
+
     # Deep storage
     druid.storage.type={{ .Values.druid_deepstorage_type }}
-    druid.storage.storageDirectory = {{ .Values.druid_storage_directory }}
-    #druid.storage.bucket={{ .Values.druid_deepstorage_container }}
-    #druid.storage.baseKey=druid/segments
+    # AWS
+    druid.s3.accessKey = {{ .Values.s3_access_key }}
+    druid.s3.secretKey = {{ .Values.s3_secret_key }}
+    druid.storage.bucket={{ .Values.s3_bucket }}
+    druid.storage.baseKey=druid/segments
+    # Azure
+    druid.azure.account = {{ .Values.azure_storage_account_name }}
+    druid.azure.key = {{ .Values.azure_storage_account_key }}
+    druid.azure.container = {{ .Values.azure_storage_container }}
+    #druid.storage.storageDirectory = {{ .Values.druid_storage_directory }}
     #druid.storage.disableAcl=true
-    #
-    #
-    #
     
     # # Indexing service logs
     # # For local disk (only viable in a cluster if this is a network mount):

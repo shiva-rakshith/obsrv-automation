@@ -1,11 +1,11 @@
-druid_env: "${deployment_stage}"
+druid_env: "dev"
 druid_cluster_type: "raw"
 druid_image: "apache/druid:0.21.1"
-druid_namespace: "${druid_namespace}"
+druid_namespace: "druid"
 dp_vault_pgdb_admin_password: postgres
 druid_monitoring: False
 mount_path: /druid/data
-storageClass: ${storage_class_name}
+storageClass: "default"
 
 ######################### Druid common variables ########################
 druid_directory: "/opt/druid"
@@ -18,12 +18,22 @@ druid.startup.logging.logProperties: true
 # Druid Metadata Store
 druid_metadata_storage_type: "postgresql"
 druid_metadata_storage_connector_connectURI: "jdbc:postgresql://postgresql-hl.postgresql.svc.cluster.local:5432/druid_raw"
-druid_metadata_storage_connector_user: "${druid_user}"
-druid_metadata_storage_connector_password: "${druid_password}"
+druid_metadata_storage_connector_user: "druid"
+druid_metadata_storage_connector_password: "druid"
 
 # Druid Storage Type
 druid_deepstorage_type: "local"
 druid_storage_directory: "/data"
+
+# AWS S3 Details
+s3_access_key: ""
+s3_secret_key: ""
+s3_bucket: ""
+
+# Azure Container Details
+azure_storage_account_name: ""
+azure_storage_account_key: ""
+azure_storage_container: ""
 
 # Indexing service logs
 # For local disk (only viable in a cluster_type if this is a network mount):
@@ -147,7 +157,7 @@ druid_middlemanager_heap_size: 128M
 druid_middlemanager_persistent_volume_size: 1G
 
 # Number of tasks per middleManager
-druid_worker_capacity: "${druid_worker_capacity}"
+druid_worker_capacity: 1
 druid_middlemanager_peon_heap_size: 256M
 
 # Task launch parameters

@@ -1,9 +1,9 @@
-resource "aws_s3_bucket" "ingestion_spec" {
-    bucket = local.ingestion_spec_bucket
+resource "aws_s3_bucket" "storage_bucket" {
+    bucket = local.storage_bucket
 
     tags = merge(
       {
-        Name = local.ingestion_spec_bucket
+        Name = local.storage_bucket
       },
       local.common_tags,
       var.additional_tags)
