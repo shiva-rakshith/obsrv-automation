@@ -45,3 +45,9 @@ variable "monitoring_chart_version" {
     description = "Monitoring chart version."
     default     = "44.2.1"
 }
+
+variable "monitoring_install_timeout" {
+    type        = number
+    description = "Monitoring chart install timeout."
+    default     = 1200
+}

@@ -10,7 +10,7 @@ variable "postgresql_namespace" {
     default     = "postgresql"
 }
 
-variable "postgresql_chart_install_timeout" {
+variable "postgresql_install_timeout" {
     type        = number
     description = "Postgresql chart install timeout."
     default     = 600
@@ -22,31 +22,31 @@ variable "postgresql_create_namespace" {
     default     = true
 }
 
-variable "postgresql_chart_template" {
+variable "postgresql_template" {
     type        = string
     description = "Postgresql chart custom values.yaml path."
     default     = "../terraform_helm_templates/postgres.yaml.tfpl"
 }
 
-variable "postgresql_chart_dependecy_update" {
+variable "postgresql_dependecy_update" {
     type        = bool
     description = "Postgresql chart dependency update."
     default     = true
 }
 
-variable "postgresql_chart_repository" {
+variable "postgresql_repository" {
     type        = string
     description = "Postgresql chart repository url."
     default     = "https://charts.bitnami.com/bitnami"
 }
 
-variable "postgresql_chart_name" {
+variable "postgresql_name" {
     type        = string
     description = "Postgresql chart name."
     default     = "postgresql"
 }
 
-variable "postgresql_chart_version" {
+variable "postgresql_version" {
     type        = string
     description = "postgresql chart version."
     default     = "11.9.1"

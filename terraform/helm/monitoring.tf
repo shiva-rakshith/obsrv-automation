@@ -6,4 +6,5 @@ resource "helm_release" "monitoring" {
     namespace        = var.monitoring_namespace
     create_namespace = var.monitoring_create_namespace
     wait_for_jobs    = var.monitoring_wait_for_jobs
+    timeout          = var.monitoring_install_timeout
 }
