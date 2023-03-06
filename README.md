@@ -1,5 +1,7 @@
 # sunbird-infra-provision
 
+Infra provision on one click.
+
 Infra provision on Azure
 
 Pre-requisites:

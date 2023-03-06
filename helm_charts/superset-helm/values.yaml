@@ -102,11 +102,11 @@ configOverrides:
       'CACHE_TYPE': 'redis',
       'CACHE_DEFAULT_TIMEOUT': 600,
       'CACHE_KEY_PREFIX': 'superset_',
-      'CACHE_REDIS_URL': 'redis://{{ template "superset.fullname" . }}-redis-headless:6379/1'
+      'CACHE_REDIS_URL': 'redis://obsrv-redis.redis.svc.cluster.local:6379/3'
     }
 
   sql_alchemy_config: |
-    SQLALCHEMY_DATABASE_URI = 'postgresql://{{ tpl .Values.postgres.superset.db_username . }}:{{ tpl .Values.postgres.superset.db_password . }}@postgresql-hl.postgres.svc.cluster.local:5432/{{ tpl .Values.postgres.superset.db_name . }}'
+    SQLALCHEMY_DATABASE_URI = 'postgresql://{{ tpl .Values.postgres.superset.db_username . }}:{{ tpl .Values.postgres.superset.db_password . }}@postgresql-hl.postgresql.svc.cluster.local:5432/{{ tpl .Values.postgres.superset.db_name . }}'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = 'thisISaSECRET_1234'
 
@@ -149,14 +149,14 @@ extraConfigMountPath: "/app/configs"
 
 image:
   repository: amancevice/superset
-  tag: 1.5.0
+  tag: 2.0.0
   pullPolicy: Always
 
 imagePullSecrets: []
 
 
 service:
-  type: LoadBalancer 
+  type: ClusterIP 
   port: 8088
   annotations: {}
 
@@ -194,7 +194,7 @@ resources: {}
 ## Superset node configuration
 supersetNode:
   connections:
-    redis_host: '{{ template "superset.fullname" . }}-redis-headless'
+    redis_host: 'obsrv-redis.redis.svc.cluster.local'
     redis_port: "6379"
     db_host: '{{ template "superset.fullname" . }}-postgres-headless'
     db_port: "{{ .Values.postgres.db_port }}"
