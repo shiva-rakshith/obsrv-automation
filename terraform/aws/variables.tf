@@ -91,7 +91,7 @@ variable "eks_node_group_instance_type" {
 variable "eks_node_group_capacity_type" {
     type        = string
     description = "EKS node group type. Either SPOT or ON_DEMAND can be used"
-    default     = "ON_DEMAND"
+    default     = "SPOT"
 }
 
 variable "eks_node_group_scaling_config" {
