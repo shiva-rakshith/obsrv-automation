@@ -1,6 +1,6 @@
 resource "helm_release" "obsrv_superset" {
   name             = "obsrv-superset"
-  chart            = "../superset-helm"
+  chart            = "../../helm_charts/superset-helm"
   #repository       = "./helm_charts"
   namespace        = var.SUPERSET_NAMESPACE
   create_namespace = true

@@ -4,17 +4,17 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "=3.14.0"
     }
-    postgresql = {
-      source = "cyrilgdn/postgresql"
-      version = "=1.16.0"
-}
+    # postgresql = {
+    #   source = "cyrilgdn/postgresql"
+    #   version = "=1.16.0"
+    # }
   }
 }
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
-skip_provider_registration=true
+  skip_provider_registration=true
 }
 
 data "azurerm_resource_group" "rg" {

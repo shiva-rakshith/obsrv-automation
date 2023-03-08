@@ -19,7 +19,7 @@ variable "superset_chart_path" {
 variable "superset_chart_install_timeout" {
     type        = number
     description = "Superset chart install timeout."
-    default     = 3500
+    default     = 3000
 }
 
 variable "superset_create_namespace" {

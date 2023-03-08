@@ -1,8 +1,3 @@
-# resource "kubernetes_namespace" "postgres" {
-#   metadata {
-#     name = "postgres"
-#   }
-# }
 
 resource "helm_release" "postgres" {
   chart = "https://charts.bitnami.com/bitnami/postgresql-11.9.1.tgz"

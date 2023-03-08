@@ -22,12 +22,12 @@ variable "FLINK_NAMESPACE" {
 
 variable "DRUID_CLUSTER_CHART" {
   description = "Druid Instance Running Namespace"
-  default     = "../druid-cluster"
+  default     = "../../helm_charts/druid-cluster"
 }
 
 variable "FLINK_CHART" {
   description = "Flink chart"
-  default     = "../pipeline_jobs"
+  default     = "../../helm_charts/flink"
 }
 
 variable "DRUID_OPERATOR_CHART" {
@@ -40,7 +40,7 @@ variable "NAME_INGESTION_SPEC"{
 }
 
 variable "PATH_INGESTION_SPEC"{
-  default     = "../2020-06-04-1591233567703.json.gz"
+  default     = "../sample-data/2020-06-04-1591233567703.json.gz"
 }
 
 variable "KAFKA_CHART" {
@@ -62,7 +62,7 @@ variable "STORAGE_ACCOUNT" {
 variable "KUBE_CONFIG_PATH" {
   description = "Path of the kubeconfig file"
   type        = string
-  default     = "~/z/aks.yaml"
+  default     = "../aks.yaml"
 }
 
 variable "DRUID_RDS_DB_NAME" {
