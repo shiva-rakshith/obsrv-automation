@@ -72,8 +72,8 @@ variable "eks_nodes_role" {
 
 variable "node_group_name" {
     type        = string
-    description = "EKS node group name.."
-    default     = "eks_spot_node_group"
+    description = "EKS node group name."
+    default     = "eks_node_group"
 }
 
 variable "eks_node_group_ami_type" {
@@ -144,7 +144,7 @@ variable "kubernetes_storage_class" {
 
 variable "druid_deepstorage_type" {
     type        = string
-    description = "Druid deep strorage."
+    description = "Druid deep strorage type."
     default     = "s3"
 }
 
