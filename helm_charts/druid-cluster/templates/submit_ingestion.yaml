@@ -1,0 +1,17 @@
+# apiVersion: "druid.apache.org/v1alpha1"
+# kind: "Druid"
+# metadata:
+#   name: "{{ .Values.druid_cluster_type }}-{{ .Values.druid_env }}"
+# spec:
+#   template:
+#     metadata:
+#       name: "submit-ingestion"
+#     spec:
+#       containers:
+#         - name: submit-ingestion
+#           image: "{{ .Values.druid_image }}"
+#           command: ["/bin/bash", "-c"]
+#           args:
+#             - |
+#               curl -XPOST -H 'Content-Type: application/json' -d @./ingestion-spec/system-stats-ingestion-spec.json http://druid-raw-dev-routers.druid-raw.svc.cluster.local:8888/druid/indexer/v1/task
+#       restartPolicy: Never
