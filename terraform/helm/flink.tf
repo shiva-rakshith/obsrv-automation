@@ -10,9 +10,11 @@ resource "helm_release" "flink" {
     values = [
       templatefile(var.flink_chart_template,
       {
-          checkpoint_store_type = var.flink_checkpoint_store_type
-          s3_access_key         = coalesce(local.s3_access_key, "")
-          s3_secret_key         = coalesce(local.s3_secret_key, "")
+          checkpoint_store_type   = var.flink_checkpoint_store_type
+          s3_access_key           = try(local.storage.s3_access_key, "")
+          s3_secret_key           = try(local.storage.s3_secret_key, "")
+          azure_account           = try(local.storage.azure_storage_account_name, "")
+          azure_secret            = try(local.storage.azure_storage_account_key, "")
       })
     ]
 }

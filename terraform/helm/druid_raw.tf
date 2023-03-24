@@ -9,16 +9,19 @@ resource "helm_release" "druid_cluster" {
     values = [
       templatefile(var.druid_cluster_chart_template,
         {
-          druid_namespace          = var.druid_cluster_namespace
-          druid_user               = var.druid_user
-          druid_password           = var.druid_password
-          druid_worker_capacity    = var.druid_worker_capacity
-          env                      = var.env
-          kubernetes_storage_class = var.kubernetes_storage_class
-          druid_deepstorage_type   = var.druid_deepstorage_type
-          s3_bucket                = coalesce(local.s3_bucket, "")
-          s3_access_key            = coalesce(local.s3_access_key, "")
-          s3_secret_key            = coalesce(local.s3_secret_key, "")
+          druid_namespace             = var.druid_cluster_namespace
+          druid_user                  = var.druid_user
+          druid_password              = var.druid_password
+          druid_worker_capacity       = var.druid_worker_capacity
+          env                         = var.env
+          kubernetes_storage_class    = var.kubernetes_storage_class
+          druid_deepstorage_type      = var.druid_deepstorage_type
+          s3_bucket                   = try(local.storage.s3_bucket, "")
+          s3_access_key               = try(local.storage.s3_access_key, "")
+          s3_secret_key               = try(local.storage.s3_secret_key, "")
+          azure_storage_account_name  = try(local.storage.azure_storage_account_name, "")
+          azure_storage_account_key   = try(local.storage.azure_storage_account_key, "")
+          azure_storage_container     = try(local.storage.azure_storage_container, "")
         }
       )
     ]
