@@ -1,4 +1,4 @@
-namespace: "flink-dev"
+namespace: ""
 imagepullsecrets: ""
 registry: ""
 repository: "manjudr/obsrv-core-pipeline" 
