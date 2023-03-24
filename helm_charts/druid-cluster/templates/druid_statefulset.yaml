@@ -7,12 +7,9 @@ metadata:
   name: "{{ .Values.druid_cluster_type }}-{{ .Values.druid_env }}"
 spec:
   image: "{{ .Values.druid_image }}"
-  # Optionally specify image for all nodes. Can be specify on nodes also
-  # imagePullSecrets:
-  # - name: tutu
   startScript: /druid.sh
   podLabels:
-    environment: {{ .Values.druid_env }}
+    environment: { { .Values.druid_env } }
     release: alpha
   podAnnotations:
     dummykey: dummyval
@@ -20,7 +17,6 @@ spec:
     httpGet:
       path: /status/health
       port: 8088
-  #serviceAccount: dev-databus-druid-s3
   securityContext:
     fsGroup: 1000
     runAsUser: 1000
@@ -60,8 +56,7 @@ spec:
     # Log all runtime properties on startup. Disable to avoid logging properties on startup:
     druid.startup.logging.logProperties=true
     # Zookeeper
-    druid.zk.service.host=druid-cluster-zookeeper-headless.{{ .Values.druid_namespace }}.svc.cluster.local
-    # druid.zk.service.host=druid-cluster-zookeeper-0.druid-cluster-zookeeper-headless.druid-raw.svc.cluster.local:2181,druid-cluster-zookeeper-1.druid-cluster-zookeeper-headless.druid-raw.svc.cluster.local:2181,druid-cluster-zookeeper-2.druid-cluster-zookeeper-headless.druid-raw.svc.cluster.local:2181
+    druid.zk.service.host={{ .Release.Name }}-zookeeper-headless.{{ .Values.druid_namespace }}.svc.cluster.local
     druid.zk.paths.base=/druid
     # Metadata storage
     # For PostgreSQL:
@@ -83,7 +78,7 @@ spec:
     druid.azure.container = {{ .Values.azure_storage_container }}
     #druid.storage.storageDirectory = {{ .Values.druid_storage_directory }}
     #druid.storage.disableAcl=true
-    
+
     # # Indexing service logs
     # # For local disk (only viable in a cluster if this is a network mount):
     druid.indexer.logs.type={{ .Values.druid_indexer_logs_type }}
@@ -91,8 +86,7 @@ spec:
     druid.indexer.logs.prefix={{ .Values.druid_indexer_logs_prefix }}
     druid.indexer.logs.s3Bucket={{ .Values.druid_indexer_logs_container }}
     druid.indexer.logs.s3Prefix= {{ .Values.druid_indexer_logs_prefix }}
-        
-    
+
     # Service discovery
     druid.selectors.indexing.serviceName={{ .Values.druid_selectors_indexing_serviceName }}
     druid.selectors.coordinator.serviceName={{ .Values.druid_selectors_coordinator_serviceName }}
@@ -130,12 +124,9 @@ spec:
       # Optionally specify for running broker as Deployment
       kind: Deployment
       nodeType: "broker"
-      # Optionally specify for broker nodes
-      # imagePullSecrets:
-      # - name: tutu
-      druid.port: {{ .Values.druid_broker_port }}
+      druid.port: { { .Values.druid_broker_port } }
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/query/broker"
-      replicas: {{ .Values.druid_broker_replicas }}
+      replicas: { { .Values.druid_broker_replicas } }
       runtime.properties: |
         druid.service={{ .Values.druid_broker_service }}
         # HTTP server threads
@@ -144,22 +135,17 @@ spec:
         # Processing threads and buffers
         druid.processing.buffer.sizeBytes={{ .Values.druid_broker_processing_buffer_sizeBytes }}
         druid.processing.numThreads={{ .Values.druid_broker_processing_numThreads }}
+        druid.processing.numMergeBuffers={{ .Values.druid_broker_processing_numMergeBuffers }}
         druid.javascript.enabled=true
         druid.sql.enable={{ .Values.druid_sql_enable }}
-      extra.jvm.options: |-
+      extra.jvm.options: |+
         -Xms{{ .Values.druid_broker_min_heap_size }}
         -Xmx{{ .Values.druid_broker_max_heap_size }}
         -XX:MaxDirectMemorySize={{ .Values.druid_broker_max_direct_size }}
-      # volumeMounts:
-      #   - mountPath: /druid/data
-      #     name: data-volume
-      # volumes:
-      #   - name: data-volume
-      #     emptyDir: {}
       readinessProbe:
         httpGet:
           path: /status/health
-          port: {{ .Values.druid_broker_port }}
+          port: { { .Values.druid_broker_port } }
 
       # hpAutoscaler:
       #   maxReplicas: 2
@@ -178,19 +164,19 @@ spec:
 
       resources:
         requests:
-          memory: 1Gi
-          cpu: 256m
+          memory: { { .Values.druid_broker_pod_memory_request } }
+          cpu: { { .Values.druid_broker_pod_cpu_request } }
         limits:
-          memory: 2Gi
-          cpu: 1
+          memory: { { .Values.druid_broker_pod_memory_limit } }
+          cpu: { { .Values.druid_broker_pod_cpu_limit } }
 
     coordinators:
       # Optionally specify for running coordinator as Deployment
       kind: Deployment
       nodeType: "coordinator"
-      druid.port: {{ .Values.druid_coordinator_port }}
+      druid.port: { { .Values.druid_coordinator_port } }
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/master/coordinator-overlord"
-      replicas: {{ .Values.druid_coordinator_replicas }}
+      replicas: { { .Values.druid_coordinator_replicas } }
       runtime.properties: |
         druid.service={{ .Values.druid_coordinator_service }}
         druid.coordinator.startDelay={{ .Values.druid_coordinator_startDelay }}
@@ -198,34 +184,29 @@ spec:
         druid.coordinator.balancer.strategy={{ .Values.druid_coordinator_balancer_strategy }}
         druid.coordinator.asOverlord.enabled=false
       extra.jvm.options: |-
-        -Xms{{ .Values.druid_coordinator_heap_size }}
-        -Xmx{{ .Values.druid_coordinator_heap_size }}
-      # volumeMounts:
-      #   - mountPath: /druid/data
-      #     name: data-volume
-      # volumes:
-      #   - name: data-volume
-      #     emptyDir: {}
+        -Xms{{ .Values.druid_coordinator_min_heap_size }}
+        -Xmx{{ .Values.druid_coordinator_max_heap_size }}
+
       readinessProbe:
         httpGet:
           path: /status/health
-          port: {{ .Values.druid_coordinator_port }}
+          port: { { .Values.druid_coordinator_port } }
 
       resources:
         requests:
-          memory: 512Mi
-          cpu: 256m
+          memory: { { .Values.druid_coordinator_pod_memory_request } }
+          cpu: { { .Values.druid_coordinator_pod_cpu_request } }
         limits:
-          memory: 1Gi
-          cpu: 512m
+          memory: { { .Values.druid_coordinator_pod_memory_limit } }
+          cpu: { { .Values.druid_coordinator_pod_cpu_limit } }
 
     overlords:
       # Optionally specify for running coordinator as Deployment
       kind: Deployment
       nodeType: "overlord"
-      druid.port: {{ .Values.druid_overlord_port }}
+      druid.port: { { .Values.druid_overlord_port } }
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/master/coordinator-overlord"
-      replicas: {{ .Values.druid_overlord_replicas }}
+      replicas: { { .Values.druid_overlord_replicas } }
       runtime.properties: |
         druid.service={{ .Values.druid_overlord_service }}
         druid.indexer.queue.startDelay={{ .Values.druid_indexer_queue_startDelay }}
@@ -234,37 +215,31 @@ spec:
         # Additional parameters for minor compaction
         druid.indexer.tasklock.forceTimeChunkLock={{ .Values.druid_indexer_tasklock_forceTimeChunkLock }}
       extra.jvm.options: |-
-        -Xms{{ .Values.druid_overlord_heap_size }}
-        -Xmx{{ .Values.druid_overlord_heap_size }}
-      # volumeMounts:
-      #   - mountPath: /druid/data
-      #     name: data-volume
-      # volumes:
-      #   - name: data-volume
-      #     emptyDir: {}
+        -Xms{{ .Values.druid_overlord_min_heap_size }}
+        -Xmx{{ .Values.druid_overlord_max_heap_size }}
 
       readinessProbe:
         httpGet:
           path: /status/health
-          port: {{ .Values.druid_overlord_port }}
+          port: { { .Values.druid_overlord_port } }
 
       resources:
         requests:
-          memory: 512Mi
-          cpu: 256m
+          memory: { { .Values.druid_overlord_pod_memory_request } }
+          cpu: { { .Values.druid_overlord_pod_cpu_request } }
         limits:
-          memory: 1Gi
-          cpu: 512m
+          memory: { { .Values.druid_overlord_pod_memory_limit } }
+          cpu: { { .Values.druid_overlord_pod_cpu_limit } }
 
     historicals:
       nodeType: "historical"
-      druid.port: {{ .Values.druid_historical_port }}
+      druid.port: { { .Values.druid_historical_port } }
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/data/historical"
-      replicas: {{ .Values.druid_historical_replicas }}
+      replicas: { { .Values.druid_historical_replicas } }
       readinessProbe:
         httpGet:
           path: /status/health
-          port: {{ .Values.druid_historical_port }}
+          port: { { .Values.druid_historical_port } }
       runtime.properties: |
         druid.service={{ .Values.druid_historical_service }}
         # HTTP server threads
@@ -292,126 +267,160 @@ spec:
         runAsUser: 0
         runAsGroup: 0
       volumeMounts:
-         - mountPath: {{ .Values.mount_path }}
-           name: historical-volume
-      volumeClaimTemplates:
-      - metadata:
+        - mountPath: { { .Values.mount_path } }
           name: historical-volume
-        spec:
-          storageClassName: "{{- .Values.storageClass }}"
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: {{ .Values.druid_historical_persistent_volume_size }}
+      volumeClaimTemplates:
+        - metadata:
+            name: historical-volume
+          spec:
+            storageClassName: "{{- .Values.storageClass }}"
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: { { .Values.druid_historical_persistent_volume_size } }
 
       resources:
         requests:
-          memory: 1Gi
-          cpu: 256m
+          memory: { { .Values.druid_historical_pod_memory_request } }
+          cpu: { { .Values.druid_historical_pod_cpu_request } }
         limits:
-          memory: 2Gi
-          cpu: 1
+          memory: { { .Values.druid_historical_pod_memory_limit } }
+          cpu: { { .Values.druid_historical_pod_cpu_limit } }
 
-      # volumes:
-      #   - name: historical-volume
-      #     persistentVolumeClaim:
-      #       claimName: historical-pv-claim
-      #   # - name: data-volume
-      #   #   emptyDir: {}
-      # volumeMounts:
-      #   - mountPath: "/var/segments"
-      #     name: historical-volume
-      #   # - mountPath: /druid/data
-      #   #   name: data-volume
-      
-    middlemanagers:
-      nodeType: "middleManager"
-      druid.port: {{ .Values.druid_middlemanager_port }}
-      nodeConfigMountPath: "/opt/druid/conf/druid/cluster/data/middleManager"
-      replicas: {{ .Values.druid_middlemanager_replicas }}
+    # middlemanagers:
+    #   nodeType: "middleManager"
+    #   druid.port: {{ .Values.druid_middlemanager_port }}
+    #   nodeConfigMountPath: "/opt/druid/conf/druid/cluster/data/middleManager"
+    #   replicas: {{ .Values.druid_middlemanager_replicas }}
+    #   runtime.properties: |
+    #     druid.service={{ .Values.druid_middlemanager_service }}
+    #     # Number of tasks per middleManager
+    #     druid.worker.capacity={{ .Values.druid_worker_capacity }}
+    #     # Task launch parameters
+    #     druid.indexer.runner.javaOpts={{ .Values.druid_indexer_runner_javaOpts }}
+    #     druid.indexer.task.baseTaskDir={{ .Values.druid_indexer_task_baseTaskDir }}
+    #     # Peon properties
+    #     druid.indexer.fork.property.druid.processing.buffer.sizeBytes={{ .Values.druid_indexer_fork_property_druid_processing_buffer_sizeBytes }}
+    #     druid.indexer.fork.property.druid.processing.numThreads={{ .Values.druid_indexer_fork_property_druid_processing_numThreads }}
+    #     druid.indexer.fork.property.druid.server.http.numThreads={{ .Values.druid_indexer_fork_property_druid_server_http_numThreads }}
+    #     #Additional Parameters
+    #     druid.indexer.task.restoreTasksOnRestart={{ .Values.druid_indexer_task_restoreTasksOnRestart }}
+    #     druid.indexer.task.defaultHadoopCoordinates=[\"org.apache.hadoop:hadoop-client:2.8.3\"]
+    #   extra.jvm.options: |+
+    #     -Xmx{{ .Values.druid_middlemanager_heap_size }}
+    #     -Xms{{ .Values.druid_middlemanager_heap_size }}
+    #   # services:
+    #   # - spec:
+    #   #     clusterIP: None
+    #   #     ports:
+    #   #     - name: middlemanager-port
+    #   #       port: {{ .Values.druid_middlemanager_port }}
+    #   #       targetPort: {{ .Values.druid_middlemanager_port }}
+    #   #     type: ClusterIP
+    #   readinessProbe:
+    #     initialDelaySeconds: 30
+    #     httpGet:
+    #       path: /status/health
+    #       port: {{ .Values.druid_middlemanager_port }}
+
+    #   securityContext:
+    #     fsGroup: 0
+    #     runAsUser: 0
+    #     runAsGroup: 0
+    #   volumeMounts:
+    #      - mountPath: {{ .Values.mount_path }}
+    #        name: middlemanager-volume
+    #   volumeClaimTemplates:
+    #   - metadata:
+    #       name: middlemanager-volume
+    #     spec:
+    #       storageClassName: "{{- .Values.storageClass }}"
+    #       accessModes:
+    #         - ReadWriteOnce
+    #       resources:
+    #         requests:
+    #           storage: {{ .Values.druid_middlemanager_persistent_volume_size }}
+
+    #   resources:
+    #     requests:
+    #       memory: 1Gi
+    #       cpu: 256m
+    #     limits:
+    #       memory: 2Gi
+    #       cpu: 1
+
+    indexers:
+      nodeType: "indexer"
+      druid.port: { { .Values.druid_indexer_port } }
+      nodeConfigMountPath: "/opt/druid/conf/druid/cluster/data/indexer"
+      replicas: { { .Values.druid_indexer_replicas } }
       runtime.properties: |
-        druid.service={{ .Values.druid_middlemanager_service }}
-        # Number of tasks per middleManager
-        druid.worker.capacity={{ .Values.druid_worker_capacity }}
+        druid.service={{ .Values.druid_indexer_service }}
+        # Number of tasks per indexer
+        druid.worker.capacity={{ .Values.druid_indexer_worker_capacity }}
         # Task launch parameters
         druid.indexer.runner.javaOpts={{ .Values.druid_indexer_runner_javaOpts }}
         druid.indexer.task.baseTaskDir={{ .Values.druid_indexer_task_baseTaskDir }}
-        # Peon properties
-        druid.indexer.fork.property.druid.processing.buffer.sizeBytes={{ .Values.druid_indexer_fork_property_druid_processing_buffer_sizeBytes }}
-        druid.indexer.fork.property.druid.processing.numThreads={{ .Values.druid_indexer_fork_property_druid_processing_numThreads }}
-        druid.indexer.fork.property.druid.server.http.numThreads={{ .Values.druid_indexer_fork_property_druid_server_http_numThreads }}
+        # Merge jobs
+        druid.worker.numConcurrentMerges={{ .Values.druid_indexer_numConcurrentMerges }}
+        # Processing resource properties
+        # testing auto for sizeBytes
+        druid.processing.buffer.sizeBytes={{ .Values.druid_indexer_fork_property_druid_processing_buffer_sizeBytes }}
+        druid.processing.numThreads={{ .Values.druid_indexer_fork_property_druid_processing_numThreads }}
+        druid.processing.numMergeBuffers={{ .Values.druid_indexer_fork_property_druid_processing_numMergeBuffers }}
+        druid.server.http.numThreads={{ .Values.druid_indexer_fork_property_druid_server_http_numThreads }}
         #Additional Parameters
         druid.indexer.task.restoreTasksOnRestart={{ .Values.druid_indexer_task_restoreTasksOnRestart }}
         druid.indexer.task.defaultHadoopCoordinates=[\"org.apache.hadoop:hadoop-client:2.8.3\"]
       extra.jvm.options: |-
-        -Xmx{{ .Values.druid_middlemanager_heap_size }}
-        -Xms{{ .Values.druid_middlemanager_heap_size }}
-      # services:
-      # - spec:
-      #     clusterIP: None
-      #     ports:
-      #     - name: middlemanager-port
-      #       port: {{ .Values.druid_middlemanager_port }}
-      #       targetPort: {{ .Values.druid_middlemanager_port }}
-      #     type: ClusterIP
+        -Xms{{ .Values.druid_indexer_min_heap_size }}
+        -Xmx{{ .Values.druid_indexer_max_heap_size }}
+        -XX:MaxDirectMemorySize={{ .Values.druid_indexer_max_direct_size }}
       readinessProbe:
-        initialDelaySeconds: 30
+        initialDelaySeconds: { { .Values.indexer_intial_delay } }
         httpGet:
           path: /status/health
-          port: {{ .Values.druid_middlemanager_port }}
+          port: { { .Values.druid_indexer_port } }
 
       securityContext:
         fsGroup: 0
         runAsUser: 0
         runAsGroup: 0
       volumeMounts:
-         - mountPath: {{ .Values.mount_path }}
-           name: middlemanager-volume
+        - mountPath: { { .Values.mount_path } }
+          name: indexer-volume
       volumeClaimTemplates:
-      - metadata:
-          name: middlemanager-volume
-        spec:
-          storageClassName: "{{- .Values.storageClass }}"
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: {{ .Values.druid_middlemanager_persistent_volume_size }}
-
+        - metadata:
+            name: indexer-volume
+          spec:
+            storageClassName: "{{- .Values.storageClass }}"
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: { { .Values.druid_indexer_persistent_volume_size } }
       resources:
         requests:
-          memory: 1Gi
-          cpu: 256m
+          memory: { { .Values.druid_indexer_pod_memory_request } }
+          cpu: { { .Values.druid_indexer_pod_cpu_request } }
         limits:
-          memory: 2Gi
-          cpu: 1
+          memory: { { .Values.druid_indexer_pod_memory_limit } }
+          cpu: { { .Values.druid_indexer_pod_cpu_limit } }
 
-      # volumeMounts:
-      #   - mountPath: /var/task
-      #     name: middlemanager-volume
-      #   # - mountPath: /druid/data
-      #   #   name: data-volume
-      # volumes:
-      #   - name: middlemanager-volume
-      #     persistentVolumeClaim:
-      #       claimName: middlemanager-pv-claim
-      #   # - name: data-volume
-      #   #   emptyDir: {}
-          
     routers:
       nodeType: "router"
-      druid.port: {{ .Values.druid_router_plaintextPort }}
+      druid.port: { { .Values.druid_router_plaintextPort } }
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/query/router"
-      replicas: {{ .Values.druid_router_replicas }}
+      replicas: { { .Values.druid_router_replicas } }
       services:
         - spec:
             type: ClusterIP
             ports:
-            - name: druidrouterport
-              port: 8888
-              targetPort: 8888
-              protocol: TCP
+              - name: druidrouterport
+                port: 8888
+                targetPort: 8888
+                protocol: TCP
       # services:
       #   - spec:
       #       type: ClusterIP
@@ -451,23 +460,17 @@ spec:
         # Management proxy to coordinator / overlord: required for unified web console.
         druid.router.managementProxy.enabled={{ .Values.druid_router_managementProxy_enabled }}
       extra.jvm.options: |-
-        -Xms{{ .Values.druid_router_heap_size }}
-        -Xmx{{ .Values.druid_router_heap_size }}
-      # volumeMounts:
-      #   - mountPath: /druid/data
-      #     name: data-volume
-      # volumes:
-      #   - name: data-volume
-      #     emptyDir: {}
+        -Xms{{ .Values.druid_router_min_heap_size }}
+        -Xmx{{ .Values.druid_router_max_heap_size }}
       readinessProbe:
         httpGet:
           path: /status/health
-          port: {{ .Values.druid_router_plaintextPort }}
+          port: { { .Values.druid_router_plaintextPort } }
 
       resources:
         requests:
-          memory: 512Mi
-          cpu: 256m
+          memory: { { .Values.druid_router_pod_memory_request } }
+          cpu: { { .Values.druid_router_pod_cpu_request } }
         limits:
-          memory: 1Gi
-          cpu: 512m
+          memory: { { .Values.druid_router_pod_memory_limit } }
+          cpu: { { .Values.druid_router_pod_cpu_limit } }
