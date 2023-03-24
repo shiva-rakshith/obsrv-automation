@@ -9,7 +9,7 @@ spec:
   image: "{{ .Values.druid_image }}"
   startScript: /druid.sh
   podLabels:
-    environment: { { .Values.druid_env } }
+    environment: {{ .Values.druid_env }}
     release: alpha
   podAnnotations:
     dummykey: dummyval
@@ -124,9 +124,9 @@ spec:
       # Optionally specify for running broker as Deployment
       kind: Deployment
       nodeType: "broker"
-      druid.port: { { .Values.druid_broker_port } }
+      druid.port: {{ .Values.druid_broker_port }}
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/query/broker"
-      replicas: { { .Values.druid_broker_replicas } }
+      replicas: {{ .Values.druid_broker_replicas }}
       runtime.properties: |
         druid.service={{ .Values.druid_broker_service }}
         # HTTP server threads
@@ -145,7 +145,7 @@ spec:
       readinessProbe:
         httpGet:
           path: /status/health
-          port: { { .Values.druid_broker_port } }
+          port: {{ .Values.druid_broker_port }}
 
       # hpAutoscaler:
       #   maxReplicas: 2
@@ -164,19 +164,19 @@ spec:
 
       resources:
         requests:
-          memory: { { .Values.druid_broker_pod_memory_request } }
-          cpu: { { .Values.druid_broker_pod_cpu_request } }
+          memory: {{ .Values.druid_broker_pod_memory_request }}
+          cpu: {{ .Values.druid_broker_pod_cpu_request }}
         limits:
-          memory: { { .Values.druid_broker_pod_memory_limit } }
-          cpu: { { .Values.druid_broker_pod_cpu_limit } }
+          memory: {{ .Values.druid_broker_pod_memory_limit }}
+          cpu: {{ .Values.druid_broker_pod_cpu_limit }}
 
     coordinators:
       # Optionally specify for running coordinator as Deployment
       kind: Deployment
       nodeType: "coordinator"
-      druid.port: { { .Values.druid_coordinator_port } }
+      druid.port: {{ .Values.druid_coordinator_port }}
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/master/coordinator-overlord"
-      replicas: { { .Values.druid_coordinator_replicas } }
+      replicas: {{ .Values.druid_coordinator_replicas }}
       runtime.properties: |
         druid.service={{ .Values.druid_coordinator_service }}
         druid.coordinator.startDelay={{ .Values.druid_coordinator_startDelay }}
@@ -190,23 +190,23 @@ spec:
       readinessProbe:
         httpGet:
           path: /status/health
-          port: { { .Values.druid_coordinator_port } }
+          port: {{ .Values.druid_coordinator_port }}
 
       resources:
         requests:
-          memory: { { .Values.druid_coordinator_pod_memory_request } }
-          cpu: { { .Values.druid_coordinator_pod_cpu_request } }
+          memory: {{ .Values.druid_coordinator_pod_memory_request }}
+          cpu: {{ .Values.druid_coordinator_pod_cpu_request }}
         limits:
-          memory: { { .Values.druid_coordinator_pod_memory_limit } }
-          cpu: { { .Values.druid_coordinator_pod_cpu_limit } }
+          memory: {{ .Values.druid_coordinator_pod_memory_limit }}
+          cpu: {{ .Values.druid_coordinator_pod_cpu_limit }}
 
     overlords:
       # Optionally specify for running coordinator as Deployment
       kind: Deployment
       nodeType: "overlord"
-      druid.port: { { .Values.druid_overlord_port } }
+      druid.port: {{ .Values.druid_overlord_port }}
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/master/coordinator-overlord"
-      replicas: { { .Values.druid_overlord_replicas } }
+      replicas: {{ .Values.druid_overlord_replicas }}
       runtime.properties: |
         druid.service={{ .Values.druid_overlord_service }}
         druid.indexer.queue.startDelay={{ .Values.druid_indexer_queue_startDelay }}
@@ -221,25 +221,25 @@ spec:
       readinessProbe:
         httpGet:
           path: /status/health
-          port: { { .Values.druid_overlord_port } }
+          port: {{ .Values.druid_overlord_port }}
 
       resources:
         requests:
-          memory: { { .Values.druid_overlord_pod_memory_request } }
-          cpu: { { .Values.druid_overlord_pod_cpu_request } }
+          memory: {{ .Values.druid_overlord_pod_memory_request }}
+          cpu: {{ .Values.druid_overlord_pod_cpu_request }}
         limits:
-          memory: { { .Values.druid_overlord_pod_memory_limit } }
-          cpu: { { .Values.druid_overlord_pod_cpu_limit } }
+          memory: {{ .Values.druid_overlord_pod_memory_limit }}
+          cpu: {{ .Values.druid_overlord_pod_cpu_limit }}
 
     historicals:
       nodeType: "historical"
-      druid.port: { { .Values.druid_historical_port } }
+      druid.port: {{ .Values.druid_historical_port }}
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/data/historical"
-      replicas: { { .Values.druid_historical_replicas } }
+      replicas: {{ .Values.druid_historical_replicas }}
       readinessProbe:
         httpGet:
           path: /status/health
-          port: { { .Values.druid_historical_port } }
+          port: {{ .Values.druid_historical_port }}
       runtime.properties: |
         druid.service={{ .Values.druid_historical_service }}
         # HTTP server threads
@@ -267,7 +267,7 @@ spec:
         runAsUser: 0
         runAsGroup: 0
       volumeMounts:
-        - mountPath: { { .Values.mount_path } }
+        - mountPath: {{ .Values.mount_path }}
           name: historical-volume
       volumeClaimTemplates:
         - metadata:
@@ -278,15 +278,15 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: { { .Values.druid_historical_persistent_volume_size } }
+                storage: {{ .Values.druid_historical_persistent_volume_size }}
 
       resources:
         requests:
-          memory: { { .Values.druid_historical_pod_memory_request } }
-          cpu: { { .Values.druid_historical_pod_cpu_request } }
+          memory: {{ .Values.druid_historical_pod_memory_request }}
+          cpu: {{ .Values.druid_historical_pod_cpu_request }}
         limits:
-          memory: { { .Values.druid_historical_pod_memory_limit } }
-          cpu: { { .Values.druid_historical_pod_cpu_limit } }
+          memory: {{ .Values.druid_historical_pod_memory_limit }}
+          cpu: {{ .Values.druid_historical_pod_cpu_limit }}
 
     # middlemanagers:
     #   nodeType: "middleManager"
@@ -352,9 +352,9 @@ spec:
 
     indexers:
       nodeType: "indexer"
-      druid.port: { { .Values.druid_indexer_port } }
+      druid.port: {{ .Values.druid_indexer_port }}
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/data/indexer"
-      replicas: { { .Values.druid_indexer_replicas } }
+      replicas: {{ .Values.druid_indexer_replicas }}
       runtime.properties: |
         druid.service={{ .Values.druid_indexer_service }}
         # Number of tasks per indexer
@@ -378,17 +378,17 @@ spec:
         -Xmx{{ .Values.druid_indexer_max_heap_size }}
         -XX:MaxDirectMemorySize={{ .Values.druid_indexer_max_direct_size }}
       readinessProbe:
-        initialDelaySeconds: { { .Values.indexer_intial_delay } }
+        initialDelaySeconds: {{ .Values.indexer_intial_delay }}
         httpGet:
           path: /status/health
-          port: { { .Values.druid_indexer_port } }
+          port: {{ .Values.druid_indexer_port }}
 
       securityContext:
         fsGroup: 0
         runAsUser: 0
         runAsGroup: 0
       volumeMounts:
-        - mountPath: { { .Values.mount_path } }
+        - mountPath: {{ .Values.mount_path }}
           name: indexer-volume
       volumeClaimTemplates:
         - metadata:
@@ -399,20 +399,20 @@ spec:
               - ReadWriteOnce
             resources:
               requests:
-                storage: { { .Values.druid_indexer_persistent_volume_size } }
+                storage: {{ .Values.druid_indexer_persistent_volume_size }}
       resources:
         requests:
-          memory: { { .Values.druid_indexer_pod_memory_request } }
-          cpu: { { .Values.druid_indexer_pod_cpu_request } }
+          memory: {{ .Values.druid_indexer_pod_memory_request }}
+          cpu: {{ .Values.druid_indexer_pod_cpu_request }}
         limits:
-          memory: { { .Values.druid_indexer_pod_memory_limit } }
-          cpu: { { .Values.druid_indexer_pod_cpu_limit } }
+          memory: {{ .Values.druid_indexer_pod_memory_limit }}
+          cpu: {{ .Values.druid_indexer_pod_cpu_limit }}
 
     routers:
       nodeType: "router"
-      druid.port: { { .Values.druid_router_plaintextPort } }
+      druid.port: {{ .Values.druid_router_plaintextPort }}
       nodeConfigMountPath: "/opt/druid/conf/druid/cluster/query/router"
-      replicas: { { .Values.druid_router_replicas } }
+      replicas: {{ .Values.druid_router_replicas }}
       services:
         - spec:
             type: ClusterIP
@@ -465,12 +465,12 @@ spec:
       readinessProbe:
         httpGet:
           path: /status/health
-          port: { { .Values.druid_router_plaintextPort } }
+          port: {{ .Values.druid_router_plaintextPort }}
 
       resources:
         requests:
-          memory: { { .Values.druid_router_pod_memory_request } }
-          cpu: { { .Values.druid_router_pod_cpu_request } }
+          memory: {{ .Values.druid_router_pod_memory_request }}
+          cpu: {{ .Values.druid_router_pod_cpu_request }}
         limits:
-          memory: { { .Values.druid_router_pod_memory_limit } }
-          cpu: { { .Values.druid_router_pod_cpu_limit } }
+          memory: {{ .Values.druid_router_pod_memory_limit }}
+          cpu: {{ .Values.druid_router_pod_cpu_limit }}

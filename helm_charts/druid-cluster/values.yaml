@@ -1,6 +1,6 @@
 druid_env: "dev"
 druid_cluster_type: "raw"
-druid_image: "apache/druid:0.21.1"
+druid_image: "apache/druid:25.0.0"
 druid_namespace: "druid-raw"
 dp_vault_pgdb_admin_password: postgres
 druid_monitoring: True
@@ -9,7 +9,7 @@ storageClass: "default"
 
 ######################### Druid common variables ########################
 druid_directory: "/opt/druid"
-druid_extensions_loadList: '"postgresql-metadata-storage", "druid-kafka-indexing-service","druid-s3-extensions"'
+druid_extensions_loadList: '"postgresql-metadata-storage", "druid-kafka-indexing-service", "druid-azure-extensions", "druid-s3-extensions"'
 
 # Logging
 # Log all runtime properties on startup. Disable to avoid logging properties on startup:
