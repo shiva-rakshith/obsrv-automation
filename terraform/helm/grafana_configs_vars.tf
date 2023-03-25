@@ -25,5 +25,5 @@ variable "grafana_configs_chart_install_timeout" {
 variable "grafana_configs_wait_for_jobs" {
     type        = bool
     description = "Grafana configs wait for jobs paramater."
-    default     = false
+    default     = true
 }
