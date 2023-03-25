@@ -3,15 +3,8 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.6.0-beta.0
-    meta.helm.sh/release-name: druid-operator
-    meta.helm.sh/release-namespace: {{ .Values.druid_namespace }}
-  creationTimestamp: "2022-06-21T10:47:15Z"
   generation: 1
-  labels:
-    app.kubernetes.io/managed-by: Helm
   name: druids.druid.apache.org
-  resourceVersion: "934"
-  uid: c464c8d8-e136-46c1-8458-d4968d18350c
 spec:
   conversion:
     strategy: None
