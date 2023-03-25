@@ -16,12 +16,6 @@ variable "kafka_exporter_chart_path" {
     default     = "../../helm_charts/kafka-exporter"
 }
 
-# variable "druid_exporter_chart_install_timeout" {
-#     type        = number
-#     description = "Druid exporter chart install timeout."
-#     default     = 600
-# }
-
 variable "kafka_exporter_create_namespace" {
     type        = bool
     description = "Create kakfa exporter namespace."
