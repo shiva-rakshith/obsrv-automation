@@ -13,7 +13,7 @@ variable "api_namespace" {
 variable "api_chart_path" {
     type        = string
     description = "api chart path."
-    default     = "../../helm_charts/obsrv-api-service"
+    default     = "../../helm_charts/dataset-service"
 }
 
 variable "api_create_namespace" {
@@ -24,6 +24,6 @@ variable "api_create_namespace" {
 
 variable "api_chart_template" {
     type = string
-    default = "../../helm_charts/obsrv-api-service/values.yaml"
+    default = "../../helm_charts/dataset-service/values.yaml"
     
 }
