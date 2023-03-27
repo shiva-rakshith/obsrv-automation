@@ -1,0 +1,28 @@
+resource "helm_release" "secor" {
+    name             = var.secor_release_name
+    chart            = var.secor_chart_path
+    timeout          = var.secor_chart_install_timeout
+    namespace        = var.secor_namespace
+    create_namespace = var.secor_create_namespace
+    depends_on       = [helm_release.kafka]
+    wait_for_jobs    = var.secor_wait_for_jobs
+    values = [
+      templatefile(var.druid_cluster_chart_template,
+        {
+          deployment_stage            = var.env
+          base_path                   = var.base_path
+          timestamp_key               = "syncts"
+          fallback_timestamp_key      = ""
+          env                         = var.env
+          kafka_broker_host           = var.kafka_broker_host
+          zookeeper_quorum            = var.kafka_zookeeper_ip
+          backup_pv_size              = var.secor_backup_pv_size
+          request_cpu                 = var.secor_cpu_request   
+          request_memory              = var.secor_memory_request
+          secor_cpu_limit             = var.secor_cpu_limit
+          secor_memory_limit          = var.secor_memory_limit  
+          secor_image                 = var.secor_image  
+        }
+      )
+    ]
+}
