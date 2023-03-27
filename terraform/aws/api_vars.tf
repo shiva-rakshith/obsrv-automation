@@ -1,13 +1,13 @@
 variable "api_release_name" {
     type        = string
     description = "api helm release name."
-    default     = "obsrv-api-service"
+    default     = "dataset-api"
 }
 
 variable "api_namespace" {
     type        = string
     description = "api namespace."
-    default     = "obsrv-api-service-dev"
+    default     = "dataset-service-dev"
 }
 
 variable "api_chart_path" {
