@@ -13,7 +13,13 @@ variable "secor_image_tag" {
 variable "jobs" {
   description = "Create release names"
   type        = list(string)
-  default     = ["ingest-backup", "extractor-duplicate-backup", "extractor-failed-backup", "raw-backup", "failed-backup", "invalid-backup", "unique-backup", "duplicate-backup", "denorm-backup", "denorm-failed-backup", "transform-backup"]
+  default     = [
+  "ingest-backup", "extractor-duplicate-backup", 
+  "extractor-failed-backup", "raw-backup", 
+  "failed-backup", "invalid-backup", 
+  "unique-backup", "duplicate-backup", 
+  "denorm-backup", "denorm-failed-backup", "transform-backup"
+  ]
 }
 
 variable "secor_image_repository" {
@@ -74,25 +80,25 @@ variable "secor_threads_count" {
 variable "secor_cpu_request" {
     type        = string
     description = "Secor CPU Request"
-    default     = "512m"
+    default     = "128m"
 }
 
 variable "secor_memory_request" {
     type        = string
     description = "Secor Memory Request"
-    default     = "1024Mi"
+    default     = "512Mi"
 }
 
 variable "secor_cpu_limit" {
     type        = string
     description = "Secor CPU limit"
-    default     = "1"
+    default     = "128m"
 }
 
 variable "secor_memory_limit" {
     type        = string
     description = "Secor Memory limit"
-    default     = "1024Mi"
+    default     = "512Mi"
 }
 
 variable "secor_backup_interval" {

@@ -69,6 +69,7 @@ secor_jobs:
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
+    
   extractor-failed-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_extractor_failed"
