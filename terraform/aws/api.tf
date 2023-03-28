@@ -1,1 +1,1 @@
-/Users/manoj/Documents/sunbird/oneclick/obsrv-automation/terraform/helm/api.tf
+../helm/api.tf
