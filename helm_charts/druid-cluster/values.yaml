@@ -1,7 +1,7 @@
 druid_env: "dev"
 druid_cluster_type: "raw"
 druid_image: "apache/druid:25.0.0"
-druid_namespace: "druid"
+druid_namespace: ""
 dp_vault_pgdb_admin_password: postgres
 druid_monitoring: False
 mount_path: /druid/data
@@ -56,7 +56,7 @@ druid_emitter_logging_logLevel: INFO
 # ommiting this will lead to index double as float at the storage layer
 druid_indexing_doubleStorage: double
 
-#Writing query logs into file 
+#Writing query logs into file
 druid_request_logging_type: composing
 druid_request_logging_dir: "/data/druid/log"
 
@@ -163,7 +163,7 @@ druid_historical_persistent_volume_size: 1G
 druid_segmentCache_numLoadingThreads: 4
 
 # Caching
-druid_historical_cache_useCache: False 
+druid_historical_cache_useCache: False
 druid_historical_cache_populateCache: true
 druid_historical_cache_unCacheable: '"select", "scan"'
 druid_cache_type: caffeine
@@ -224,7 +224,7 @@ druid_indexer_persistent_volume_size: 1Gi
 indexer_intial_delay: 30
 
 # Number of tasks per indexer
-druid_indexer_worker_capacity: 2 #(Number of available processors - 1) 
+druid_indexer_worker_capacity: 2 #(Number of available processors - 1)
 
 # Task launch parameters
 # druid_indexer_runner_javaOpts: "-server -Xms512m -Xmx1024m -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:MaxDirectMemorySize=512m"
@@ -340,6 +340,5 @@ zookeeper:
     annotations: {}
     headless:
       annotations: {}
-    
-    
-  
+
+
