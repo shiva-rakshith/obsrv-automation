@@ -4,10 +4,16 @@ variable "secor_release_name" {
     default     = "secor"
 }
 
-variable "secor_image" {
+variable "secor_image_tag" {
     type        = string
     description = "secor image version"
-    default     = "secor:0.29"
+    default     = "0.29.1"
+}
+
+variable "secor_image_repository" {
+    type        = string
+    description = "secor image version"
+    default     = "manjudr/secor"
 }
 
 variable "secor_namespace" {
@@ -117,4 +123,16 @@ variable "kafka_zookeeper_ip" {
     type        = string
     description = "Kafka zookeeper address"
     default     = "kafka-zookeeper-headless.svc.cluster.local:2181"  
+}
+
+variable "cloud_storage_bucket" {
+    type        = string
+    description = "Cloud storage bucket"
+    default     = "telemetry-data-store"  
+}
+
+variable "secor_chart_template" {
+    type = string
+    default = "../../helm_charts/secor/values.yaml"
+    
 }

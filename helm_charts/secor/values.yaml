@@ -1,12 +1,12 @@
-s3_bucket_name: "${s3_bucket_name}"
+cloud_storage_bucket: "${cloud_storage_bucket}"
 namespace: "secor-${deployment_stage}"
 storageClass: "gp2"
 secor_env: "${deployment_stage}"
-repository: "${repository}"
+image_repository: "${image_repository}"
 region: "${region}"
-account_id: "${ACC_ID}"
 pullPolicy: "Always"
 jvm_memory: 1024m
+image_tag: "${secor_image_tag}"
 
 # Secor backups at various levels
 secor_jobs:
@@ -35,12 +35,11 @@ secor_jobs:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"
   
   extractor-duplicate:
     replicas: 1
@@ -67,12 +66,12 @@ secor_jobs:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"
+    
 
   extractor-failed:
     replicas: 1
@@ -99,12 +98,11 @@ secor_jobs:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"
 
   raw:
     replicas: 1
@@ -131,12 +129,12 @@ secor_jobs:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"
+
   failed:
     replicas: 1
     consumer_group: "${deployment_stage}_failed"
@@ -162,12 +160,11 @@ secor_jobs:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"
 
 invalid:
     replicas: 1
@@ -194,12 +191,11 @@ invalid:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"
 
 unique:
     replicas: 1
@@ -226,12 +222,11 @@ unique:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"
 
 duplicate:
     replicas: 1
@@ -258,12 +253,11 @@ duplicate:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"
 
 denorm:
     replicas: 1
@@ -290,12 +284,11 @@ denorm:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"
 
 denorm_failed:
     replicas: 1
@@ -322,12 +315,11 @@ denorm_failed:
       cpu: "${request_cpu}"
       memory: "${request_memory}"
     limits:
-      cpu: "${max_cpu}"
-      memory: "${max_memory}"
+      cpu: "${secor_cpu_limit}"
+      memory: "${secor_memory_limit}"
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${default_secor_image}"    
 
 transform:
     replicas: 1
@@ -359,8 +351,6 @@ transform:
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    image_tag: "${secor_image}"   
-
 
 # exporter:
 #   image:

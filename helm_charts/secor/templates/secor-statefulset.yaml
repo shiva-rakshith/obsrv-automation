@@ -38,7 +38,7 @@ spec:
           mountPath: /mnt/data
       containers:
         - name: {{ .Release.Name }}-secor
-          image: {{ .Values.account_id }}.dkr.ecr.{{ .Values.region }}.amazonaws.com/{{ .Values.repository }}:{{ get (get $.Values.secor_jobs $.Release.Name) "image_tag" }}
+          image: {{ .Values.image.prefix | default "" }}/{{ .Values.image_repository }}:{{ .Values.image_tag }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           env:
             - name: "CONFIG_FILE"
