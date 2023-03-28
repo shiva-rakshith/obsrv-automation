@@ -51,3 +51,15 @@ variable "monitoring_install_timeout" {
     description = "Monitoring chart install timeout."
     default     = 1200
 }
+
+variable "prometheus_persistent_volume_size" {
+    type        = string
+    description = "Persistent volume size for prometheus metrics data."
+    default     = "10Gi"
+}
+
+variable "monitoring_chart_template" {
+    type        = string
+    description = "Loki chart values.yaml path."
+    default     = "../terraform_helm_templates/monitoring.yaml.tfpl"
+}
