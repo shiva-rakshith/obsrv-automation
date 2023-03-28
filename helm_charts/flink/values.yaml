@@ -1,8 +1,8 @@
-namespace: "flink-dev"
+namespace: ""
 imagepullsecrets: ""
-dockerhub: ""
-repository: "docker.io/anandp504/sunbird-oneclick"
-image_tag: "1.0.0"
+registry: ""
+repository: "manjudr/obsrv-core-pipeline" 
+image_tag: "2.1"
 serviceMonitor:
   enabled: false
 replicaCount: 1
@@ -42,12 +42,12 @@ azure_secret: ""
 
 log4j_console_properties: |
   # This affects logging for both user code and Flink
-  rootLogger.level = INFO
+  rootLogger.level = ERROR
   rootLogger.appenderRef.console.ref = ConsoleAppender
 
   # Uncomment this if you want to _only_ change Flink's logging
-  #logger.flink.name = org.apache.flink
-  #logger.flink.level = INFO
+  logger.flink.name = org.apache.flink
+  logger.flink.level = ERROR
 
   # The following lines keep the log level of common libraries/connectors on
   # log level INFO. The root logger does not override this. You have to manually
@@ -101,9 +101,8 @@ base_config: |
   task {
     parallelism = 1
     consumer.parallelism = 1
-    checkpointing.compressed = true
-    checkpointing.interval = 10
-    checkpointing.pause.between.seconds = 3000
+    checkpointing.interval = 10000
+    checkpointing.pause.between.seconds = 10000
     restart-strategy.attempts = 3
     restart-strategy.delay = 30000 # in milli-seconds
   }
@@ -125,6 +124,7 @@ base_config: |
     maxConnections = 2
     user = "postgres"
     password = "postgres"
+    database = "obsrv"
   }
 
   lms-cassandra {
@@ -132,45 +132,48 @@ base_config: |
     port = "9042"
   }
 
-druid-validator:
-  druid-validator: |+
+merged-pipeline:
+  merged-pipeline: |+
     include file("/data/flink/conf/base-config.conf")
     kafka {
-      input.topic = dev.telemetry.denorm
-      output.telemetry.route.topic = dev.druid.events.telemetry
-      output.summary.route.topic = dev.druid.events.summary
-      output.failed.topic = dev.telemetry.failed
-      output.duplicate.topic = dev.telemetry.duplicate
-      groupId = dev-druid-validator-group
+      input.topic = ${job.env}".ingest"
+      output.raw.topic = ${job.env}".raw"
+      output.extractor.duplicate.topic = ${job.env}".extractor.duplicate"
+      output.failed.topic = ${job.env}".failed"
+      output.batch.failed.topic = ${job.env}".extractor.failed"
+      event.max.size = "1048576" # Max is only 1MB
+      output.invalid.topic = ${job.env}".invalid"
+      output.unique.topic = ${job.env}".unique"
+      output.duplicate.topic = ${job.env}".duplicate"
+      output.denorm.topic = ${job.env}".denorm"
+      output.denorm.failed.topic = ${job.env}".denorm.failed"
+      output.transform.topic = ${job.env}".transform"
+      stats.topic = ${job.env}".stats"
+      groupId = ${job.env}"-single-pipeline-group"
+      producer {
+        max-request-size = 5242880
+      }
     }
     task {
+      window.time.in.seconds = 5
+      window.count = 30
+      window.shards = 1400
       consumer.parallelism = 1
       downstream.operators.parallelism = 1
-      druid.validation.enabled = true
-      druid.deduplication.enabled = false
     }
-    schema {
-      path {
-        telemetry = "schemas/telemetry"
-        summary = "schemas/summary"
-      }
-      file {
-        default = envelope.json
-        summary = me_workflow_summary.json
-        search = search.json
-      }
-    }
+    
     redis {
       database {
-        duplicationstore.id = 8
+        extractor.duplication.store.id = 1
+        preprocessor.duplication.store.id = 2
         key.expiry.seconds = 3600
       }
     }
-
   flink-conf: |+
     jobmanager.memory.flink.size: 1024m
     taskmanager.memory.flink.size: 1024m
     taskmanager.numberOfTaskSlots: 1
+    jobManager.numberOfTaskSlots: 1
     parallelism.default: 1
     jobmanager.execution.failover-strategy: region
     taskmanager.memory.network.fraction: 0.1
@@ -179,5 +182,181 @@ druid-validator:
     heartbeat.interval: 5000
     taskmanager.memory.process.size: 1700m
     jobmanager.memory.process.size: 1600m
+    state.savepoints.dir: file:///tmp
+  job_classname: org.sunbird.obsrv.pipeline.task.MergedPipelineStreamTask
 
-job_classname: org.sunbird.dp.validator.task.DruidValidatorStreamTask
+extractor:
+  extractor: |+
+    include file("/data/flink/conf/base-config.conf")
+    kafka {
+      input.topic = ${job.env}".ingest"
+      output.raw.topic = ${job.env}".raw"
+      output.extractor.duplicate.topic = ${job.env}".extractor.duplicate"
+      output.failed.topic = ${job.env}".failed"
+      output.batch.failed.topic = ${job.env}".extractor.failed"
+      event.max.size = "1048576" # Max is only 1MB
+      groupId = ${job.env}"-extractor-group"
+      producer {
+        max-request-size = 5242880
+      }
+    }
+
+    task {
+      consumer.parallelism = 1
+      downstream.operators.parallelism = 1
+    }
+
+    redis {
+      database {
+        extractor.duplication.store.id = 1
+        key.expiry.seconds = 3600
+      }
+    }
+
+  flink-conf: |+
+    jobmanager.memory.flink.size: 1024m
+    taskmanager.memory.flink.size: 1024m
+    taskmanager.numberOfTaskSlots: 1
+    jobManager.numberOfTaskSlots: 1
+    parallelism.default: 1
+    jobmanager.execution.failover-strategy: region
+    taskmanager.memory.network.fraction: 0.1
+    scheduler-mode: reactive
+    heartbeat.timeout: 8000
+    heartbeat.interval: 5000
+    state.savepoints.dir: file:///tmp
+
+  job_classname: org.sunbird.obsrv.extractor.task.ExtractorStreamTask
+
+preprocessor:
+  preprocessor: |+
+    include file("/data/flink/conf/base-config.conf")
+    kafka {
+      input.topic = ${job.env}".raw"
+      output.failed.topic = ${job.env}".failed"
+      output.invalid.topic = ${job.env}".invalid"
+      output.unique.topic = ${job.env}".unique"
+      output.duplicate.topic = ${job.env}".duplicate"
+      groupId = ${job.env}"-pipeline-preprocessor-group"
+    }
+
+    task {
+      consumer.parallelism = 1
+      downstream.operators.parallelism = 1
+    }
+
+    redis {
+      database {
+        preprocessor.duplication.store.id = 2
+        key.expiry.seconds = 3600
+      }
+    }
+
+  flink-conf: |+
+    jobmanager.memory.flink.size: 1024m
+    taskmanager.memory.flink.size: 1024m
+    taskmanager.numberOfTaskSlots: 1
+    jobManager.numberOfTaskSlots: 1
+    parallelism.default: 1
+    jobmanager.execution.failover-strategy: region
+    taskmanager.memory.network.fraction: 0.1
+    scheduler-mode: reactive
+    heartbeat.timeout: 8000
+    heartbeat.interval: 5000
+    state.savepoints.dir: file:///tmp
+
+  job_classname: org.sunbird.obsrv.preprocessor.task.PipelinePreprocessorStreamTask
+
+denormalizer:
+  denormalizer: |+
+    include file("/data/flink/conf/base-config.conf")
+    kafka {
+      input.topic = ${job.env}".unique"
+      output.denorm.topic = ${job.env}".denorm"
+      output.denorm.failed.topic = ${job.env}".denorm.failed"
+      groupId = ${job.env}"-denormalizer-group"
+    }
+
+    task {
+      window.time.in.seconds = 5
+      window.count = 30
+      window.shards = 1400
+      consumer.parallelism = 1
+      downstream.operators.parallelism = 1
+    }
+
+  flink-conf: |+
+    jobmanager.memory.flink.size: 1024m
+    taskmanager.memory.flink.size: 1024m
+    taskmanager.numberOfTaskSlots: 1
+    jobManager.numberOfTaskSlots: 1
+    parallelism.default: 1
+    jobmanager.execution.failover-strategy: region
+    taskmanager.memory.network.fraction: 0.1
+    scheduler-mode: reactive
+    heartbeat.timeout: 8000
+    heartbeat.interval: 5000
+    state.savepoints.dir: file:///tmp
+
+  job_classname: org.sunbird.obsrv.denormalizer.task.DenormalizerWindowStreamTask
+
+transformer:
+  transformer: |+
+    include file("/data/flink/conf/base-config.conf")
+    kafka {
+      input.topic = ${job.env}".denorm"
+      output.transform.topic = ${job.env}".transform"
+      groupId = ${job.env}"-transformer-group"
+      producer {
+        max-request-size = 5242880
+      }
+    }
+
+    task {
+      consumer.parallelism = 1
+      downstream.operators.parallelism = 1
+    }
+
+  flink-conf: |+
+    jobmanager.memory.flink.size: 1024m
+    taskmanager.memory.flink.size: 1024m
+    taskmanager.numberOfTaskSlots: 1
+    jobManager.numberOfTaskSlots: 1
+    parallelism.default: 1
+    jobmanager.execution.failover-strategy: region
+    taskmanager.memory.network.fraction: 0.1
+    scheduler-mode: reactive
+    heartbeat.timeout: 8000
+    heartbeat.interval: 5000
+    state.savepoints.dir: file:///tmp
+
+  job_classname: org.sunbird.obsrv.transformer.task.TransformerStreamTask
+
+druid-router:
+  druid-router: |+
+    include file("/data/flink/conf/base-config.conf")
+    kafka {
+      input.topic = ${job.env}".transform"
+      stats.topic = ${job.env}".stats"
+      groupId = ${job.env}"-druid-router-group"
+    }
+
+    task {
+      consumer.parallelism = 1
+      downstream.operators.parallelism = 1
+    }
+
+  flink-conf: |+
+    jobmanager.memory.flink.size: 1024m
+    taskmanager.memory.flink.size: 1024m
+    taskmanager.numberOfTaskSlots: 1
+    jobManager.numberOfTaskSlots: 1
+    parallelism.default: 1
+    jobmanager.execution.failover-strategy: region
+    taskmanager.memory.network.fraction: 0.1
+    scheduler-mode: reactive
+    heartbeat.timeout: 8000
+    heartbeat.interval: 5000
+    state.savepoints.dir: file:///tmp
+
+  job_classname: org.sunbird.obsrv.router.task.DruidRouterStreamTask

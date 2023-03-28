@@ -39,7 +39,9 @@ locals {
               - "${var.building_block}-${var.env}-eks"
     KUBECONFIG
 
-    s3_bucket              = local.storage_bucket
-    s3_access_key          = aws_iam_access_key.s3_user_key.id
-    s3_secret_key          = aws_iam_access_key.s3_user_key.secret
+    storage = {
+      s3_bucket              = local.storage_bucket
+      s3_access_key          = aws_iam_access_key.s3_user_key.id
+      s3_secret_key          = aws_iam_access_key.s3_user_key.secret
+    }
 }

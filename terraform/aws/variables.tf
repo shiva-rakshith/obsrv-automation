@@ -29,7 +29,7 @@ variable "vpc_instance_tenancy" {
 }
 
 variable "additional_tags" {
-    type        = map(string)  
+    type        = map(string)
     description = "Additional tags for the resources. These tags will be applied to all the resources."
     default     = {}
 }
@@ -72,8 +72,8 @@ variable "eks_nodes_role" {
 
 variable "node_group_name" {
     type        = string
-    description = "EKS node group name.."
-    default     = "eks_spot_node_group"
+    description = "EKS node group name."
+    default     = "eks_node_group"
 }
 
 variable "eks_node_group_ami_type" {
@@ -98,8 +98,8 @@ variable "eks_node_group_scaling_config" {
     type        = map(number)
     description = "EKS node group auto scaling configuration."
     default = {
-      desired_size = 3
-      max_size   = 3
+      desired_size = 4
+      max_size   = 4
       min_size   = 1
     }
 }
@@ -144,7 +144,7 @@ variable "kubernetes_storage_class" {
 
 variable "druid_deepstorage_type" {
     type        = string
-    description = "Druid deep strorage."
+    description = "Druid deep strorage type."
     default     = "s3"
 }
 
