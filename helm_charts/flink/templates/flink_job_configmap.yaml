@@ -12,5 +12,3 @@ data:
 {{ index .Values $name | toYaml | indent 2 }}
   log4j_console_properties: |+
 {{ .Values.log4j_console_properties | indent 4 }}
-  dataset-registry: |+
-{{ .Values.dataset_registry | indent 4 }}
