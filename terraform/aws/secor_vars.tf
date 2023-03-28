@@ -10,6 +10,12 @@ variable "secor_image_tag" {
     default     = "0.29.1"
 }
 
+variable "jobs" {
+  description = "Create release names"
+  type        = list(string)
+  default     = ["ingest-backup", "extractor-duplicate-backup", "extractor-failed-backup", "raw-backup", "failed-backup", "invalid-backup", "unique-backup", "duplicate-backup", "denorm-backup", "denorm-failed-backup", "transform-backup"]
+}
+
 variable "secor_image_repository" {
     type        = string
     description = "secor image version"
@@ -116,13 +122,13 @@ variable "secor_backup_pv_size" {
 variable "kafka_broker_ip" {
     type        = string
     description = "Kafka broker address"
-    default     = "kafka-headless.kafka.svc.cluster.local:9092"
+    default     = "kafka-headless.kafka.svc.cluster.local"
 }
 
 variable "kafka_zookeeper_ip" {
     type        = string
     description = "Kafka zookeeper address"
-    default     = "kafka-zookeeper-headless.svc.cluster.local:2181"  
+    default     = "kafka-zookeeper-headless.kafka.svc.cluster.local:2181"  
 }
 
 variable "cloud_storage_bucket" {

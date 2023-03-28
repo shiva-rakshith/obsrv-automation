@@ -1,5 +1,5 @@
 cloud_storage_bucket: "${cloud_storage_bucket}"
-namespace: "secor-${deployment_stage}"
+namespace: "${secor_namespace}"
 storageClass: "gp2"
 secor_env: "${deployment_stage}"
 image_repository: "${image_repository}"
@@ -7,13 +7,11 @@ region: "${region}"
 pullPolicy: "Always"
 jvm_memory: 1024m
 image_tag: "${secor_image_tag}"
-
-# Secor backups at various levels
 secor_jobs:
   ingest-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_ingest"
-    service_name: "ingest"
+    service_name: "ingest-backup"
     base_path: "${base_path}"
     timestamp_key: "${timestamp_key}"
     fallback_timestamp_key: "${fallback_timestamp_key}"
@@ -26,7 +24,7 @@ secor_jobs:
     partition_prefix_key: ""
     partition_prefix_mapping: "{}"
     message_channel_prefix_enabled: "false"
-    message_channel_identifier: "dataset"
+    message_channel_identifier: ""
     output_file_pattern: "{partition}-{currentTimestamp}.json"
     message_parser: "com.pinterest.secor.parser.PatternDateMessageParser"
     storage:
@@ -40,8 +38,8 @@ secor_jobs:
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-  
-  extractor-duplicate:
+
+  extractor-duplicate-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_extractor_duplicate"
     service_name: "extractor_duplicate"
@@ -71,9 +69,7 @@ secor_jobs:
     lag_threshold_warning: 100000
     threads: "${threads}"
     lag_threshold_critical: 200000
-    
-
-  extractor-failed:
+  extractor-failed-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_extractor_failed"
     service_name: "extractor_failed"
@@ -104,7 +100,7 @@ secor_jobs:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-  raw:
+  raw-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_raw"
     service_name: "raw"
@@ -135,7 +131,7 @@ secor_jobs:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-  failed:
+  failed-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_failed"
     service_name: "failed"
@@ -166,7 +162,7 @@ secor_jobs:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-invalid:
+  invalid-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_invalid"
     service_name: "invalid"
@@ -197,7 +193,7 @@ invalid:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-unique:
+  unique-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_unique"
     service_name: "unique"
@@ -228,7 +224,7 @@ unique:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-duplicate:
+  duplicate-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_duplicate"
     service_name: "duplicate"
@@ -259,7 +255,7 @@ duplicate:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-denorm:
+  denorm-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_denorm"
     service_name: "denorm"
@@ -290,7 +286,7 @@ denorm:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-denorm_failed:
+  denorm-failed-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_denorm_failed"
     service_name: "denorm_failed"
@@ -321,7 +317,7 @@ denorm_failed:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-transform:
+  transform-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_transform"
     service_name: "transform"
@@ -352,19 +348,6 @@ transform:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-# exporter:
-#   image:
-#     repository: prom/statsd-exporter
-#     tag: latest
-#     pullPolicy: IfNotPresent
-
-# prometheus_rule_selector_app: prometheus-operator
-# prometheus_rule_selector_release: prometheus-operator
-
-# If you enable this, secor lag alert rules will be created in the flink cluster.
-# In our case the consumer group lag metrics available in core prometheus.
-# So we need to create the secor lag alert rule in core prometheus.
-# By adding this condition we are avoiding creating the secor lag alert rule in flink cluster.
 alertrules:
   enabled: false
 
