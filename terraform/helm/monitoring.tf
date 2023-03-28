@@ -7,4 +7,11 @@ resource "helm_release" "monitoring" {
     create_namespace = var.monitoring_create_namespace
     wait_for_jobs    = var.monitoring_wait_for_jobs
     timeout          = var.monitoring_install_timeout
+    values = [
+      templatefile(var.monitoring_chart_template,
+        {
+            prometheus_persistent_volume_size = var.prometheus_persistent_volume_size
+        }
+      )
+    ]
 }
