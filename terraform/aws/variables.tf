@@ -29,7 +29,7 @@ variable "vpc_instance_tenancy" {
 }
 
 variable "additional_tags" {
-    type        = map(string)  
+    type        = map(string)
     description = "Additional tags for the resources. These tags will be applied to all the resources."
     default     = {}
 }
@@ -100,7 +100,7 @@ variable "eks_node_group_scaling_config" {
     default = {
       desired_size = 4
       max_size   = 4
-      min_size   = 0
+      min_size   = 1
     }
 }
 
