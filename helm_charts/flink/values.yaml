@@ -1,7 +1,8 @@
-namespace: "flink-dev"
+namespace: ""
 imagepullsecrets: ""
-dockerhub: ""
+registry: ""
 repository: "manjudr/obsrv-core-pipeline" 
+release_name: "obsrv-flink"
 image_tag: "2.1"
 serviceMonitor:
   enabled: false
