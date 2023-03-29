@@ -17,3 +17,8 @@ resource "aws_iam_role_policy_attachment" "AmazonEBSCSIDriverPolicy" {
     policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
     role    = aws_iam_role.eks_nodes_role.name
 }
+
+resource "aws_iam_role_policy_attachment" "node_s3_policy" {
+    policy_arn = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:policy/obsrv-eks-cluster-s3-policy"
+    role    = aws_iam_role.eks_nodes_role.name
+}

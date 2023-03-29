@@ -1,7 +1,7 @@
 variable "flink_release_name" {
     type        = string
     description = "Flink helm release name."
-    default     = "druid-validator"
+    default     = "merged-pipeline"
 }
 
 variable "flink_namespace" {
@@ -43,5 +43,5 @@ variable "flink_chart_template" {
 variable "flink_kubernetes_service_name" {
     type        = string
     description = "Flink kubernetes service name."
-    default     = "druid-validator-jobmanager"
+    default     = "merged-pipeline"
 }

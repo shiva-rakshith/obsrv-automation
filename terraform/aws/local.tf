@@ -8,6 +8,7 @@ locals {
     availability_zones = [for zone in ["a", "b", "c"] : "${var.region}${zone}"]
 
     storage_bucket = "${var.building_block}-${var.env}-${data.aws_caller_identity.current.account_id}"
+    # storage_bucket = "obsrv-data-storage"
 
     kubeconfig = <<KUBECONFIG
       apiVersion: v1

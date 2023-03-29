@@ -1,0 +1,1 @@
+../helm/secor_vars.tf

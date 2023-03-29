@@ -78,14 +78,15 @@ spec:
     druid.azure.container = {{ .Values.azure_storage_container }}
     #druid.storage.storageDirectory = {{ .Values.druid_storage_directory }}
     #druid.storage.disableAcl=true
-    
+
     # # Indexing service logs
     # # For local disk (only viable in a cluster if this is a network mount):
     druid.indexer.logs.type={{ .Values.druid_indexer_logs_type }}
     druid.indexer.logs.container={{ .Values.druid_indexer_logs_container }}
     druid.indexer.logs.prefix={{ .Values.druid_indexer_logs_prefix }}
-    #
-    #
+    druid.indexer.logs.s3Bucket={{ .Values.druid_indexer_logs_container }}
+    druid.indexer.logs.s3Prefix= {{ .Values.druid_indexer_logs_prefix }}
+
     # Service discovery
     druid.selectors.indexing.serviceName={{ .Values.druid_selectors_indexing_serviceName }}
     druid.selectors.coordinator.serviceName={{ .Values.druid_selectors_coordinator_serviceName }}
@@ -266,18 +267,18 @@ spec:
         runAsUser: 0
         runAsGroup: 0
       volumeMounts:
-         - mountPath: {{ .Values.mount_path }}
-           name: historical-volume
-      volumeClaimTemplates:
-      - metadata:
+        - mountPath: {{ .Values.mount_path }}
           name: historical-volume
-        spec:
-          storageClassName: "{{- .Values.storageClass }}"
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: {{ .Values.druid_historical_persistent_volume_size }}
+      volumeClaimTemplates:
+        - metadata:
+            name: historical-volume
+          spec:
+            storageClassName: "{{- .Values.storageClass }}"
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: {{ .Values.druid_historical_persistent_volume_size }}
 
       resources:
         requests:
@@ -286,7 +287,7 @@ spec:
         limits:
           memory: {{ .Values.druid_historical_pod_memory_limit }}
           cpu: {{ .Values.druid_historical_pod_cpu_limit }}
-      
+
     # middlemanagers:
     #   nodeType: "middleManager"
     #   druid.port: {{ .Values.druid_middlemanager_port }}
@@ -387,18 +388,18 @@ spec:
         runAsUser: 0
         runAsGroup: 0
       volumeMounts:
-         - mountPath: {{ .Values.mount_path }}
-           name: indexer-volume
-      volumeClaimTemplates:
-      - metadata:
+        - mountPath: {{ .Values.mount_path }}
           name: indexer-volume
-        spec:
-          storageClassName: "{{- .Values.storageClass }}"
-          accessModes:
-            - ReadWriteOnce
-          resources:
-            requests:
-              storage: {{ .Values.druid_indexer_persistent_volume_size }}
+      volumeClaimTemplates:
+        - metadata:
+            name: indexer-volume
+          spec:
+            storageClassName: "{{- .Values.storageClass }}"
+            accessModes:
+              - ReadWriteOnce
+            resources:
+              requests:
+                storage: {{ .Values.druid_indexer_persistent_volume_size }}
       resources:
         requests:
           memory: {{ .Values.druid_indexer_pod_memory_request }}
@@ -406,7 +407,7 @@ spec:
         limits:
           memory: {{ .Values.druid_indexer_pod_memory_limit }}
           cpu: {{ .Values.druid_indexer_pod_cpu_limit }}
-          
+
     routers:
       nodeType: "router"
       druid.port: {{ .Values.druid_router_plaintextPort }}
@@ -416,10 +417,10 @@ spec:
         - spec:
             type: ClusterIP
             ports:
-            - name: druidrouterport
-              port: 8888
-              targetPort: 8888
-              protocol: TCP
+              - name: druidrouterport
+                port: 8888
+                targetPort: 8888
+                protocol: TCP
       # services:
       #   - spec:
       #       type: ClusterIP
@@ -473,4 +474,3 @@ spec:
         limits:
           memory: {{ .Values.druid_router_pod_memory_limit }}
           cpu: {{ .Values.druid_router_pod_cpu_limit }}
-

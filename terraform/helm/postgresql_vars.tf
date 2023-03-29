@@ -13,7 +13,7 @@ variable "postgresql_namespace" {
 variable "postgresql_install_timeout" {
     type        = number
     description = "Postgresql chart install timeout."
-    default     = 600
+    default     = 900
 }
 
 variable "postgresql_create_namespace" {

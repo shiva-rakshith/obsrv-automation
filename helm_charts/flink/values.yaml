@@ -2,6 +2,7 @@ namespace: ""
 imagepullsecrets: ""
 registry: ""
 repository: "manjudr/obsrv-core-pipeline" 
+release_name: "obsrv-flink"
 image_tag: "2.1"
 serviceMonitor:
   enabled: false
@@ -39,6 +40,16 @@ s3_path_style_access: ""
 # Azure Container Details
 azure_account: ""
 azure_secret: ""
+ 
+dataset_registry: |
+  postgres {
+    host = postgresql.postgresql.svc.cluster.local
+    port = 5432
+    maxConnections = 2
+    user = "postgres"
+    password = "postgres"
+    database = "obsrv"
+  }
 
 log4j_console_properties: |
   # This affects logging for both user code and Flink
@@ -79,7 +90,7 @@ base_config: |
       blob {
         storage {
           account = "obsrvacc.blob.core.windows.net"
-          container = "obsrv-blob"
+          container = "obsrv-data-storage"
           checkpointing.dir = "checkpoint"
         }
       }
@@ -108,7 +119,7 @@ base_config: |
     restart-strategy.delay = 30000 # in milli-seconds
   }
 
-  redisdb.connection.timeout = 100
+  redis.connection.timeout = 100
   redis {
     host = obsrv-redis-master.redis.svc.cluster.local
     port = 6379

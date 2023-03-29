@@ -7,6 +7,8 @@ auth:
   existingSecret: ""
   
 primary: 
+  extendedConfiguration: |
+      password_encryption = md5
   persistence: 
     size: 1Gi
     enabled: true
