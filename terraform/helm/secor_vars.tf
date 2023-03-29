@@ -18,7 +18,9 @@ variable "jobs" {
   "extractor-failed-backup", "raw-backup", 
   "failed-backup", "invalid-backup", 
   "unique-backup", "duplicate-backup", 
-  "denorm-backup", "denorm-failed-backup", "transform-backup"
+  "denorm-backup", "denorm-failed-backup", 
+  "transform-backup", "system-stats",
+  "system-events"
   ]
 }
 
