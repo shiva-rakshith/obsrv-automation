@@ -18,7 +18,9 @@ variable "jobs" {
   "extractor-failed-backup", "raw-backup", 
   "failed-backup", "invalid-backup", 
   "unique-backup", "duplicate-backup", 
-  "denorm-backup", "denorm-failed-backup", "transform-backup"
+  "denorm-backup", "denorm-failed-backup", 
+  "transform-backup", "system-stats",
+  "system-events"
   ]
 }
 
@@ -43,7 +45,7 @@ variable "secor_chart_path" {
 variable "secor_chart_install_timeout" {
     type        = number
     description = "Secor chart install timeout."
-    default     = 3000
+    default     = 3001
 }
 
 variable "secor_create_namespace" {
@@ -104,18 +106,18 @@ variable "secor_memory_limit" {
 variable "secor_backup_interval" {
     type        = number
     description = "Secor backup interval"
-    default     = 21600  # In seconds
+    default     = 1000  # In seconds
 }
 
 variable "secor_backup_max_file_size" {
     type        = number
-    description = "Secor backup interval"
+    description = "Secor backup max file size"
     default     = 100000000  # In bytes
 }
 
 variable "secor_backup_basepath" {
     type        = string
-    description = "Secor backup interval"
+    description = "Secor backup base path"
     default     = "/telemetry-data"
 }
 
