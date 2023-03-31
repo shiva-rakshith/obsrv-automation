@@ -7,6 +7,7 @@ metadata:
     app: {{ .Chart.Name }}
 data:
   SYSTEM_ENV: "{{ .Values.SYSTEM_ENV }}"
+  TELEMETRY_KAFKA_COMPRESSION: "{{.Values.TELEMETRY_KAFKA_COMPRESSION}}"
   DRUID_HOST: "{{ .Values.druid_service.DRUID_HOST }}"
   DRUID_PORT: "{{ .Values.druid_service.DRUID_PORT }}"
   KAFKA_HOST: "{{ .Values.kafka_service.KAFKA_HOST }}"

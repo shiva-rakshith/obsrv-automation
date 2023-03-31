@@ -7,6 +7,7 @@ network:
   port: 3000
   targetport: 3000
 SYSTEM_ENV: "${env}"
+TELEMETRY_KAFKA_COMPRESSION: snappy
 druid_service:
   DRUID_HOST: http://druid-raw-${env}-routers.druid-raw.svc
   DRUID_PORT: 8888
