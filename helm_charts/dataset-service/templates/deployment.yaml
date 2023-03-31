@@ -89,6 +89,11 @@ spec:
                 configMapKeyRef:
                   name: "{{ .Chart.Name }}-config"
                   key: POSTGRES_PASSWORD
+            - name: telemetry_kafka_compression
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Chart.Name }}-config"
+                  key: TELEMETRY_KAFKA_COMPRESSION 
           ports:
             - containerPort: 3000
 
