@@ -1,0 +1,38 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    role: alert-rules
+    app: {{ .Values.prometheus_rule_selector_app }}
+    release: {{ .Values.prometheus_rule_selector_release }}
+  name: {{ .Values.fullnameOverride }}-alertrules
+  namespace: {{ .Values.namespace }}
+spec:
+  groups:
+  - name: Container CPU Usage
+    rules:   
+    - alert: ContainerCPUUsageLow
+      expr: sum(container_cpu_usage_seconds_total{container_name!="POD", container_name!=""}) / sum(machine_cpu_cores) * 100 < 80
+      for: 5m
+      labels:
+          severity: warning
+      annotations:
+          summary: Container CPU usage low
+          description: Container CPU usage has been below 80% for the last 5 minutes.
+    - alert: ContainerCPUUsageMedium
+      expr: sum(container_cpu_usage_seconds_total{container_name!="POD", container_name!=""}) / sum(machine_cpu_cores) * 100 >= 80 and sum(container_cpu_usage_seconds_total{container_name!="POD", container_name!=""}) / sum(machine_cpu_cores) * 100 < 90
+      for: 5m
+      labels:
+          severity: warning
+      annotations:
+          summary: Container CPU usage medium
+          description: Container CPU usage has been between 80% and 90% for the last 5 minutes.
+    - alert: ContainerCPUUsageHigh
+      expr: sum(container_cpu_usage_seconds_total{container_name!="POD", container_name!=""}) / sum(machine_cpu_cores) * 100 >= 90
+      for: 5m
+      labels:
+          severity: critical
+      annotations:
+          summary: Container CPU usage high
+          description: Container CPU usage has been above 90% for the last 5 minutes.

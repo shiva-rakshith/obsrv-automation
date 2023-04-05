@@ -1,0 +1,4 @@
+prometheus_rule_selector_app: prometheus-operator
+prometheus_rule_selector_release: monitoring
+fullnameOverride: monitoring
+namespace: monitoring
