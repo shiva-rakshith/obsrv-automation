@@ -39,7 +39,7 @@ module "vpc" {
 
 module "eks" {
   source                = "../modules/aws/eks"
-  eks_master_subnet_ids = module.vpc.public_subnets_ids
+  eks_master_subnet_ids = module.vpc.multi_zone_public_subnets_ids
   eks_nodes_subnet_ids  = module.vpc.single_zone_public_subnets_id
   eks_master_role       = "keshav_eks_master_role"
   eks_nodes_role        = "keshav_eks_nodes_role"

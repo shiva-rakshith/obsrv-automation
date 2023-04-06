@@ -1,4 +1,4 @@
-output "public_subnets_ids" {
+output "multi_zone_public_subnets_ids" {
   value = aws_subnet.public_subnets[*].id
 }
 
