@@ -1,9 +1,3 @@
-data "aws_caller_identity" "current" {}
-
-locals {
-    storage_bucket = "${var.building_block}-${var.env}-${data.aws_caller_identity.current.account_id}"
-}
-
 resource "helm_release" "flink" {
     name             = var.flink_release_name
     chart            = "${path.module}/${var.flink_chart_path}"

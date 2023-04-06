@@ -1,9 +1,3 @@
-data "aws_caller_identity" "current" {}
-
-locals {
-  storage_bucket = "${var.building_block}-${var.env}-${data.aws_caller_identity.current.account_id}"
-}
-
 resource "helm_release" "druid_cluster" {
   name             = var.druid_cluster_release_name
   chart            = "${path.module}/${var.druid_cluster_chart_path}"
