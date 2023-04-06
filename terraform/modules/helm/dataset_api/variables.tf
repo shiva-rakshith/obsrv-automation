@@ -73,3 +73,21 @@ variable "dataset_api_chart_depends_on" {
   description = "List of helm release names that this chart depends on."
   default     = ""
 }
+
+variable "dataset_api_container_registry" {
+  type        = string
+  description = "Container registry. For example docker.io/obsrv"
+  default     = "sanketikahub"
+}
+
+variable "dataset_api_image_name" {
+  type        = string
+  description = "Dataset api image name."
+  default     = "obsrv-api-service"
+ }
+
+variable "dataset_api_image_tag" {
+  type        = string
+  description = "Dataset api image tag."
+  default     = "1.0.2"
+}

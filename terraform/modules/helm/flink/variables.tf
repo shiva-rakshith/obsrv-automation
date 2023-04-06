@@ -62,19 +62,19 @@ variable "flink_container_registry" {
   type        = string
   description = "Container registry. For example docker.io/obsrv"
   default     = "manjudr"
- }
+}
 
- variable "flink_image_name" {
+variable "flink_image_name" {
   type        = string
-  description = "Flink kubernetes service name."
+  description = "Flink image name."
   default     = "obsrv-core-pipeline"
- }
+}
 
- variable "flink_image_tag" {
+variable "flink_image_tag" {
   type        = string
-  description = "Flink kubernetes service name."
+  description = "Flink image tag."
   default     = "2.1"
- }
+}
 
 variable "flink_checkpoint_store_type" {
   type        = string

@@ -72,7 +72,6 @@ module "superset" {
   postgresql_admin_username         = module.postgresql.postgresql_admin_username
   postgresql_admin_password         = module.postgresql.postgresql_admin_password
   postgresql_superset_user_password = module.postgresql.postgresql_superset_user_password
-  superset_image_tag                = var.superset_image_tag
   superset_chart_depends_on         = [module.postgresql]
 }
 
@@ -83,7 +82,6 @@ module "grafana_configs" {
 
 module "postgresql" {
   source               = "../modules/helm/postgresql"
-  postgresql_image_tag = var.postgresql_image_tag
   depends_on           = [module.eks]
 }
 
@@ -94,6 +92,7 @@ module "kafka" {
 
 module "flink" {
   source                         = "../modules/helm/flink"
+  flink_container_registry       = var.flink_container_registry
   flink_image_tag                = var.flink_image_tag
   s3_access_key                  = module.iam.s3_access_key
   s3_secret_key                  = module.iam.s3_secret_key
@@ -135,6 +134,8 @@ module "druid_exporter" {
 
 module "dataset_api" {
   source                             = "../modules/helm/dataset_api"
+  dataset_api_container_registry     = var.dataset_api_container_registry
+  dataset_api_image_tag              = var.dataset_api_image_tag
   dataset_api_postgres_user_password = module.postgresql.postgresql_dataset_api_user_password
   dataset_api_chart_depends_on       = [module.postgresql, module.kafka]
 }

@@ -10,24 +10,6 @@ variable "building_block" {
   default     = "obsrv"
 }
 
-variable "superset_image_tag" {
-  type        = string
-  description = "Superset image tag"
-  default     = "2.0.0"
-}
-
-variable "postgresql_image_tag" {
-  type = string
-  description = "Postgresql image tag."
-  default = "14.5.0-debian-11-r14"
-}
-
-variable "flink_image_tag" {
-   type        = string
-   description = "Flink kubernetes service name."
-   default     = "2.1"
-}
-
 variable "kubernetes_storage_class" {
     type        = string
     description = "Storage class name for the AKS cluster"
@@ -44,4 +26,28 @@ variable "flink_checkpoint_store_type" {
     type        = string
     description = "Flink checkpoint store type."
     default     = "azure"
+}
+
+variable "dataset_api_container_registry" {
+  type        = string
+  description = "Container registry. For example docker.io/obsrv"
+  default     = "sanketikahub"
+}
+
+variable "dataset_api_image_tag" {
+  type        = string
+  description = "Dataset api image tag."
+  default     = "1.0.2"
+}
+
+variable "flink_container_registry" {
+  type        = string
+  description = "Container registry. For example docker.io/obsrv"
+  default     = "manjudr"
+}
+
+variable "flink_image_tag" {
+   type        = string
+   description = "Flink kubernetes service name."
+   default     = "2.1"
 }
