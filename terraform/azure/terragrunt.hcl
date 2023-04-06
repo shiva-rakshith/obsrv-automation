@@ -4,7 +4,7 @@ remote_state {
     resource_group_name  = get_env("AZURE_TERRAFORM_BACKEND_RG")
     storage_account_name = get_env("AZURE_TERRAFORM_BACKEND_STORAGE_ACCOUNT")
     container_name       = get_env("AZURE_TERRAFORM_BACKEND_CONTAINER")
-    key                  = "${path_relative_to_include()}/${get_env("TF_ENV")}.terraform.tfstate"
+    key                  = "${path_relative_to_include()}/terraform.tfstate"
     encrypt              = true
   }
 }

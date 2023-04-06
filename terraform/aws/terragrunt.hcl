@@ -3,7 +3,7 @@ remote_state {
   config = {
     bucket  = get_env("AWS_TERRAFORM_BACKEND_BUCKET_NAME")
     region  = get_env("AWS_TERRAFORM_BACKEND_BUCKET_REGION")
-    key     = "${path_relative_to_include()}/${get_env("TF_ENV")}.terraform.tfstate"
+    key     = "${path_relative_to_include()}/terraform.tfstate"
     encrypt = true
   }
 }
