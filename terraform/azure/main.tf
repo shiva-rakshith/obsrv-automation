@@ -1,10 +1,5 @@
 terraform {
-  backend "azurerm" {
-    resource_group_name  = "obsrv-terraform-rg"
-    storage_account_name = "obsrvterraformstorage"
-    container_name       = "obsrv-dev-terraform-state"
-    key                  = "dev.tfstate"
-  }
+  backend "azurerm" {}
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"

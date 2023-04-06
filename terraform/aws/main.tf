@@ -1,9 +1,5 @@
 terraform {
-  backend "s3" {
-    bucket = "keshav-tf-testing"
-    key    = "dev.tf"
-    region = "us-east-2"
-  }
+  backend "s3" {}
   required_providers {
     aws = {
       source  = "hashicorp/aws"
