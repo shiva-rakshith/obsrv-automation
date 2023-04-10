@@ -103,7 +103,7 @@ spec:
         message: {{`'{{ $labels.nodename }} ({{ $labels.host }}) has a high load average. Load average is {{ $value }}%.'`}}
         summary: {{`'HIGH LOAD AVERAGE warning ON {{ $labels.nodename }}'`}}
     - alert: node_exporter_down_critical
-      expr: up == 1
+      expr: up{job="node"} == 0
       for: 1m
       labels:
         severity: critical
