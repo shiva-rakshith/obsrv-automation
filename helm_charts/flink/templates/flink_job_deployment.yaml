@@ -7,6 +7,7 @@ metadata:
   labels:
     app: flink
     component: {{ .Release.Name }}-jobmanager
+    release: monitoring
 spec:
   type: ClusterIP
   ports:
@@ -31,6 +32,10 @@ metadata:
   namespace: {{ .Values.namespace }}
   {{- if .Values.service.annotations }}
   {{- with .Values.service.annotations }}
+  labels:
+    app: flink
+    component: {{ .Release.Name }}-jobmanager-webui
+    release: monitoring
 annotations:
   {{ toYaml . | indent 4 }}
   {{- end }}

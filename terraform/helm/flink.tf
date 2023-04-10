@@ -1,5 +1,6 @@
 resource "helm_release" "flink" {
-    name             = var.flink_release_name
+    count            = length(var.flink_release_name)
+    name             = var.flink_release_name[count.index]
     chart            = var.flink_chart_path
     namespace        = var.flink_namespace
     create_namespace = var.flink_create_namespace

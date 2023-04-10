@@ -121,7 +121,7 @@ base_config: |
 
   redis.connection.timeout = 100
   redis {
-    host = obsrv-redis-master.redis.svc.cluster.local
+    host = obsrv-redis-headless.redis.svc.cluster.local
     port = 6379
   }
 
