@@ -1,7 +1,7 @@
 import json
 import requests
 
-login_url = 'http://a1c470914e19e46a48bbc1a607c5ecdc-672264420.us-east-2.elb.amazonaws.com:8088/api/v1/security/login'
+login_url = 'http://localhost:8088/api/v1/security/login'
 headers = {'Content-Type': 'application/json'}
 data = {
     'username': 'admin',
@@ -22,7 +22,7 @@ else:
 
 import json
 
-create_chart_url = "http://a1c470914e19e46a48bbc1a607c5ecdc-672264420.us-east-2.elb.amazonaws.com:8088/api/v1/chart"
+create_chart_url = "http://localhost:8088/api/v1/chart"
 
 time_series_chart_payload = json.dumps({
   "slice_name": "dataset-summary",
