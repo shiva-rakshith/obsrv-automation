@@ -40,7 +40,9 @@ resource "aws_iam_policy" "s3_policy" {
         "Action" : "s3:*",
         "Resource" : [
           "arn:aws:s3:::*/*",
-          "arn:aws:s3:::obsrv-data-storage"
+          "arn:aws:s3:::obsrv-data-storage",
+          "arn:aws:s3:::${local.storage_bucket}",
+
         ]
       }
     ]

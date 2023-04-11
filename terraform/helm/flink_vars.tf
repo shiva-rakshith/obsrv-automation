@@ -1,7 +1,8 @@
 variable "flink_release_name" {
     type        = list(string)
     description = "Flink helm release name."
-    default     = ["merged-pipeline","extractor","preprocessor","denormalizer","transformer","druid-router"]
+    # default     = ["merged-pipeline","extractor","preprocessor","denormalizer","transformer","druid-router"]
+    default = [ "merged-pipeline" ]
 }
 
 variable "flink_namespace" {

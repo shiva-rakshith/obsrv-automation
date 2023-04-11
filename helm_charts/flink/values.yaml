@@ -1,9 +1,9 @@
 namespace: ""
 imagepullsecrets: ""
 registry: ""
-repository: "manjudr/obsrv-core-pipeline" 
+repository: "sanketikahub/obsrv-core" 
 release_name: "obsrv-flink"
-image_tag: "2.1"
+image_tag: "latest"
 serviceMonitor:
   enabled: false
 replicaCount: 1
