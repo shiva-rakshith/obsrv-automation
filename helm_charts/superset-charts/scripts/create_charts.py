@@ -4,8 +4,8 @@ import requests
 login_url = 'http://localhost:8088/api/v1/security/login'
 headers = {'Content-Type': 'application/json'}
 data = {
-    'username': 'admin',
-    'password': 'admin123',
+    'username': '',
+    'password': '',
     'provider': 'db',
     'refresh': True
 }
