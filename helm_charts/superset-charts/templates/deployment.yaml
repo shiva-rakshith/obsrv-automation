@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: superset-charts
+  namespace: {{ .Values.namespace }}
+spec:
+  restartPolicy: Never  # Set restart policy for the pod to "Never"
+  containers:
+    - name: superset
+      image: "python:3.9"
+      command: ["bash", "-c", "pip install requests && python /etc/scripts/create-charts.py"]
+      volumeMounts:
+        - name: scripts-volume
+          mountPath: /etc/scripts 
+  volumes:
+    - name: scripts-volume
+      configMap:
+        name: superset-charts-config
