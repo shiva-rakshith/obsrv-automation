@@ -21,5 +21,7 @@ data:
   POSTGRES_DATABASE: "{{ .Values.postgres_service.POSTGRES_DATABASE }}"
   POSTGRES_USERNAME: "{{ .Values.postgres_service.POSTGRES_USERNAME }}"
   POSTGRES_PASSWORD: "{{ .Values.postgres_service.POSTGRES_PASSWORD }}"
+  REDIS_HOST: "{{ .Values.redis_service.REDIS_HOST }}"
+  REDIS_PORT: "{{ .Values.redis_service.REDIS_PORT }}"
 
   
