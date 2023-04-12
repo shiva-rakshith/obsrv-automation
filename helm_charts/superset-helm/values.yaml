@@ -24,7 +24,13 @@ oauth:
   client_secret: "client_secret"
   email_whitelist_regex: ""
   whitelist_domain: ""
-  user_registration_role: "Gamma"
+  user_registration_role: "Public"
+  api_base_url: "http://192.168.1.8:4000"
+  access_token_url: "http://192.168.1.8:4000/api/oauth/token"
+  authorize_url: "http://localhost:4000/api/oauth/authorize"
+  access_token_headers_value: "Basic MTIzOnNlY3JldA=="
+  redirect_uri: "http://localhost:8088/oauth-authorized/obsrv"
+
 
 runAsUser: 1000
 
@@ -84,7 +90,28 @@ extraConfigs: {}
   #       sqlalchemy_uri: example://example-db.local
   #       tables: []
 
-extraSecrets: {}
+extraSecrets:
+  custom_sso_security_manager.py: |
+    import logging
+    import json
+    from superset.security import SupersetSecurityManager
+
+    class CustomSsoSecurityManager(SupersetSecurityManager):
+
+        def oauth_user_info(self, provider, response=None):
+            print("Oauth2 provider:", provider)
+            if provider == 'obsrv':
+            # As example, this line request a GET to base_url + '/' + userDetails with Bearer  Authentication,
+            # and expects that authorization server checks the token, and response with user details
+
+               response = self.appbuilder.sm.oauth_remotes[provider].get('api/oauth/user-details').__dict__
+               content = response['_content'].decode('utf-8')
+               data = json.loads(content)
+               print("Oauth2 user data:", data)
+               id = ['id']
+               name = ['name']
+               email = data['data']['email']
+               return { 'name' :name, 'email' : email, 'id' : id, 'username' : name, 'first_name':'', 'last_name':''}
 
 # A dictionary of overrides to append at the end of superset_config.py - the name does not matter
 # WARNING: the order is not guaranteed
@@ -114,24 +141,31 @@ configOverrides:
   #  MAPBOX_API_KEY=''
 
   oauth: |
-    from flask_appbuilder.security.manager import (AUTH_DB, AUTH_OAUTH)
+    from flask_appbuilder.security.manager import AUTH_OAUTH
     AUTH_TYPE = AUTH_OAUTH
 
     OAUTH_PROVIDERS = [
       {
-          "name": "google",
-          "whitelist": [ "{{ .Values.oauth.email_whitelist_regex }}" ],
-          "icon": "fa-google",
-          "token_key": "access_token",
-          "remote_app": {
-              "client_id": "{{ .Values.oauth.client_id }}",
-              "client_secret": "{{ .Values.oauth.client_secret }}",
-              "api_base_url": "https://www.googleapis.com/oauth2/v2/",
-              "client_kwargs": {"scope": "email profile"},
-              "request_token_url": None,
-              "access_token_url": "https://accounts.google.com/o/oauth2/token",
-              "authorize_url": "https://accounts.google.com/o/oauth2/auth",
-              "authorize_params": {"hd": "{{ .Values.oauth.whitelist_domain }}"}
+          'name': 'obsrv',
+          'token_key':'access_token', # Name of the token in the response of access_token_url
+          'icon':'fa-address-card',   # Icon for the provider
+          'remote_app': {
+              'client_id': '{{ .Values.oauth.client_id }}',  # Client Id (Identify Superset application)
+              'client_secret': '{{ .Values.oauth.client_secret }}', # Secret for this Client Id (Identify Superset application)
+              'client_kwargs':{
+                  'scope': 'read'  # Scope for the Authorization
+              },
+              'access_token_method':'POST',    # HTTP Method to call access_token_url
+              'access_token_params':{        # Additional parameters for calls to access_token_url
+                  'client_id': '{{ .Values.oauth.client_id }}',
+                  'client_secret': '{{ .Values.oauth.client_secret }}'
+              },
+              'access_token_headers':{    # Additional headers for calls to access_token_url
+                  'Authorization': '{{ .Values.oauth.access_token_headers_value }}'
+              },
+              'api_base_url': '{{ .Values.oauth.api_base_url }}',
+              'access_token_url': '{{ .Values.oauth.access_token_url }}',
+              'authorize_url': '{{ .Values.oauth.authorize_url }}'
           }
       }
     ]
@@ -141,7 +175,11 @@ configOverrides:
     # Will allow user self registration, allowing to create Flask users from Authorized User
     AUTH_USER_REGISTRATION = True
     # The default user self registration role
-    AUTH_USER_REGISTRATION_ROLE = "{{ oauth.user_registration_role }}"
+    AUTH_USER_REGISTRATION_ROLE = '{{ oauth.user_registration_role }}'
+    AUTH_OAUTH_REDIRECT_URI= '{{ oauth.redirect_uri }}'
+    
+    from custom_sso_security_manager import CustomSsoSecurityManager
+    CUSTOM_SECURITY_MANAGER = CustomSsoSecurityManager
 
 configMountPath: "/etc/superset"
 
