@@ -41,8 +41,6 @@ module "eks" {
   source                = "../modules/aws/eks"
   eks_master_subnet_ids = module.vpc.multi_zone_public_subnets_ids
   eks_nodes_subnet_ids  = module.vpc.single_zone_public_subnets_id
-  eks_master_role       = "keshav_eks_master_role"
-  eks_nodes_role        = "keshav_eks_nodes_role"
 }
 
 module "iam" {
@@ -65,6 +63,7 @@ module "loki" {
 
 module "monitoring" {
   source          = "../modules/helm/monitoring"
+  depends_on      = [module.eks]
 }
 
 module "superset" {
@@ -150,7 +149,7 @@ module "submit_ingestion" {
   submit_ingestion_chart_depends_on = [module.kafka, module.druid_raw_cluster]
 }
 
-module "alert_rules" {
-  source                       = "../modules/helm/alert_rules"
-  alertrules_chart_depends_on  = [module.monitoring]
-}
+# module "alert_rules" {
+#   source                       = "../modules/helm/alert_rules"
+#   alertrules_chart_depends_on  = [module.monitoring]
+# }

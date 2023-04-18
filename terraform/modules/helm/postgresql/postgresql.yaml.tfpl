@@ -6,10 +6,6 @@ image:
 auth:
   enablePostgresUser: true
   postgresPassword: ${postgresql_admin_password}
-  database: ${postgresql_druid_database}
-  username: ${postgresql_druid_user_name}
-  password: ${postgresql_druid_user_password}
-  existingSecret: ""
 
 primary:
   extendedConfiguration: |

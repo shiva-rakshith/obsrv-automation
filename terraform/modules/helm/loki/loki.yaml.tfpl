@@ -23,3 +23,7 @@ monitoring:
   serviceMonitor:
     labels:
       release: monitoring
+read:
+  affinity: {}
+write:
+  affinity: {}

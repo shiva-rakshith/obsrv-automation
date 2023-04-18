@@ -4,6 +4,9 @@ resource "helm_release" "alertrules" {
     namespace        = var.alertrules_namespace
     create_namespace = var.alertrules_create_namespace
     depends_on       = [var.alertrules_chart_depends_on]
+    force_update     = true
+    cleanup_on_fail  = true
+    atomic           = true
     values = [
       templatefile("${path.module}/${var.alertrules_chart_template}",
         {

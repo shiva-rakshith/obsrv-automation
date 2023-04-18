@@ -108,12 +108,12 @@ variable "postgresql_flink_user_password" {
 
 variable "postgresql_druid_raw_user_password" {
   type        = string
-  description = "Postgresql flink user password."
+  description = "Postgresql druid user password."
   default   = "druidraw123"
 }
 
 variable "postgresql_dataset_api_user_password" {
   type        = string
-  description = "Postgresql flink user password."
+  description = "Postgresql dataset api user password."
   default   = "datasetapi123"
 }

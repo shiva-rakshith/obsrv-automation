@@ -49,7 +49,7 @@ variable "eks_node_group_ami_type" {
 variable "eks_node_group_instance_type" {
   type        = list(string)
   description = "EKS nodegroup instance types."
-  default     = ["t2.2xlarge"]
+  default     = ["t2.xlarge"]
 }
 
 variable "eks_node_group_capacity_type" {
@@ -62,8 +62,8 @@ variable "eks_node_group_scaling_config" {
   type        = map(number)
   description = "EKS node group auto scaling configuration."
   default = {
-    desired_size = 0
-    max_size     = 6
+    desired_size = 4
+    max_size     = 4
     min_size     = 0
   }
 }
@@ -108,4 +108,10 @@ variable eks_master_subnet_ids {
 variable eks_nodes_subnet_ids {
   type        = list(string)
   description = "The VPC's public subnet id which will be used to create the EKS node groups."
+}
+
+variable "eks_node_disk_size" {
+  type        = number
+  description = "EKS nodes disk size"
+  default     = 128
 }

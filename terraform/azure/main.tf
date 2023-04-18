@@ -50,10 +50,12 @@ module "promtail" {
 
 module "loki" {
   source         = "../modules/helm/loki"
+  depends_on     = [module.aks]
 }
 
 module "monitoring" {
   source         = "../modules/helm/monitoring"
+  depends_on     = [module.aks]
 }
 
 module "superset" {
@@ -70,11 +72,13 @@ module "grafana_configs" {
 }
 
 module "postgresql" {
-  source               = "../modules/helm/postgresql"
+  source         = "../modules/helm/postgresql"
+  depends_on     = [module.aks]
 }
 
 module "kafka" {
   source         = "../modules/helm/kafka"
+  depends_on     = [module.aks]
 }
 
 module "flink" {
@@ -101,6 +105,7 @@ module "druid_raw_cluster" {
 
 module "druid_operator" {
   source         = "../modules/helm/druid_operator"
+  depends_on     = [module.aks]
 }
 
 module "kafka_exporter" {
