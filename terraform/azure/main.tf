@@ -50,7 +50,7 @@ module "promtail" {
 
 module "loki" {
   source         = "../modules/helm/loki"
-  depends_on     = [module.aks]
+  depends_on     = [module.aks, module.monitoring]
 }
 
 module "monitoring" {

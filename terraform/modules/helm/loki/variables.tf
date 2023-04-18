@@ -61,7 +61,7 @@ variable "loki_chart_version" {
 variable "loki_install_timeout" {
   type        = number
   description = "Loki chart install timeout."
-  default     = 1200
+  default     = 1500
 }
 
 variable "loki_custom_values_yaml" {
