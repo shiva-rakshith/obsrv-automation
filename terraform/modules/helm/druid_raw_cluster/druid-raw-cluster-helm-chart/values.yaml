@@ -28,7 +28,7 @@ druid_storage_directory: "/data"
 # AWS S3 Details
 s3_access_key: ""
 s3_secret_key: ""
-s3_bucket: "obsrv-data-storage"
+s3_bucket: "obsrv-dev-725876873105"
 
 # Azure Container Details
 azure_storage_account_name: ""
@@ -38,7 +38,7 @@ azure_storage_container: ""
 # Indexing service logs
 # For local disk (only viable in a cluster_type if this is a network mount):
 druid_indexer_logs_type: "s3"
-druid_indexer_logs_container: "obsrv-data-storage"
+druid_indexer_logs_container: "obsrv-dev-725876873105"
 druid_indexer_logs_prefix: "backups/druid/druid-task-logs"
 
 # Service discovery

@@ -2,11 +2,12 @@ namespace: "dev"
 dockerhub: "sanketikahub"
 replicaCount: 1
 repository: "obsrv-api-service"
-image_tag: 1.0.2
+image_tag: 1.0.4
 network:
   port: 3000
   targetport: 3000
-SYSTEM_ENV: "dev"
+SYSTEM_ENV: "${env}"
+TELEMETRY_KAFKA_COMPRESSION: snappy
 druid_service:
   DRUID_HOST: http://druid-raw-dev-routers.druid-raw.svc
   DRUID_PORT: 8888
@@ -23,3 +24,6 @@ postgres_service:
   POSTGRES_DATABASE: "obsrv"
   POSTGRES_USERNAME: "postgres"
   POSTGRES_PASSWORD: "postgres"
+redis_service:
+  REDIS_HOST: obsrv-redis-master.redis.svc.cluster.local
+  REDIS_PORT: 6379

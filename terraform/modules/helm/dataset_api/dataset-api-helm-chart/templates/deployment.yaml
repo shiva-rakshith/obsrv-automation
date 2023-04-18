@@ -89,6 +89,22 @@ spec:
                 configMapKeyRef:
                   name: "{{ .Chart.Name }}-config"
                   key: POSTGRES_PASSWORD
+            - name: telemetry_kafka_compression
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Chart.Name }}-config"
+                  key: TELEMETRY_KAFKA_COMPRESSION
+            - name: redis_host
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Chart.Name }}-config"
+                  key: REDIS_HOST
+            - name: redis_port
+              valueFrom:
+                configMapKeyRef:
+                  name: "{{ .Chart.Name }}-config"
+                  key: REDIS_PORT
+            
           ports:
             - containerPort: 3000
 
