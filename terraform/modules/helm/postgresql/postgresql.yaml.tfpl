@@ -1,0 +1,41 @@
+image:
+  registry: docker.io
+  repository: bitnami/postgresql
+  tag: ${postgresql_image_tag}
+
+auth:
+  enablePostgresUser: true
+  postgresPassword: ${postgresql_admin_password}
+
+primary:
+  extendedConfiguration: |
+      password_encryption = md5
+  persistence:
+    size: ${postgresql_persistence_size}
+    enabled: true
+    mountPath: /bitnami/postgresql
+
+  initdb:
+    user: ${postgresql_admin_username}
+    password: ${postgresql_admin_password}
+    scripts:
+      00_create_superset_db.sql: |
+        CREATE DATABASE superset;
+      01_create_superset_user.sql: |
+        CREATE USER superset WITH ENCRYPTED PASSWORD '${postgresql_superset_user_password}';
+        GRANT ALL PRIVILEGES ON DATABASE superset TO superset;
+      02_create_flink_db.sql: |
+        CREATE DATABASE flink;
+      03_create_flink_user.sql: |
+        CREATE USER flink WITH ENCRYPTED PASSWORD '${postgresql_flink_user_password}';
+        GRANT ALL PRIVILEGES ON DATABASE flink TO flink;
+      04_create_druid_raw_db.sql: |
+        CREATE DATABASE druid_raw;
+      05_create_druid_raw_user.sql: |
+        CREATE USER druid_raw WITH ENCRYPTED PASSWORD '${postgresql_druid_raw_user_password}';
+        GRANT ALL PRIVILEGES ON DATABASE druid_raw TO druid_raw;
+      06_create_dataset_api.sql: |
+        CREATE DATABASE dataset_api;
+      07_create_dataset_api_user.sql: |
+        CREATE USER dataset_api_user WITH ENCRYPTED PASSWORD '${postgresql_dataset_api_user_password}';
+        GRANT ALL PRIVILEGES ON DATABASE dataset_api TO dataset_api_user;

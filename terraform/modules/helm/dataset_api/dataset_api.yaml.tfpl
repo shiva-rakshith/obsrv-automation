@@ -1,0 +1,13 @@
+namespace: ${dataset_api_namespace}
+druid_service:
+  DRUID_HOST: http://druid-raw-${env}-routers.druid-raw.svc
+  DRUID_PORT: 8888
+postgres_service:
+  POSTGRES_HOST: postgresql-hl.postgresql.svc
+  POSTGRES_PORT: 5432
+  POSTGRES_DATABASE: ${dataset_api_postgres_database}
+  POSTGRES_USERNAME: ${dataset_api_postgres_username}
+  POSTGRES_PASSWORD: ${dataset_api_postgres_user_password}
+dockerhub: ${dataset_api_container_registry}
+repository: ${dataset_api_image_name}
+image_tag: ${dataset_api_image_tag}
