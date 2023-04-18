@@ -89,5 +89,5 @@ variable "dataset_api_image_name" {
 variable "dataset_api_image_tag" {
   type        = string
   description = "Dataset api image tag."
-  default     = "1.0.2"
+  default     = "1.0.4"
 }

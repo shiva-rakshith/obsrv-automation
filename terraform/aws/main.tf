@@ -151,6 +151,6 @@ module "submit_ingestion" {
 }
 
 module "alert_rules" {
-  source                  = "../modules/helm/alert_rules"
-  secor_chart_depends_on  = [module.monitoring]
+  source                       = "../modules/helm/alert_rules"
+  alertrules_chart_depends_on  = [module.monitoring]
 }

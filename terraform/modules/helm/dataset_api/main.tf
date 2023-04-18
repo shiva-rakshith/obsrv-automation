@@ -17,6 +17,9 @@ resource "helm_release" "dataset_api" {
           dataset_api_postgres_database      = var.dataset_api_postgres_database
           dataset_api_postgres_username      = var.dataset_api_postgres_username
           dataset_api_postgres_user_password = var.dataset_api_postgres_user_password
+          dataset_api_container_registry     = var.dataset_api_container_registry
+          dataset_api_image_name             = var.dataset_api_image_name
+          dataset_api_image_tag              = var.dataset_api_image_tag
         }
       )
     ]
