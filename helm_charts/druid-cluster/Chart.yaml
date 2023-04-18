@@ -1,5 +1,5 @@
 name: druid-cluster
-version: 0.1.0
+version: 0.1.1
 appVersion: 0.21.1
 description: Helm chart to deploy a druid cluster on Kubernetes
 keywords:
