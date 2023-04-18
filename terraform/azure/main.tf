@@ -135,3 +135,8 @@ module "submit_ingestion" {
   source                            = "../modules/helm/submit_ingestion"
   submit_ingestion_chart_depends_on = [module.kafka, module.druid_raw_cluster]
 }
+
+module "alert_rules" {
+  source                  = "../modules/helm/alert_rules"
+  secor_chart_depends_on  = [module.monitoring]
+}

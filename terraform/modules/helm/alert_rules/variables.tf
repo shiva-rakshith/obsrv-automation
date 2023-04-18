@@ -26,3 +26,9 @@ variable "alertrules_chart_template" {
   type = string
   default = "alert_rules.yaml.tfpl"
 }
+
+variable "alertrules_chart_depends_on" {
+  type        = any
+  description = "List of helm release names that this chart depends on."
+  default     = ""
+}
