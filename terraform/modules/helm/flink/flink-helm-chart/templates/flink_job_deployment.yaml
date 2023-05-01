@@ -124,7 +124,7 @@ spec:
           mountPath: /opt/flink/conf/flink-conf.yaml
           subPath: flink-conf.yaml
         - name: flink-config-volume
-          mountPath: /data/flink/conf/base-config.conf
+          mountPath: /data/flink/conf/baseconfig.conf
           subPath: base-config.conf
         - name: flink-config-volume
           mountPath: /data/flink/conf/{{ .Release.Name }}.conf
