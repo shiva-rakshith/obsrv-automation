@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-jobmanager
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.namespace }}
   labels:
     app: flink
     component: {{ .Release.Name }}-jobmanager
@@ -28,7 +28,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Release.Name }}-jobmanager-webui
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.namespace }}
   {{- if .Values.service.annotations }}
   {{- with .Values.service.annotations }}
 annotations:
@@ -51,11 +51,28 @@ spec:
     app: flink
     component: {{ .Release.Name }}-jobmanager
 ---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-taskmanager
+  namespace: {{ .Release.namespace }}
+  labels:
+    app: flink
+    component: {{ .Release.Name }}-taskmanager
+spec:
+  type: ClusterIP
+  ports:
+    - name: prom
+      port: {{ .Values.jobmanager.prom_port }}
+  selector:
+    app: flink
+    component: {{ .Release.Name }}-taskmanager
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
   name: {{ .Release.Name }}-jobmanager
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.namespace }}
 spec:
   template:
     metadata:
@@ -86,6 +103,11 @@ spec:
       - name: {{ .Release.Name }}-jobmanager
         image: "{{ .Values.repository }}:{{ .Values.image_tag }}"
         imagePullPolicy: Always
+        resources:
+          requests:
+            cpu: "{{ .Values.jobmanager.cpu_requests }}"
+          limits:
+            cpu: "{{ .Values.jobmanager.cpu_limits }}"
         workingDir: /opt/flink
         command: ["/opt/flink/bin/standalone-job.sh"]
         args: ["start-foreground",
@@ -138,7 +160,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}-taskmanager
-  namespace: {{ .Values.namespace }}
+  namespace: {{ .Release.namespace }}
 spec:
   replicas: {{ .Values.taskmanager.replicas }}
   selector:
@@ -169,6 +191,8 @@ spec:
         resources:
           requests:
             cpu: "{{ .Values.taskmanager.cpu_requests }}"
+          limits:
+            cpu: "{{ .Values.taskmanager.cpu_limits }}"
         workingDir: {{ .Values.taskmanager.flink_work_dir }}
         command: ["/opt/flink/bin/taskmanager.sh"]
         args: ["start-foreground",
