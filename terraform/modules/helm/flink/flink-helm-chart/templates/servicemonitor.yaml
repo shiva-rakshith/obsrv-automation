@@ -14,9 +14,6 @@ spec:
   endpoints:
   - port: prom
     interval: 30s
-  namespaceSelector:
-    matchNames:
-    - {{ .Release.namespace }}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -33,6 +30,3 @@ spec:
   endpoints:
   - port: prom
     interval: 30s
-  namespaceSelector:
-    matchNames:
-    - {{ .Release.namespace }}
