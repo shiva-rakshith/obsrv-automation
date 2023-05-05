@@ -151,6 +151,7 @@ logFlushIntervalMs: 1000
 ## @param logRetentionBytes A size-based retention policy for logs
 ##
 # logRetentionBytes: _1073741824
+logRetentionBytes: _-1
 ## @param logRetentionCheckIntervalMs The interval at which log segments are checked to see if they can be deleted
 ##
 logRetentionCheckIntervalMs: 300000
