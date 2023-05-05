@@ -10,7 +10,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      component: {{ .Release.Name }}-jobmanager
+      component: {{ .Release.Name }}-taskmanager
   endpoints:
   - port: prom
     interval: 30s
