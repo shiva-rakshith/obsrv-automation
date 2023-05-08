@@ -2,7 +2,7 @@ namespace: ""
 imagepullsecrets: ""
 registry: ""
 repository: "sanketikahub/obsrv-core"
-image_tag: "1.0.0"
+image_tag: "1.0.1"
 serviceMonitor:
   enabled: false
 replicaCount: 1
@@ -76,16 +76,9 @@ log4j_console_properties: |
 base_config: |
   job {
     env = "dev"
-    enable.distributed.checkpointing = false
+    enable.distributed.checkpointing = true
     statebackend {
-      blob {
-        storage {
-          account = "obsrvacc.blob.core.windows.net"
-          container = "obsrv-data-storage"
-          checkpointing.dir = "checkpoint"
-        }
-      }
-      base.url = ""
+      base.url = "s3://flink-checkpoints-obsrv-dev"
     }
   }
   kafka {
@@ -104,8 +97,8 @@ base_config: |
   task {
     parallelism = 1
     consumer.parallelism = 1
-    checkpointing.interval = 10000
-    checkpointing.pause.between.seconds = 10000
+    checkpointing.interval = 30000
+    checkpointing.pause.between.seconds = 5000
     restart-strategy.attempts = 3
     restart-strategy.delay = 30000 # in milli-seconds
   }
@@ -417,4 +410,4 @@ unified-pipeline:
     heartbeat.interval: 5000
     state.savepoints.dir: file:///tmp
 
-  job_classname: org.sunbird.obsrv.pipeline.task.UnifiedPipelineStreamTask
+  job_classname: in.sanketika.obsrv.pipeline.task.UnifiedPipelineStreamTask

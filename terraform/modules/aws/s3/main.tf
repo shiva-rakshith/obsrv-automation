@@ -18,6 +18,16 @@ resource "aws_s3_bucket" "storage_bucket" {
     var.additional_tags)
 }
 
+resource "aws_s3_bucket" "checkpoint_storage_bucket" {
+  bucket = "checkpoint-${local.storage_bucket}"
+  tags = merge(
+    {
+      Name = "checkpoint-${local.storage_bucket}"
+    },
+    local.common_tags,
+    var.additional_tags)
+}
+
 resource "aws_s3_bucket" "velero_storage_bucket" {
   bucket = "velero-${local.storage_bucket}"
   tags = merge(

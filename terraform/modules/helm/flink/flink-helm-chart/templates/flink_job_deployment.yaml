@@ -63,7 +63,7 @@ spec:
   type: ClusterIP
   ports:
     - name: prom
-      port: {{ .Values.jobmanager.prom_port }}
+      port: {{ .Values.taskmanager.prom_port }}
   selector:
     app: flink
     component: {{ .Release.Name }}-taskmanager
