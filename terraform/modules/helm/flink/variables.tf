@@ -89,9 +89,21 @@ variable "flink_chart_depends_on" {
   default     = ""
 }
 
-variable "postgresql_flink_user_password" {
+variable "postgresql_obsrv_username" {
   type        = string
-  description = "Postgresql flink user password."
+  description = "Postgresql obsrv username."
+  default     = "obsrv"
+}
+
+variable "postgresql_obsrv_user_password" {
+  type        = string
+  description = "Postgresql obsrv user password."
+}
+
+variable "postgresql_obsrv_database" {
+  type        = string
+  description = "Postgresql obsrv database."
+  default     = "obsrv"
 }
 
 variable "s3_access_key" {

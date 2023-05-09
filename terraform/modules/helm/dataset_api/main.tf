@@ -14,9 +14,9 @@ resource "helm_release" "dataset_api" {
         {
           env                                = var.env
           dataset_api_namespace              = var.dataset_api_namespace
-          dataset_api_postgres_database      = var.dataset_api_postgres_database
-          dataset_api_postgres_username      = var.dataset_api_postgres_username
-          dataset_api_postgres_user_password = var.dataset_api_postgres_user_password
+          postgresql_obsrv_username          = var.postgresql_obsrv_username
+          postgresql_obsrv_user_password     = var.postgresql_obsrv_user_password
+          postgresql_obsrv_database          = var.postgresql_obsrv_database
           dataset_api_container_registry     = var.dataset_api_container_registry
           dataset_api_image_name             = var.dataset_api_image_name
           dataset_api_image_tag              = var.dataset_api_image_tag
