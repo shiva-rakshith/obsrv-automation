@@ -23,6 +23,8 @@ resource "helm_release" "flink" {
           postgresql_obsrv_user_password = var.postgresql_obsrv_user_password
           postgresql_obsrv_database      = var.postgresql_obsrv_database
           checkpoint_base_url            = var.checkpoint_base_url
+          redis_namespace                = var.redis_namespace
+          redis_release_name             = var.redis_release_name
       })
     ]
 }
