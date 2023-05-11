@@ -5,6 +5,7 @@ azure_account: ${azure_account}
 azure_secret: ${azure_secret}
 repository: ${flink_container_registry}
 image_tag: ${flink_image_tag}
+
 base_config: |
   job {
     env = "dev"
@@ -50,9 +51,9 @@ base_config: |
     host = postgresql-hl.postgres.svc.cluster.local
     port = 5432
     maxConnections = 2
-    user = postgres
-    password = '${postgresql_flink_user_password}'
-    database = obsrv
+    user = '${postgresql_obsrv_username}'
+    password = '${postgresql_obsrv_user_password}'
+    database = '${postgresql_obsrv_database}'
   }
 
   lms-cassandra {

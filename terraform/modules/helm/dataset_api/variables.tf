@@ -49,21 +49,20 @@ variable "dataset_api_install_timeout" {
   default     = 1200
 }
 
-variable "dataset_api_postgres_database" {
+variable "postgresql_obsrv_database" {
   type        = string
-  description = "Dataset service postgres database"
-  default     = "dataset_api"
+  description = "obsrv postgres database"
 }
 
-variable "dataset_api_postgres_username" {
+variable "postgresql_obsrv_username" {
   type = string
-  description = "Dataset service postgres username"
-  default = "dataset_api_user"
+  description = "obsrv postgres username"
+  default = "obsrv"
 }
 
-variable "dataset_api_postgres_user_password" {
+variable "postgresql_obsrv_user_password" {
   type = string
-  description = "Dataset service postgres password"
+  description = "obsrv user postgres password"
 }
 
 variable "dataset_api_chart_depends_on" {

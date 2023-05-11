@@ -121,10 +121,11 @@ module "flink" {
   s3_access_key                  = module.iam.s3_access_key
   s3_secret_key                  = module.iam.s3_secret_key
   flink_checkpoint_store_type    = var.flink_checkpoint_store_type
-  flink_chart_depends_on         = [module.kafka]
-  postgresql_flink_user_password = module.postgresql.postgresql_flink_user_password
+  flink_chart_depends_on         = [module.kafka, module.postgresql]
+  postgresql_obsrv_username      = module.postgresql.postgresql_obsrv_username
+  postgresql_obsrv_user_password = module.postgresql.postgresql_obsrv_user_password
+  postgresql_obsrv_database      = module.postgresql.postgresql_obsrv_database
   checkpoint_base_url            = "s3://${module.s3.checkpoint_storage_bucket}"
-
 }
 
 module "druid_raw_cluster" {
@@ -174,7 +175,9 @@ module "dataset_api" {
   building_block                     = var.building_block
   dataset_api_container_registry     = var.dataset_api_container_registry
   dataset_api_image_tag              = var.dataset_api_image_tag
-  dataset_api_postgres_user_password = module.postgresql.postgresql_dataset_api_user_password
+  # dataset_api_postgres_user_password = module.postgresql.postgresql_dataset_api_user_password
+  postgresql_obsrv_username          = module.postgresql.postgresql_obsrv_username
+  postgresql_obsrv_user_password     = module.postgresql.postgresql_obsrv_user_password
   dataset_api_sa_annotations         = "eks.amazonaws.com/role-arn: ${module.eks.dataset_api_sa_annotations}"
   dataset_api_chart_depends_on       = [module.postgresql, module.kafka]
 }
