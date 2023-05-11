@@ -103,7 +103,6 @@ variable "postgresql_obsrv_user_password" {
 variable "postgresql_obsrv_database" {
   type        = string
   description = "Postgresql obsrv database."
-  default     = "obsrv"
 }
 
 variable "s3_access_key" {

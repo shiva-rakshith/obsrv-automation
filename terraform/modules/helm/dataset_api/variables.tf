@@ -52,7 +52,6 @@ variable "dataset_api_install_timeout" {
 variable "postgresql_obsrv_database" {
   type        = string
   description = "obsrv postgres database"
-  default     = "obsrv"
 }
 
 variable "postgresql_obsrv_username" {
