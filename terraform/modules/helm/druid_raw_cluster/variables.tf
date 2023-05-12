@@ -17,7 +17,6 @@ variable "druid_cluster_release_name" {
 variable "druid_cluster_namespace" {
   type        = string
   description = "Druid namespace."
-  default     = "druid-raw"
 }
 
 variable "druid_cluster_chart_path" {
@@ -123,4 +122,10 @@ variable "azure_storage_container" {
   type        = string
   description = "Azure storage account container name for druid deepstore."
   default     = ""
+}
+
+variable "druid_raw_sa_annotations" {
+  type        = string
+  description = "Service account annotations for druid raw service account."
+  default     = "serviceAccountName: default"
 }

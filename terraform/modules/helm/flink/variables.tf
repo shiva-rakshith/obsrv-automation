@@ -17,7 +17,6 @@ variable "flink_release_name" {
 variable "flink_namespace" {
   type        = string
   description = "Flink namespace."
-  default     = "flink"
 }
 
 variable "flink_chart_path" {
@@ -139,4 +138,10 @@ variable "azure_storage_account_key" {
   type        = string
   description = "Azure storage account key for flink checkpoints."
   default     = ""
+}
+
+variable "flink_sa_annotations" {
+  type        = string
+  description = "Service account annotations for flink service account."
+  default     = "serviceAccountName: default"
 }

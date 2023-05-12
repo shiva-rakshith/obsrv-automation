@@ -43,7 +43,6 @@ variable "secor_image_repository" {
 variable "secor_namespace" {
   type        = string
   description = "Secor namespace."
-  default     = "secor"
 }
 
 variable "secor_chart_path" {
@@ -165,4 +164,10 @@ variable "region" {
   type        = string
   description = "AWS region to create the resources."
   default     = "us-east-2"
+}
+
+variable "secor_sa_annotations" {
+  type        = string
+  description = "Service account annotations for secor service account."
+  default     = "serviceAccountName: default"
 }
