@@ -17,7 +17,7 @@ variable "secor_release_name" {
 variable "secor_image_tag" {
   type        = string
   description = "secor image version"
-  default     = "0.29.1"
+  default     = "0.29.11"
 }
 
 variable "jobs" {
@@ -121,7 +121,7 @@ variable "secor_backup_max_file_size" {
 variable "secor_backup_basepath" {
   type        = string
   description = "Secor backup base path"
-  default     = "/telemetry-data"
+  default     = "telemetry-data"
 }
 
 variable "secor_backup_pv_size" {

@@ -7,6 +7,7 @@ region: "${region}"
 pullPolicy: "Always"
 jvm_memory: 1024m
 image_tag: "${secor_image_tag}"
+message_timezone: "UTC"
 secor_jobs:
   ingest-backup:
     replicas: 1

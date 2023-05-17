@@ -8,6 +8,7 @@ resource "helm_release" "secor_sa" {
   force_update     = true
   cleanup_on_fail  = true
   atomic           = true
+  depends_on       = [helm_release.secor]
   values = [
     templatefile("${path.module}/${var.secor_custom_values_yaml}-sa",
       {
@@ -25,7 +26,7 @@ resource "helm_release" "secor" {
   chart            = "${path.module}/${var.secor_chart_path}"
   namespace        = var.secor_namespace
   create_namespace = var.secor_create_namespace
-  depends_on       = [var.secor_chart_depends_on, helm_release.secor_sa]
+  depends_on       = [var.secor_chart_depends_on]
   wait_for_jobs    = var.secor_wait_for_jobs
   timeout          = var.secor_chart_install_timeout
   force_update     = true
