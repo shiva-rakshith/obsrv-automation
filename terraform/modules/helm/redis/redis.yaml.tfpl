@@ -9,6 +9,9 @@ commonConfiguration: |-
   # Enable RDB persistence
   save 300 100
 
+auth:
+  enabled: false
+
 master:
   count: 1
   ## @param master.configuration Configuration for Redis&reg; master nodes
