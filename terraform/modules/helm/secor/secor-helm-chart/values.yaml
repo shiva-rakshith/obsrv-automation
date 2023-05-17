@@ -13,7 +13,7 @@ secor_jobs:
     replicas: 1
     consumer_group: "dev_ingest"
     service_name: "ingest-backup"
-    base_path: "telemetry-data/extractor-raw"
+    base_path: "telemetry-data/ingest"
     timestamp_key: "syncts"
     fallback_timestamp_key: ""
     topic: "dev.ingest"
@@ -384,7 +384,7 @@ secor_jobs:
     partition_prefix_enabled: "false"
     partition_prefix_key: ""
     partition_prefix_mapping: "{}"
-    message_channel_identifier: "dataset"
+    message_channel_identifier: "data.dataset"
     output_file_pattern: "{partition}-{currentTimestamp}.json"
     message_parser: "com.pinterest.secor.parser.ChannelDateMessageParser"
     storage:
