@@ -38,7 +38,8 @@ resource "helm_release" "secor" {
         deployment_stage           = var.env
         secor_namespace            = var.secor_namespace
         base_path                  = var.secor_backup_basepath
-        timestamp_key              = "syncts"
+        default_timestamp_key      = var.secor_default_timestamp_key
+        extractor_timestamp_key    = var.secor_extractor_timestamp_key
         fallback_timestamp_key     = ""
         env                        = var.env
         kafka_broker_host          = var.kafka_broker_ip

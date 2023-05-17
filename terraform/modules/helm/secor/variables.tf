@@ -82,6 +82,18 @@ variable "secor_threads_count" {
   default     = 2
 }
 
+variable "secor_extractor_timestamp_key" {
+  type        = string
+  description = "Secor process number of threads."
+  default     = "syncts"
+}
+
+variable "secor_default_timestamp_key" {
+  type        = string
+  description = "Secor process number of threads."
+  default     = "obsrv_meta.syncts"
+}
+
 variable "secor_cpu_request" {
   type        = string
   description = "Secor CPU Request"

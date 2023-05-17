@@ -43,7 +43,7 @@ secor_jobs:
     replicas: 1
     consumer_group: "dev_extractor_duplicate"
     service_name: "extractor_duplicate"
-    base_path: "telemetry-data/extractor-duplicate"
+    base_path: "telemetry-data/extractor-duplicates"
     timestamp_key: "syncts"
     fallback_timestamp_key: ""
     topic: "dev.extractor.duplicate"
