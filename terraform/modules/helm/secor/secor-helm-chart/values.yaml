@@ -1,7 +1,7 @@
 cloud_storage_bucket: ""
 namespace: ""
 storageClass: "default"
-secor_env: "dev"
+secor_env: ""
 image_repository: ""
 region: ""
 pullPolicy: "IfNotPresent"
