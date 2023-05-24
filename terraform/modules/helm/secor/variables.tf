@@ -178,6 +178,18 @@ variable "region" {
   default     = "us-east-2"
 }
 
+variable "storage_class" {
+  type        = string
+  description = "Storage Class"
+  default     = "default"
+}
+
+variable "fallback_timestamp_key" {
+  type        = string
+  description = "default timestamp key"
+  default     = ""
+}
+
 variable "secor_sa_annotations" {
   type        = string
   description = "Service account annotations for secor service account."

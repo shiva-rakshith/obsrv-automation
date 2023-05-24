@@ -8,7 +8,6 @@ resource "helm_release" "secor_sa" {
   force_update     = true
   cleanup_on_fail  = true
   atomic           = true
-  depends_on       = [helm_release.secor]
   values = [
     templatefile("${path.module}/${var.secor_custom_values_yaml}-sa",
       {
@@ -26,7 +25,7 @@ resource "helm_release" "secor" {
   chart            = "${path.module}/${var.secor_chart_path}"
   namespace        = var.secor_namespace
   create_namespace = var.secor_create_namespace
-  depends_on       = [var.secor_chart_depends_on]
+  depends_on       = [var.secor_chart_depends_on, helm_release.secor_sa]
   wait_for_jobs    = var.secor_wait_for_jobs
   timeout          = var.secor_chart_install_timeout
   force_update     = true
@@ -40,7 +39,8 @@ resource "helm_release" "secor" {
         base_path                  = var.secor_backup_basepath
         default_timestamp_key      = var.secor_default_timestamp_key
         extractor_timestamp_key    = var.secor_extractor_timestamp_key
-        fallback_timestamp_key     = ""
+        fallback_timestamp_key     = var.fallback_timestamp_key
+        storage_class              = var.storage_class
         env                        = var.env
         kafka_broker_host          = var.kafka_broker_ip
         zookeeper_quorum           = var.kafka_zookeeper_ip
