@@ -8,6 +8,7 @@ pullPolicy: "IfNotPresent"
 jvm_memory: 1024m
 image_tag: "0.29.11"
 message_timezone: "UTC"
+parser_timezone: "Asia/Kolkata"
 secor_jobs:
   ingest-backup:
     replicas: 1

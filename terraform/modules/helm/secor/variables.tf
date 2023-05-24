@@ -194,9 +194,17 @@ variable "storage_class" {
 
 variable "message_timezone" {
   type        = string
-  description = "message time zone"
+  description = "message timezone"
   default     = "UTC"
 }
+
+variable "parser_timezone" {
+  type        = string
+  description = "parser timezone"
+  default     = "Asia/Kolkata"
+}
+
+
 
 variable "image_pull_policy" {
   type        = string
