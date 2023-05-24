@@ -40,6 +40,8 @@ resource "helm_release" "secor" {
         default_timestamp_key      = var.secor_default_timestamp_key
         extractor_timestamp_key    = var.secor_extractor_timestamp_key
         fallback_timestamp_key     = var.fallback_timestamp_key
+        message_timezone           = var.message_timezone
+        image_pull_policy          = var.image_pull_policy
         storage_class              = var.storage_class
         env                        = var.env
         kafka_broker_host          = var.kafka_broker_ip
@@ -50,6 +52,7 @@ resource "helm_release" "secor" {
         secor_cpu_limit            = var.secor_cpu_limit
         secor_memory_limit         = var.secor_memory_limit
         secor_image_tag            = var.secor_image_tag
+        jvm_memory                 = var.jvm_memory
         image_repository           = var.secor_image_repository
         cloud_storage_bucket       = var.cloud_storage_bucket
         region                     = var.region,

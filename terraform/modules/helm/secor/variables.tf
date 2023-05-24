@@ -142,6 +142,14 @@ variable "secor_backup_pv_size" {
   default     = "1Gi"
 }
 
+variable "jvm_memory" {
+  type        = string
+  description = "secor process JVM memory"
+  default     = "1024m"
+}
+
+
+
 variable "kafka_broker_ip" {
   type        = string
   description = "Kafka broker address"
@@ -182,6 +190,18 @@ variable "storage_class" {
   type        = string
   description = "Storage Class"
   default     = "default"
+}
+
+variable "message_timezone" {
+  type        = string
+  description = "message time zone"
+  default     = "UTC"
+}
+
+variable "image_pull_policy" {
+  type        = string
+  description = "Docker image pull policy"
+  default     = "IfNotPresent"
 }
 
 variable "fallback_timestamp_key" {
