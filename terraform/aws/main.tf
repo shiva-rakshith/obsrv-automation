@@ -208,6 +208,7 @@ module "secor" {
   secor_sa_annotations    = "eks.amazonaws.com/role-arn: ${module.eks.secor_sa_iam_role}"
   secor_chart_depends_on  = [module.kafka]
   secor_namespace         = module.eks.secor_namespace
+  cloud_storage_bucket    = module.s3.s3_bucket
 }
 
 module "submit_ingestion" {

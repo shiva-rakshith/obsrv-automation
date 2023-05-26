@@ -189,7 +189,7 @@ variable "region" {
 variable "storage_class" {
   type        = string
   description = "Storage Class"
-  default     = "default"
+  default     = "gp2"
 }
 
 variable "message_timezone" {

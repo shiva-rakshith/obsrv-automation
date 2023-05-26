@@ -11,7 +11,7 @@ variable "building_block" {
 variable "flink_release_name" {
   type        = string
   description = "Flink helm release name."
-  default     = "merged-pipeline"
+  default     = "flink"
 }
 
 variable "flink_namespace" {
@@ -19,10 +19,22 @@ variable "flink_namespace" {
   description = "Flink namespace."
 }
 
+variable "flink_chart_path_sa" {
+  type        = string
+  description = "Flink chart path."
+  default     = "flink-helm-chart-sa"
+}
+
 variable "flink_chart_path" {
   type        = string
   description = "Flink chart path."
   default     = "flink-helm-chart"
+}
+
+variable "jobs" {
+  description = "Create release names"
+  type        = list(string)
+  default     = [ "merged-pipeline"]
 }
 
 variable "flink_chart_install_timeout" {
@@ -49,21 +61,21 @@ variable "flink_custom_values_yaml" {
   default     = "flink.yaml.tfpl"
 }
 
+variable "flink_custom_values_yaml_sa" {
+  type        = string
+  description = "Flink chart values.yaml path."
+  default     = "flink.yaml.tfpl-sa"
+}
+
 variable "flink_kubernetes_service_name" {
   type        = string
   description = "Flink kubernetes service name."
-  default     = "merged-pipeline"
+  default     = ""
 }
 
 variable "flink_container_registry" {
   type        = string
   description = "Container registry. For example docker.io/obsrv"
-}
-
-variable "flink_image_name" {
-  type        = string
-  description = "Flink image name."
-  default     = "obsrv-core-pipeline"
 }
 
 variable "flink_image_tag" {

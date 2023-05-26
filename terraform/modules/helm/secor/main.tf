@@ -41,6 +41,7 @@ resource "helm_release" "secor" {
         extractor_timestamp_key    = var.secor_extractor_timestamp_key
         fallback_timestamp_key     = var.fallback_timestamp_key
         message_timezone           = var.message_timezone
+        parser_timezone            = var.parser_timezone
         image_pull_policy          = var.image_pull_policy
         storage_class              = var.storage_class
         env                        = var.env
