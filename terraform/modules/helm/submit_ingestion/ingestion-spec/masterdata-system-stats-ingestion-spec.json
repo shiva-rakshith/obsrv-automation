@@ -4,7 +4,8 @@
 		"dataSchema": {
 			"dataSource": "masterdata-system-stats",
 			"dimensionsSpec": {
-				"dimensions": [{
+				"dimensions": [
+					{
 						"type": "string",
 						"name": "dataset"
 					},
@@ -30,7 +31,8 @@
 				"column": "sync_ts",
 				"format": "auto"
 			},
-			"metricsSpec": [{
+			"metricsSpec": [
+				{
 					"type": "count",
 					"name": "count"
 				},
@@ -81,7 +83,8 @@
 				"type": "json",
 				"flattenSpec": {
 					"useFieldDiscovery": false,
-					"fields": [{
+					"fields": [
+						{
 							"type": "path",
 							"name": "sync_ts",
 							"expr": "$.obsrv_meta.syncts"
