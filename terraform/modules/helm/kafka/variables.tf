@@ -86,6 +86,13 @@ variable "kafka_output_duplicate_topic" {
   default     = "telemetry.duplicate"
 }
 
+variable "kafka_input_masterdata_topic" {
+  type        = string
+  description = "Kafka masterdata output topic"
+  default     = "masterdata.ingest"
+}
+
+
 variable "kafka_install_timeout" {
   type        = number
   description = "Kafka chart install timeout."

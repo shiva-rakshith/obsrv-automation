@@ -17,6 +17,7 @@ resource "helm_release" "kafka" {
           output_summary_route_topic   = "${var.env}.${var.kafka_output_summary_route_topic}"
           output_failed_topic          = "${var.env}.${var.kafka_output_failed_topic}"
           output_duplicate_topic       = "${var.env}.${var.kafka_output_duplicate_topic}"
+          input_masterdata_topic       = "${var.env}.${var.kafka_input_masterdata_topic}"
         }
       )
     ]
