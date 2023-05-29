@@ -1,5 +1,5 @@
 resource "helm_release" "flink_sa" {
-  name             = "${var.flink_release_name}-sa"
+  name             = "${var.flink_sa_release_name}-sa"
   chart            = "${path.module}/${var.flink_chart_path_sa}"
   namespace        = var.flink_namespace
   create_namespace = var.flink_create_namespace
@@ -19,8 +19,8 @@ resource "helm_release" "flink_sa" {
   ]
 }
 resource "helm_release" "flink" {
-    count            = length(var.jobs)
-    name             = var.jobs[count.index]
+    count            = length(var.flink_release_name)
+    name             = var.flink_release_name[count.index]
     chart            = "${path.module}/${var.flink_chart_path}"
     namespace        = var.flink_namespace
     create_namespace = var.flink_create_namespace

@@ -8,7 +8,7 @@ variable "building_block" {
   description = "Building block name. All resources will be prefixed with this value."
 }
 
-variable "flink_release_name" {
+variable "flink_sa_release_name" {
   type        = string
   description = "Flink helm release name."
   default     = "flink"
@@ -31,10 +31,10 @@ variable "flink_chart_path" {
   default     = "flink-helm-chart"
 }
 
-variable "jobs" {
+variable "flink_release_name" {
   description = "Create release names"
   type        = list(string)
-  default     = [ "merged-pipeline"]
+  default     = [ "merged-pipeline","master-data-processor"]
 }
 
 variable "flink_chart_install_timeout" {

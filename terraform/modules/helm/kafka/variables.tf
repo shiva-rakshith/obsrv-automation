@@ -50,7 +50,7 @@ variable "kafka_chart_custom_values_yaml" {
   default     = "kafka.yaml.tfpl"
 }
 
-variable "kafka_chart_dependecy_update" {
+variable "kafka_chart_dependency_update" {
   type        = bool
   description = "Kafka helm chart dependency update."
   default     = true
@@ -59,31 +59,7 @@ variable "kafka_chart_dependecy_update" {
 variable "kafka_input_topic" {
   type        = string
   description = "Kafka input topic."
-  default     = "telemetry.denorm"
-}
-
-variable "kafka_output_telemetry_route_topic" {
-  type        = string
-  description = "Kafka output telemetry route topic"
-  default     = "druid.events.telemetry"
-}
-
-variable "kafka_output_summary_route_topic" {
-  type        = string
-  description = "Kafka output summary route topic"
-  default     = "druid.events.summary"
-}
-
-variable "kafka_output_failed_topic" {
-  type        = string
-  description = "Kafka output failed topic"
-  default     = "telemetry.failed"
-}
-
-variable "kafka_output_duplicate_topic" {
-  type        = string
-  description = "Kafka output duplicate topic"
-  default     = "telemetry.duplicate"
+  default     = "ingest"
 }
 
 variable "kafka_input_masterdata_topic" {

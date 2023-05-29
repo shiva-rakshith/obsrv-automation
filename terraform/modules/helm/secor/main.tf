@@ -56,7 +56,7 @@ resource "helm_release" "secor" {
         jvm_memory                 = var.jvm_memory
         image_repository           = var.secor_image_repository
         cloud_storage_bucket       = var.cloud_storage_bucket
-        region                     = var.region,
+        region                     = var.region
         file_size                  = var.secor_backup_max_file_size
         file_age                   = var.secor_backup_interval
         threads                    = var.secor_threads_count

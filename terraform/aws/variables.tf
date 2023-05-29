@@ -57,3 +57,9 @@ variable "flink_image_tag" {
    description = "Flink kubernetes service name."
    default     = "release-0.5.0_RC10"
 }
+
+variable "storage_class" {
+  type        = string
+  description = "Storage Class"
+  default     = "default"
+}
