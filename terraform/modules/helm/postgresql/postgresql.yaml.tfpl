@@ -51,6 +51,7 @@ primary:
             router_config JSON,
             dataset_config JSON,
             status TEXT,
+            tags TEXT[],
             created_by TEXT,
             updated_by TEXT,
             created_date TIMESTAMP NOT NULL DEFAULT now(),
