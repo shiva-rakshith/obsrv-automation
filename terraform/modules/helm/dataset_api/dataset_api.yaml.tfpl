@@ -1,4 +1,5 @@
 namespace: ${dataset_api_namespace}
+SYSTEM_ENV: "${env}"
 druid_service:
   DRUID_HOST: http://druid-raw-routers.druid-raw.svc
   DRUID_PORT: 8888
