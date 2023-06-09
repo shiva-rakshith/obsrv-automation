@@ -156,7 +156,7 @@ To view cluster metrics and access the Obsrv web console, you can either use por
             
         ```json
         {"data":{"event":{"subject":["Mathematics"],"channel":"Future Assurance Consultant","language":["English"],"id":"user-00","firstName":"Karan","lastName":"Panicker","mobile":"+91-602-8988588","email":"Karan_Panicker@obsrv.ai","state":"Gujarat","district":"Bedfordshire"}}}
-            ```
+        ```
         
     - Push events for the normal dataset: Pushing events involves loading data into the normal dataset.
         
