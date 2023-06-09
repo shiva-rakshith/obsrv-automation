@@ -55,7 +55,7 @@ The Obsrv Automation repository provides a set of tools and scripts for setting 
     `export AWS_TERRAFORM_BACKEND_BUCKET_REGION=myregion` 
     
 
-### Steps:
+#### Steps:
 
 * In order to complete the installation, please run the below steps in the same terminal.
 
@@ -79,11 +79,13 @@ The Obsrv Automation repository provides a set of tools and scripts for setting 
 
 ---TODO---
 
+To view cluster metrics and access the Obsrv web console, you can either use port forwarding or the Load Balancer IP. To port forward Obsrv web console service, type command `kubectl port-forward <obsrv-web-console-service> -n <web console namespace> <local-port>:<remote-port>`
+
 **Note:** During `terragrunt apply`, a kubeconfig file is automatically generated in the current directory for kubectl interaction. Verify the installation with `kubectl get ns`. If it fails, `export KUBECONFIG=<path_to_kubeconfig.yaml>` and `export KUBE_CONFIG_PATH=<path_to_kubeconfig.yaml>`. Retry `terragrunt apply`. Please refer to the repository's README file for specific instructions on configuring Obsrv on AWS and on other cloud providers.
 
 ## How to create a dataset?
 
-- To access the Obsrv API service on your local machine, perform port forwarding using `kubectl port-forward <api-service-name> 3000:3000`. Then access the service at localhost:3000.
+- To access the Obsrv API service on your local machine, perform port forwarding using `kubectl port-forward <api-service-name> -n <obsrv-api-namespace> 3000:3000`. Then access the service at localhost:3000.
 
 - **Dataset Configurations**
     - **`extraction_config`**: defines how the data is extracted from the source. `is_batch_event`  determines whether the extraction is done in batches or not. The `extraction_key` specifies the key used for extraction.
@@ -119,7 +121,7 @@ The Obsrv Automation repository provides a set of tools and scripts for setting 
 
 ## How to ingest data?
 
-- First port forward Druid service within the cluster, use the command: **`kubectl port-forward <your-druid-service> 8888:8888`**. Access the service on your local machine at localhost:8888.
+- First port forward Druid service within the cluster, use the command: **`kubectl port-forward <your-druid-service> -n <druid-namespace> 8888:8888`**. Access the service on your local machine at localhost:8888.
 
 - Create ingestion spec, you can refer to the [**official documentation**](https://druid.apache.org/docs/latest/development/extensions-core/kafka-ingestion.html) which provides detailed instructions and examples.
 
