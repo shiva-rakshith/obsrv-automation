@@ -196,7 +196,9 @@ To view cluster metrics and access the Obsrv web console, you can either use por
     **Request Body**:
     
     ```json
+    
     {"context":{"dataSource":"sb-telemetry"},"query":{"queryType":"scan","dataSource":"sb-telemetry","intervals":"2023-03-31/2023-04-01","granularity":"DAY"}}
+
     ```
     
     **For SQL query:**
