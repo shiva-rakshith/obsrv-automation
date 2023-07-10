@@ -77,8 +77,8 @@ spec:
   template:
     metadata:
       labels:
-        app: flink
-        component: {{ .Release.Name }}-jobmanager
+        app: {{ .Release.Name }}-jobmanager
+        # component: {{ .Release.Name }}-jobmanager
       annotations:
         prometheus.io/scrape: 'true'
         prometheus.io/port: "{{ .Values.jobmanager.prom_port }}"
