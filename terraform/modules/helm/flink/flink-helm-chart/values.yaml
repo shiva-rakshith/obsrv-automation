@@ -374,13 +374,13 @@ druid-router:
 
   job_classname: org.sunbird.obsrv.router.task.DruidRouterStreamTask
       
-# output and input topics will be fetched from postgres records
+
 kafka-connector:
   kafka-connector: |+
     include file("/data/flink/conf/baseconfig.conf")
     kafka {
       input.topic = ${job.env}".test"
-      output.topic = ${job.env}".ingest" 
+      output.topic = ${job.env}".ingest"  # output and input topics will be fetched from postgres records
       output.failed.topic = ${job.env}".failed"
       event.max.size = "1048576" # Max is only 1MB
       groupId = ${job.env}"-kafkaconnector-group"
