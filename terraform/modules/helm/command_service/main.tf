@@ -19,8 +19,6 @@ resource "helm_release" "command-service" {
           postgresql_obsrv_user_password              = var.postgresql_obsrv_user_password
           postgresql_obsrv_database                   = var.postgresql_obsrv_database
           flink_namespace                             = var.flink_namespace
-          druid_cluster_release_name                  = var.druid_cluster_release_name
-          druid_cluster_namespace                     = var.druid_cluster_namespace
           docker_registry_secret_name                 = var.docker_registry_secret_name
       })
     ]

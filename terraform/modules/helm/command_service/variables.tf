@@ -86,18 +86,6 @@ variable "flink_namespace" {
   default     = "flink"
 }
 
-variable "druid_cluster_release_name" {
-  type        = string
-  description = "Druid installation release name"
-  default     = "druid-raw"
-}
-
-variable "druid_cluster_namespace" {
-  type        = string
-  description = "Druid installation namespace"
-  default     = "druid-raw"
-}
-
 variable "docker_registry_secret_name" {
   type        = string
   description = "Kubernetes secret name to pull images from private docker registry."

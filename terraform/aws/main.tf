@@ -262,8 +262,6 @@ module "command_service" {
   postgresql_obsrv_username        = module.postgresql.postgresql_obsrv_username
   postgresql_obsrv_user_password   = module.postgresql.postgresql_obsrv_user_password
   postgresql_obsrv_database        = module.postgresql.postgresql_obsrv_database
-  druid_cluster_release_name       = module.druid_raw_cluster.druid_cluster_release_name
-  druid_cluster_namespace          = module.druid_raw_cluster.druid_cluster_namespace
   flink_namespace                  = module.flink.flink_namespace
   docker_registry_secret_name      = module.kubernetes_reflector.docker_registry_secret_name
 }

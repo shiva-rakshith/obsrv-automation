@@ -184,13 +184,11 @@ module "alert_rules" {
 module "command_service" {
   source                           = "../modules/helm/command_service"
   env                              = var.env
-  command_service_chart_depends_on = [module.flink, module.postgresql, module.druid_raw_cluster]
+  command_service_chart_depends_on = [module.flink, module.postgresql]
   command_service_image_tag        = var.command_service_image_tag
   postgresql_obsrv_username        = module.postgresql.postgresql_obsrv_username
   postgresql_obsrv_user_password   = module.postgresql.postgresql_obsrv_user_password
   postgresql_obsrv_database        = module.postgresql.postgresql_obsrv_database
-  druid_cluster_release_name       = module.druid_raw_cluster.druid_cluster_release_name
-  druid_cluster_namespace          = module.druid_raw_cluster.druid_cluster_namespace
   flink_namespace                  = module.flink.flink_namespace
   docker_registry_secret_name      = module.kubernetes_reflector.docker_registry_secret_name
 }
