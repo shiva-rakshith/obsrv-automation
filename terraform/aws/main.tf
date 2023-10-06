@@ -257,7 +257,7 @@ module "get_kubeconfig" {
 module "command_service" {
   source                           = "../modules/helm/command_service"
   env                              = var.env
-  command_service_chart_depends_on = [module.flink, module.postgresql, module.druid_raw_cluster]
+  command_service_chart_depends_on = [module.flink, module.postgresql]
   command_service_image_tag        = var.command_service_image_tag
   postgresql_obsrv_username        = module.postgresql.postgresql_obsrv_username
   postgresql_obsrv_user_password   = module.postgresql.postgresql_obsrv_user_password
