@@ -32,9 +32,5 @@ service_config: |
     db_password: ${postgresql_obsrv_user_password}
     database: ${postgresql_obsrv_database}
 
-  druid:
-    router_host: "${druid_cluster_release_name}-routers.${druid_cluster_namespace}.svc.cluster.local"
-    router_port: 8888
-    supervisor_endpoint: indexer/v1/supervisor
 
   helm_charts_base_dir: /app/helm-charts
