@@ -104,7 +104,6 @@ variable "flink_merged_pipeline_release_names" {
   default = {
     merged-pipeline = "merged-pipeline"
     master-data-processor = "master-data-processor"
-    kafka-connector = "kafka-connector"
   }
 }
 
