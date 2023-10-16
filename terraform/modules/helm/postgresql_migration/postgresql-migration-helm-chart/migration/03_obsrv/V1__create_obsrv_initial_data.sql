@@ -98,7 +98,6 @@ CREATE TABLE IF NOT EXISTS dataset_source_config (
   created_date TIMESTAMP NOT NULL DEFAULT now(),
   updated_date TIMESTAMP NOT NULL,
   published_date TIMESTAMP NOT NULL,
-  UNIQUE (dataset_id)
 );
 
 CREATE INDEX IF NOT EXISTS  dataset_source_config_dataset ON dataset_source_config(dataset_id);
