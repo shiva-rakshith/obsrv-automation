@@ -42,9 +42,9 @@ spec:
           env:
           - name: grafana_token 
             valueFrom: 
-            secretKeyRef:
-              name: grafana-secret 
-              key: bearer_token    
+              secretKeyRef:
+                name: grafana-secret 
+                key: bearer_token    
           {{- end }}
 
 
