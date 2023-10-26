@@ -244,7 +244,7 @@ variable "merged_pipeline_enabled" {
 variable "flink_image_tag" {
   type        = string
   description = "Flink kubernetes service name."
-  default     = "build_deploy_v2"
+  default     = "1.1.0"
 }
 
 
