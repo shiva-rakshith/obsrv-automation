@@ -9,3 +9,9 @@ ingestion_spec:
   masterdata_system_stats:
     topic: "sb-dev.masterdata.stats"
     name: "masterdata-system-stats"
+  failed_events:
+    topic: "sb-dev.failed"
+    name:  "failed-events"
+  masterdata_failed_events:
+    topic: "sb-dev.masterdata.failed"
+    name:  "masterdata-failed-events"  

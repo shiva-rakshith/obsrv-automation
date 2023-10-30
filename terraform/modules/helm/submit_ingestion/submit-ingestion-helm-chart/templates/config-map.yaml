@@ -341,3 +341,567 @@ data:
         }
       }
     }
+  failed-events-ingestion-spec.json: |-
+    {
+      "type": "kafka",
+      "spec": {
+        "dataSchema": {
+          "dataSource": "failed-events",
+          "dimensionsSpec": {
+            "dimensions": [
+              {
+                "type": "string",
+                "name": "dataset"
+              },
+              {
+                "type": "long",
+                "name": "data_version"
+              },
+              {
+                "type": "string",
+                "name": "extractor_job_status"
+              },
+              {
+                "type": "string",
+                "name": "event_validator_job_status"
+              },
+              {
+                "type": "string",
+                "name": "deduplication_job_status"
+              },
+              {
+                "type": "string",
+                "name": "transformer_job_status"
+              },
+              {
+                "type": "string",
+                "name": "denorm_job_status"
+              },
+              {
+                "type": "string",
+                "name": "error_source"
+              },
+              {
+                "type": "string",
+                "name": "error_code"
+              },
+              {
+                "type": "string",
+                "name": "error_message"
+              },
+              {
+                "type": "string",
+                "name": "env"
+              },
+              {
+                "type": "string",
+                "name": "source_meta_id"
+              },
+              {
+                "type": "string",
+                "name": "source_meta_connector_type"
+              },
+              {
+                "type": "string",
+                "name": "source_meta_version"
+              },
+              {
+                "type": "string",
+                "name": "producer_id"
+              },
+              {
+                "type": "string",
+                "name": "source_meta_entry_source"
+              },
+              {
+                "type": "string",
+                "name": "source_trace_id"
+              }
+            ]
+          },
+          "timestampSpec": {
+            "column": "sync_ts",
+            "format": "auto"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "count"
+            },
+            {
+              "type": "doubleSum",
+              "name": "total_processing_time",
+              "fieldName": "total_processing_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "processing_time",
+              "fieldName": "processing_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "latency_time",
+              "fieldName": "latency_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "extractor_job_processing_time",
+              "fieldName": "extractor_job_processing_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "event_validator_job_processing_time",
+              "fieldName": "event_validator_processing_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "transformer_job_processing_time",
+              "fieldName": "transformer_processing_time"
+            }
+          ],
+          "granularitySpec": {
+            "type": "uniform",
+            "segmentGranularity": "hour",
+            "rollup": true
+          }
+        },
+        "tuningConfig": {
+          "type": "kafka",
+          "maxRowsPerSegment": 5000000,
+          "logParseExceptions": true
+        },
+        "ioConfig": {
+          "type": "kafka",
+          "topic": "{{ .Values.ingestion_spec.failed_events.topic }}",
+          "consumerProperties": {
+            "bootstrap.servers": "{{ .Values.bootstrap_servers }}""
+          },
+          "taskCount": "1",
+          "replicas": 1,
+          "taskDuration": "PT1H",
+          "useEarliestOffset": true,
+          "completionTimeout": "PT1H",
+          "inputFormat": {
+            "type": "json",
+            "flattenSpec": {
+              "useFieldDiscovery": false,
+              "fields": [
+                {
+                  "type": "path",
+                  "name": "sync_ts",
+                  "expr": "$.obsrv_meta.syncts"
+                },
+                {
+                  "type": "path",
+                  "name": "dataset",
+                  "expr": "$.dataset"
+                },
+                {
+                  "type": "path",
+                  "name": "data_version",
+                  "expr": "$.data_version"
+                },
+                {
+                  "type": "path",
+                  "name": "prev_processing_time",
+                  "expr": "$.obsrv_meta.prevProcessingTime"
+                },
+                {
+                  "type": "path",
+                  "name": "processing_start_time",
+                  "expr": "$.obsrv_meta.processingStartTime"
+                },
+                {
+                  "type": "path",
+                  "name": "deduplication_job_processing_time",
+                  "expr": "$.obsrv_meta.timespans.Deduplication"
+                },
+                {
+                  "type": "path",
+                  "name": "denorm_job_processing_time",
+                  "expr": "$.obsrv_meta.timespans.DenormalizerJob"
+                },
+                {
+                  "type": "path",
+                  "name": "extractor_job_processing_time",
+                  "expr": "$.obsrv_meta.timespans.ExtractorJob"
+                },
+                {
+                  "type": "path",
+                  "name": "total_processing_time",
+                  "expr": "$.obsrv_meta.total_processing_time"
+                },
+                {
+                  "type": "path",
+                  "name": "processing_time",
+                  "expr": "$.obsrv_meta.processing_time"
+                },
+                {
+                  "type": "path",
+                  "name": "latency_time",
+                  "expr": "$.obsrv_meta.latency_time"
+                },
+                {
+                  "type": "path",
+                  "name": "transformer_processing_time",
+                  "expr": "$.obsrv_meta.timespans.TransformerJob"
+                },
+                {
+                  "type": "path",
+                  "name": "event_validator_processing_time",
+                  "expr": "$.obsrv_meta.timespans.EventValidation"
+                },
+                {
+                  "type": "path",
+                  "name": "deduplication_job_status",
+                  "expr": "$.obsrv_meta.flags.Deduplication"
+                },
+                {
+                  "type": "path",
+                  "name": "extractor_job_status",
+                  "expr": "$.obsrv_meta.flags.ExtractorJob"
+                },
+                {
+                  "type": "path",
+                  "name": "transformer_job_status",
+                  "expr": "$.obsrv_meta.flags.TransformerJob"
+                },
+                {
+                  "type": "path",
+                  "name": "event_validator_job_status",
+                  "expr": "$.obsrv_meta.flags.EventValidation"
+                },
+                {
+                  "type": "path",
+                  "name": "denorm_job_status",
+                  "expr": "$.obsrv_meta.flags.DenormalizerJob"
+                },
+                {
+                  "type": "path",
+                  "name": "error_source",
+                  "expr": "$.obsrv_meta.error.src"
+                },
+                {
+                  "type": "path",
+                  "name": "error_code",
+                  "expr": "$.obsrv_meta.error.error_code"
+                },
+                {
+                  "type": "path",
+                  "name": "error_message",
+                  "expr": "$.obsrv_meta.error.error_msg"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_id",
+                  "expr": "$.obsrv_meta.source.meta.id"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_connector_type",
+                  "expr": "$.obsrv_meta.source.meta.connector_type"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_version",
+                  "expr": "$.obsrv_meta.source.meta.version"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_entry_source",
+                  "expr": "$.obsrv_meta.source.meta.entry_source"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_trace_id",
+                  "expr": "$.obsrv_meta.source.meta.trace_id" 
+                }
+              ]
+            }
+          },
+          "appendToExisting": false
+        }
+      }
+    }
+  masterdata-failed-events-ingestion-spec.json: |-
+    {
+      "type": "kafka",
+      "spec": {
+        "dataSchema": {
+          "dataSource": "masterdata-failed-events",
+          "dimensionsSpec": {
+            "dimensions": [
+              {
+                "type": "string",
+                "name": "dataset"
+              },
+              {
+                "type": "long",
+                "name": "data_version"
+              },
+              {
+                "type": "string",
+                "name": "extractor_job_status"
+              },
+              {
+                "type": "string",
+                "name": "event_validator_job_status"
+              },
+              {
+                "type": "string",
+                "name": "deduplication_job_status"
+              },
+              {
+                "type": "string",
+                "name": "transformer_job_status"
+              },
+              {
+                "type": "string",
+                "name": "denorm_job_status"
+              },
+              {
+                "type": "string",
+                "name": "error_source"
+              },
+              {
+                "type": "string",
+                "name": "error_code"
+              },
+              {
+                "type": "string",
+                "name": "error_message"
+              },
+              {
+                "type": "string",
+                "name": "env"
+              },
+              {
+                "type": "string",
+                "name": "source_meta_id"
+              },
+              {
+                "type": "string",
+                "name": "source_meta_connector_type"
+              },
+              {
+                "type": "string",
+                "name": "source_meta_version"
+              },
+              {
+                "type": "string",
+                "name": "producer_id"
+              },
+              {
+                "type": "string",
+                "name": "source_meta_entry_source"
+              },
+              {
+                "type": "string",
+                "name": "source_trace_id"
+              }
+            ]
+          },
+          "timestampSpec": {
+            "column": "sync_ts",
+            "format": "auto"
+          },
+          "metricsSpec": [
+            {
+              "type": "count",
+              "name": "count"
+            },
+            {
+              "type": "doubleSum",
+              "name": "total_processing_time",
+              "fieldName": "total_processing_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "processing_time",
+              "fieldName": "processing_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "latency_time",
+              "fieldName": "latency_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "extractor_job_processing_time",
+              "fieldName": "extractor_job_processing_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "event_validator_job_processing_time",
+              "fieldName": "event_validator_processing_time"
+            },
+            {
+              "type": "doubleSum",
+              "name": "transformer_job_processing_time",
+              "fieldName": "transformer_processing_time"
+            }
+          ],
+          "granularitySpec": {
+            "type": "uniform",
+            "segmentGranularity": "hour",
+            "rollup": true
+          }
+        },
+        "tuningConfig": {
+          "type": "kafka",
+          "maxRowsPerSegment": 5000000,
+          "logParseExceptions": true
+        },
+        "ioConfig": {
+          "type": "kafka",
+          "topic": "{{ .Values.ingestion_spec.masterdata_failed_events.topic }}",
+          "consumerProperties": {
+            "bootstrap.servers": "{{ .Values.bootstrap_servers }}""
+          },
+          "taskCount": "1",
+          "replicas": 1,
+          "taskDuration": "PT1H",
+          "useEarliestOffset": true,
+          "completionTimeout": "PT1H",
+          "inputFormat": {
+            "type": "json",
+            "flattenSpec": {
+              "useFieldDiscovery": false,
+              "fields": [
+                {
+                  "type": "path",
+                  "name": "sync_ts",
+                  "expr": "$.obsrv_meta.syncts"
+                },
+                {
+                  "type": "path",
+                  "name": "dataset",
+                  "expr": "$.dataset"
+                },
+                {
+                  "type": "path",
+                  "name": "data_version",
+                  "expr": "$.data_version"
+                },
+                {
+                  "type": "path",
+                  "name": "prev_processing_time",
+                  "expr": "$.obsrv_meta.prevProcessingTime"
+                },
+                {
+                  "type": "path",
+                  "name": "processing_start_time",
+                  "expr": "$.obsrv_meta.processingStartTime"
+                },
+                {
+                  "type": "path",
+                  "name": "deduplication_job_processing_time",
+                  "expr": "$.obsrv_meta.timespans.Deduplication"
+                },
+                {
+                  "type": "path",
+                  "name": "denorm_job_processing_time",
+                  "expr": "$.obsrv_meta.timespans.DenormalizerJob"
+                },
+                {
+                  "type": "path",
+                  "name": "extractor_job_processing_time",
+                  "expr": "$.obsrv_meta.timespans.ExtractorJob"
+                },
+                {
+                  "type": "path",
+                  "name": "total_processing_time",
+                  "expr": "$.obsrv_meta.total_processing_time"
+                },
+                {
+                  "type": "path",
+                  "name": "processing_time",
+                  "expr": "$.obsrv_meta.processing_time"
+                },
+                {
+                  "type": "path",
+                  "name": "latency_time",
+                  "expr": "$.obsrv_meta.latency_time"
+                },
+                {
+                  "type": "path",
+                  "name": "transformer_processing_time",
+                  "expr": "$.obsrv_meta.timespans.TransformerJob"
+                },
+                {
+                  "type": "path",
+                  "name": "event_validator_processing_time",
+                  "expr": "$.obsrv_meta.timespans.EventValidation"
+                },
+                {
+                  "type": "path",
+                  "name": "deduplication_job_status",
+                  "expr": "$.obsrv_meta.flags.Deduplication"
+                },
+                {
+                  "type": "path",
+                  "name": "extractor_job_status",
+                  "expr": "$.obsrv_meta.flags.ExtractorJob"
+                },
+                {
+                  "type": "path",
+                  "name": "transformer_job_status",
+                  "expr": "$.obsrv_meta.flags.TransformerJob"
+                },
+                {
+                  "type": "path",
+                  "name": "event_validator_job_status",
+                  "expr": "$.obsrv_meta.flags.EventValidation"
+                },
+                {
+                  "type": "path",
+                  "name": "denorm_job_status",
+                  "expr": "$.obsrv_meta.flags.DenormalizerJob"
+                },
+                {
+                  "type": "path",
+                  "name": "error_source",
+                  "expr": "$.obsrv_meta.error.src"
+                },
+                {
+                  "type": "path",
+                  "name": "error_code",
+                  "expr": "$.obsrv_meta.error.error_code"
+                },
+                {
+                  "type": "path",
+                  "name": "error_message",
+                  "expr": "$.obsrv_meta.error.error_msg"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_id",
+                  "expr": "$.obsrv_meta.source.meta.id"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_connector_type",
+                  "expr": "$.obsrv_meta.source.meta.connector_type"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_version",
+                  "expr": "$.obsrv_meta.source.meta.version"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_entry_source",
+                  "expr": "$.obsrv_meta.source.meta.entry_source"
+                },
+                {
+                  "type": "path",
+                  "name": "source_meta_trace_id",
+                  "expr": "$.obsrv_meta.source.meta.trace_id" 
+                }
+              ]
+            }
+          },
+          "appendToExisting": false
+        }
+      }
+    }
