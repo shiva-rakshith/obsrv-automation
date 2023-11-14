@@ -42,66 +42,6 @@ secor_jobs:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-  extractor-duplicate-backup:
-    replicas: 1
-    consumer_group: "${deployment_stage}_extractor_duplicate"
-    service_name: "extractor_duplicate"
-    base_path: "${base_path}/extractor-duplicates"
-    timestamp_key: "${extractor_timestamp_key}"
-    fallback_timestamp_key: "${fallback_timestamp_key}"
-    topic: "${deployment_stage}.extractor.duplicate"
-    kafka_broker_host: "${kafka_broker_host}"
-    zookeeper_quorum: "${zookeeper_quorum}"
-    max_file_size: "${file_size}"
-    max_file_age: "${file_age}"
-    partition_prefix_enabled: "false"
-    partition_prefix_key: ""
-    partition_prefix_mapping: "{}"
-    message_channel_identifier: "dataset"
-    output_file_pattern: "{partition}-{currentTimestamp}.json"
-    message_parser: "com.pinterest.secor.parser.ChannelDateMessageParser"
-    storage:
-      size: "${backup_pv_size}"
-    requests:
-      cpu: "${request_cpu}"
-      memory: "${request_memory}"
-    limits:
-      cpu: "${secor_cpu_limit}"
-      memory: "${secor_memory_limit}"
-    lag_threshold_warning: 100000
-    threads: "${threads}"
-    lag_threshold_critical: 200000
-
-  extractor-failed-backup:
-    replicas: 1
-    consumer_group: "${deployment_stage}_extractor_failed"
-    service_name: "extractor_failed"
-    base_path: "${base_path}/extractor-failed"
-    timestamp_key: "${extractor_timestamp_key}"
-    fallback_timestamp_key: "${fallback_timestamp_key}"
-    topic: "${deployment_stage}.extractor.failed"
-    kafka_broker_host: "${kafka_broker_host}"
-    zookeeper_quorum: "${zookeeper_quorum}"
-    max_file_size: "${file_size}"
-    max_file_age: "${file_age}"
-    partition_prefix_enabled: "false"
-    partition_prefix_key: ""
-    partition_prefix_mapping: "{}"
-    message_channel_identifier: "dataset"
-    output_file_pattern: "{partition}-{currentTimestamp}.json"
-    message_parser: "com.pinterest.secor.parser.ChannelDateMessageParser"
-    storage:
-      size: "${backup_pv_size}"
-    requests:
-      cpu: "${request_cpu}"
-      memory: "${request_memory}"
-    limits:
-      cpu: "${secor_cpu_limit}"
-      memory: "${secor_memory_limit}"
-    lag_threshold_warning: 100000
-    threads: "${threads}"
-    lag_threshold_critical: 200000
-
   raw-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_raw"
@@ -162,36 +102,6 @@ secor_jobs:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-  invalid-backup:
-    replicas: 1
-    consumer_group: "${deployment_stage}_invalid"
-    service_name: "invalid"
-    base_path: "${base_path}/invalid"
-    timestamp_key: "${default_timestamp_key}"
-    fallback_timestamp_key: "${fallback_timestamp_key}"
-    topic: "${deployment_stage}.invalid"
-    kafka_broker_host: "${kafka_broker_host}"
-    zookeeper_quorum: "${zookeeper_quorum}"
-    max_file_size: "${file_size}"
-    max_file_age: "${file_age}"
-    partition_prefix_enabled: "false"
-    partition_prefix_key: ""
-    partition_prefix_mapping: "{}"
-    message_channel_identifier: "dataset"
-    output_file_pattern: "{partition}-{currentTimestamp}.json"
-    message_parser: "com.pinterest.secor.parser.ChannelDateMessageParser"
-    storage:
-      size: "${backup_pv_size}"
-    requests:
-      cpu: "${request_cpu}"
-      memory: "${request_memory}"
-    limits:
-      cpu: "${secor_cpu_limit}"
-      memory: "${secor_memory_limit}"
-    lag_threshold_warning: 100000
-    threads: "${threads}"
-    lag_threshold_critical: 200000
-
   unique-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_unique"
@@ -222,36 +132,6 @@ secor_jobs:
     threads: "${threads}"
     lag_threshold_critical: 200000
 
-  duplicate-backup:
-    replicas: 1
-    consumer_group: "${deployment_stage}_duplicate"
-    service_name: "duplicate"
-    base_path: "${base_path}/duplicates"
-    timestamp_key: "${default_timestamp_key}"
-    fallback_timestamp_key: "${fallback_timestamp_key}"
-    topic: "${deployment_stage}.duplicate"
-    kafka_broker_host: "${kafka_broker_host}"
-    zookeeper_quorum: "${zookeeper_quorum}"
-    max_file_size: "${file_size}"
-    max_file_age: "${file_age}"
-    partition_prefix_enabled: "false"
-    partition_prefix_key: ""
-    partition_prefix_mapping: "{}"
-    message_channel_identifier: "dataset"
-    output_file_pattern: "{partition}-{currentTimestamp}.json"
-    message_parser: "com.pinterest.secor.parser.ChannelDateMessageParser"
-    storage:
-      size: "${backup_pv_size}"
-    requests:
-      cpu: "${request_cpu}"
-      memory: "${request_memory}"
-    limits:
-      cpu: "${secor_cpu_limit}"
-      memory: "${secor_memory_limit}"
-    lag_threshold_warning: 100000
-    threads: "${threads}"
-    lag_threshold_critical: 200000
-
   denorm-backup:
     replicas: 1
     consumer_group: "${deployment_stage}_denorm"
@@ -260,36 +140,6 @@ secor_jobs:
     timestamp_key: "${default_timestamp_key}"
     fallback_timestamp_key: "${fallback_timestamp_key}"
     topic: "${deployment_stage}.denorm"
-    kafka_broker_host: "${kafka_broker_host}"
-    zookeeper_quorum: "${zookeeper_quorum}"
-    max_file_size: "${file_size}"
-    max_file_age: "${file_age}"
-    partition_prefix_enabled: "false"
-    partition_prefix_key: ""
-    partition_prefix_mapping: "{}"
-    message_channel_identifier: "dataset"
-    output_file_pattern: "{partition}-{currentTimestamp}.json"
-    message_parser: "com.pinterest.secor.parser.ChannelDateMessageParser"
-    storage:
-      size: "${backup_pv_size}"
-    requests:
-      cpu: "${request_cpu}"
-      memory: "${request_memory}"
-    limits:
-      cpu: "${secor_cpu_limit}"
-      memory: "${secor_memory_limit}"
-    lag_threshold_warning: 100000
-    threads: "${threads}"
-    lag_threshold_critical: 200000
-
-  denorm-failed-backup:
-    replicas: 1
-    consumer_group: "${deployment_stage}_denorm_failed"
-    service_name: "denorm_failed"
-    base_path: "${base_path}/denorm-failed"
-    timestamp_key: "${default_timestamp_key}"
-    fallback_timestamp_key: "${fallback_timestamp_key}"
-    topic: "${deployment_stage}.denorm.failed"
     kafka_broker_host: "${kafka_broker_host}"
     zookeeper_quorum: "${zookeeper_quorum}"
     max_file_size: "${file_size}"

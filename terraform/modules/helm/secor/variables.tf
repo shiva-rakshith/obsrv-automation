@@ -24,13 +24,10 @@ variable "jobs" {
   description = "Create release names"
   type        = list(string)
   default     = [
-  "ingest-backup", "extractor-duplicate-backup",
-  "extractor-failed-backup", "raw-backup",
-  "failed-backup", "invalid-backup",
-  "unique-backup", "duplicate-backup",
-  "denorm-backup", "denorm-failed-backup",
-  "transform-backup", "system-stats",
-  "system-events"
+  "ingest-backup", "raw-backup",
+  "failed-backup", "unique-backup",
+  "denorm-backup", "transform-backup", 
+  "system-stats", "system-events"
   ]
 }
 
